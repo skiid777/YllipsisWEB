@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="pl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Yllipsis-skiid777</title>
+<meta name="description" content="Małe narzędzia w przeglądarce. Ty zaczynasz zdanie, narzędzie dopowiada resztę.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<script src="/assets/site.js"></script>
+<style>
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--y-bg); }
+body {
+  margin: 0;
+  color: var(--y-fg);
+  font-family: var(--y-font-display);
+  font-size: 16px;
+  line-height: 1.5;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+.page { position: relative; isolation: isolate; flex: 1; display: flex; flex-direction: column; overflow-x: clip; }
+.bg {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: radial-gradient(circle at 1px 1px, var(--y-line) 1.3px, transparent 1.7px);
+  background-size: 26px 26px;
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 85%);
+  mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.6) 40%, transparent 85%);
+}
+.wrap { width: min(1200px, calc(100% - 2 * clamp(16px, 4vw, 40px))); margin-inline: auto; }
+a { color: inherit; }
+
+.hero { padding-block: clamp(44px, 9vw, 110px) clamp(26px, 4vw, 48px); }
+.eyebrow {
+  margin: 0 0 22px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font: 500 0.78rem var(--y-font-mono);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--y-fg2);
+}
+.eyebrow::before { content: ""; width: 30px; height: 1px; background: currentColor; }
+h1 {
+  margin: 0;
+  font-weight: 800;
+  font-stretch: 122%;
+  font-size: clamp(2.3rem, 8vw, 6.3rem);
+  line-height: 0.99;
+  letter-spacing: -0.04em;
+  text-wrap: balance;
+}
+h1 .w { display: inline-block; animation: rise 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--i) * 75ms + 120ms); }
+h1.still .w { animation: none; }
+h1 .yl-dots { display: inline-flex; margin-left: 0.12em; gap: 0.1em; }
+h1 .yl-dots i { width: 0.17em; height: 0.17em; margin-bottom: 0.06em; }
+@keyframes rise { from { opacity: 0; transform: translateY(0.45em) rotate(2.5deg); filter: blur(7px); } }
+@keyframes fade { from { opacity: 0; transform: translateY(8px); } }
+
+.finder { margin-top: 34px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 18px; animation: fade 0.9s ease 0.85s backwards; }
+.search { position: relative; display: block; width: min(420px, 100%); }
+.search input {
+  width: 100%;
+  height: 50px;
+  padding: 0 52px 0 18px;
+  border: 1px solid var(--y-line);
+  border-radius: 14px;
+  background: var(--y-bg);
+  color: var(--y-fg);
+  font: 500 1rem var(--y-font-display);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.search input::placeholder { color: var(--y-fg2); opacity: 0.8; }
+.search input:hover { border-color: var(--y-fg2); }
+.search input:focus-visible { outline: none; border-color: var(--y-accent); box-shadow: 0 0 0 4px var(--y-accent-soft); }
+.search kbd { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font: 500 0.78rem var(--y-font-mono); color: var(--y-fg2); border: 1px solid var(--y-line); border-radius: 6px; padding: 1px 8px; background: var(--y-surface); pointer-events: none; }
+.count { font: 500 0.8rem var(--y-font-mono); color: var(--y-fg2); min-height: 1.2em; }
+
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 18px; padding-bottom: clamp(48px, 8vw, 96px); }
+.card {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--y-line);
+  border-radius: 18px;
+  background: var(--y-bg);
+  color: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  animation: rise2 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-delay: calc(var(--i) * 110ms + 450ms);
+  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease, box-shadow 0.4s ease;
+}
+@keyframes rise2 { from { opacity: 0; transform: translateY(26px) scale(0.98); } }
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(280px circle at var(--mx, 50%) var(--my, 0%), var(--y-accent-soft), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+.card > * { position: relative; z-index: 1; }
+a.card:hover { transform: translateY(-5px); border-color: var(--y-fg2); box-shadow: 0 22px 44px -22px rgba(0, 0, 0, 0.4); }
+a.card:hover::before { opacity: 1; }
+a.card:focus-visible { outline: 2px solid var(--y-accent); outline-offset: 3px; }
+
+.art { padding: 22px 22px 18px; background: var(--y-surface); border-bottom: 1px solid var(--y-line); }
+.pt { --s: 80%; --l: 70%; display: grid; grid-template-columns: repeat(18, 1fr); gap: 3px; }
+.rs { display: block; width: 100%; height: auto; }
+.rs .b, .rs .c { transform-box: fill-box; transform-origin: center; animation: pop 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.3) backwards; }
+.rs .b { animation-delay: calc(var(--k) * 90ms + 650ms); transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3); }
+.rs .c { animation-delay: calc(var(--k) * 40ms + 900ms); }
+a.card:hover .rs .b { transform: scaleY(1.08); }
+:root[data-theme="dark"] .pt { --s: 58%; --l: 50%; }
+.pt i {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 2px;
+  background: hsl(var(--h) var(--s) var(--l));
+  animation: pop 0.55s cubic-bezier(0.2, 0.9, 0.3, 1.3) backwards;
+  animation-delay: calc(var(--c) * 14ms + var(--r) * 34ms + 650ms);
+  transition: transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+  transition-delay: calc(var(--c) * 12ms);
+}
+.pt i.e { background: none; }
+@keyframes pop { from { opacity: 0; transform: scale(0.3); } }
+a.card:hover .pt i:not(.e) { transform: translateY(-4px); }
+
+.body { padding: 20px 22px 22px; display: flex; flex-direction: column; gap: 10px; flex: 1; }
+.tag { align-self: flex-start; font: 500 0.7rem var(--y-font-mono); letter-spacing: 0.1em; text-transform: uppercase; color: var(--y-fg2); border: 1px solid var(--y-line); border-radius: 999px; padding: 2px 10px; }
+.name { margin: 0; font-size: 1.6rem; font-weight: 700; font-stretch: 112%; letter-spacing: -0.025em; line-height: 1.1; text-wrap: balance; }
+.desc { margin: 0; color: var(--y-fg2); font-size: 0.97rem; text-wrap: pretty; }
+.go { margin-top: auto; padding-top: 12px; display: flex; align-items: center; justify-content: space-between; font: 500 0.82rem var(--y-font-mono); }
+.go svg { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.2s ease; }
+a.card:hover .go svg { transform: translateX(6px); color: var(--y-accent); }
+
+.ghost { border-style: dashed; background: transparent; align-items: center; justify-content: center; text-align: center; padding: 44px 24px; gap: 10px; min-height: 280px; }
+.ghost .yl-dots { font-size: 3.4rem; gap: 0.09em; }
+.ghost .yl-dots i { width: 0.15em; height: 0.15em; }
+.ghost p { margin: 0; color: var(--y-fg2); max-width: 26ch; text-wrap: balance; }
+.ghost .t { font-weight: 700; font-stretch: 108%; color: var(--y-fg); font-size: 1.1rem; }
+
+.empty { grid-column: 1 / -1; padding: 40px 0; color: var(--y-fg2); font: 500 0.95rem var(--y-font-mono); }
+
+.still .card, .still .pt i, .still .rs .b, .still .rs .c { animation: none; }
+@media (prefers-reduced-motion: reduce) {
+  h1 .w, .finder, .card, .pt i, .rs .b, .rs .c { animation: none; }
+  a.card:hover, a.card:hover .pt i:not(.e) { transform: none; }
+}
+</style>
+</head>
+<body>
+<div id="yl-bar"></div>
+
+<div class="page">
+  <div class="bg" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow" data-pl="narzędzia w przeglądarce" data-en="tools in your browser">narzędzia w przeglądarce</p>
+      <h1 id="h1"></h1>
+      <div class="finder">
+        <label class="search">
+          <input id="f" type="search" autocomplete="off" spellcheck="false" data-attr="placeholder" data-pl="Szukaj narzędzia…" data-en="Search tools…" placeholder="Szukaj narzędzia…" aria-label="Szukaj narzędzia">
+          <kbd aria-hidden="true">/</kbd>
+        </label>
+        <span class="count" id="count" aria-live="polite"></span>
+      </div>
+    </section>
+
+    <section class="grid" id="grid" aria-label="Narzędzia"></section>
+  </main>
+
+  <div id="yl-foot"></div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+  var Y = window.Yllipsis;
+  var t = function (pl, en) { return Y ? Y.t(pl, en) : pl; };
+
+  var TOOLS = [
+    {
+      href: '/tablica',
+      tag: ['chemia', 'chemistry'],
+      name: ['Tablica Mendelejewa', "Mendeleev's Table"],
+      desc: ['Interaktywny układ okresowy. Kliknij pierwiastek i zobacz więcej niż w podręczniku: model atomu, elektrony, własności i historię.',
+        'Interactive periodic table. Click an element and see more than your textbook shows: atom model, electrons, properties and history.'],
+      words: 'układ okresowy periodic table pierwiastki elements chemia chemistry mendelejew mendeleev atom',
+      art: artHTML
+    },
+    {
+      href: '/resistance',
+      tag: ['elektronika', 'electronics'],
+      name: ['Kalkulator rezystorów', 'Resistor calculator'],
+      desc: ['Kod kolorów w obie strony: kliknij paski i zobacz wartość albo wpisz wartość i zobacz paski. Tolerancja, 4, 5 i 6 pasków, szeregi E.',
+        'The colour code both ways: click the bands to get the value, or type a value to get the bands. Tolerance, 4, 5 and 6 bands, E series.'],
+      words: 'rezystor rezystory opornik kod kolorow paski ohm elektronika resistor resistance color code bands electronics tolerance e24 e96',
+      art: resistorArt
+    },
+    {
+      href: '/ohm',
+      tag: ['elektronika', 'electronics'],
+      name: ['Prawo Ohma i moc', "Ohm's law and power"],
+      desc: ['Wpisz dowolne dwie z U, I, R, P, a reszta policzy się sama. Ze wzorami krok po kroku, rezystorem z szeregu E24 i mocą, jaką musi wytrzymać.',
+        'Type any two of U, I, R, P and the rest works itself out. With step-by-step formulas, the nearest E24 resistor and the power rating it needs.'],
+      words: 'prawo ohma ohm law napiecie prad rezystancja opor moc wat volt amper voltage current resistance power watt elektronika electronics',
+      art: ohmArt
+    }
+  ];
+
+  var ROWS = ['X................X', 'XX..........XXXXXX', 'XX..........XXXXXX', 'XXXXXXXXXXXXXXXXXX', 'XXXXXXXXXXXXXXXXXX', 'XX.XXXXXXXXXXXXXXX', 'XX.XXXXXXXXXXXXXXX', '', '..XXXXXXXXXXXXXXX.', '..XXXXXXXXXXXXXXX.'];
+  var HUES = [4, 26, 48, 48, 48, 48, 48, 48, 48, 48, 48, 48, 96, 160, 200, 200, 200, 250];
+  function artHTML() {
+    var out = '';
+    ROWS.forEach(function (row, r) {
+      for (var c = 0; c < 18; c++) {
+        var on = row.charAt(c) === 'X', hue = r >= 8 ? (r === 8 ? 292 : 330) : HUES[c];
+        out += '<i' + (on ? '' : ' class="e"') + ' style="--c:' + c + ';--r:' + r + ';--h:' + hue + '"></i>';
+      }
+    });
+    return '<div class="art" aria-hidden="true"><div class="pt">' + out + '</div></div>';
+  }
+  var RBANDS = ['#f5d33b', '#8140c8', '#d62d2d', '#c9a227'];
+  var RDOTS = ['#141414', '#7a4a2b', '#d62d2d', '#f28a1c', '#f5d33b', '#2f9e55', '#2459d6', '#8140c8', '#8d8d8d', '#f6f6f6'];
+  function resistorArt() {
+    var bands = RBANDS.map(function (c, i) {
+      return '<rect class="b" style="--k:' + i + '" x="' + [96, 132, 168, 262][i] + '" y="38" width="20" height="82" fill="' + c + '"/>';
+    }).join('');
+    var dots = RDOTS.map(function (c, i) {
+      return '<circle class="c" style="--k:' + i + '" cx="' + (49 + i * 29) + '" cy="168" r="9" fill="' + c + '" stroke="#8d8d8d" stroke-opacity="0.5"/>';
+    }).join('');
+    return '<div class="art" aria-hidden="true"><svg class="rs" viewBox="0 0 360 198">' +
+      '<line x1="14" y1="79" x2="86" y2="79" stroke="#9a9fa8" stroke-width="8" stroke-linecap="round"/>' +
+      '<line x1="274" y1="79" x2="346" y2="79" stroke="#9a9fa8" stroke-width="8" stroke-linecap="round"/>' +
+      '<clipPath id="rc"><rect x="70" y="38" width="220" height="82" rx="30"/></clipPath>' +
+      '<rect x="70" y="38" width="220" height="82" rx="30" fill="#d9c79d"/>' +
+      '<g clip-path="url(#rc)">' + bands + '</g>' + dots + '</svg></div>';
+  }
+  function ohmArt() {
+    var cell = function (k, x, y, s) { return '<text class="c" style="--k:' + k + '" x="' + x + '" y="' + y + '" text-anchor="middle" font-size="' + s + '" font-weight="800" fill="currentColor">' + 'UIR·'.charAt(k) + '</text>'; };
+    return '<div class="art" aria-hidden="true"><svg class="rs om" viewBox="0 0 360 198">' +
+      '<path class="b" style="--k:0" d="M180 14 L322 182 H38 Z" fill="none" stroke="var(--y-accent)" stroke-width="5" stroke-linejoin="round"/>' +
+      '<line class="b" style="--k:1" x1="96" y1="112" x2="264" y2="112" stroke="var(--y-accent)" stroke-width="4"/>' +
+      '<line class="b" style="--k:2" x1="180" y1="112" x2="180" y2="182" stroke="var(--y-accent)" stroke-width="4"/>' +
+      cell(0, 180, 96, 52) + cell(1, 134, 166, 46) + cell(2, 226, 166, 46) + '</svg></div>';
+  }
+  var ARROW = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h15M13 6l6 6-6 6"/></svg>';
+  function esc(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;'); }
+  function tx(arr, tag, cls) { return '<' + tag + ' class="' + cls + '" data-pl="' + esc(arr[0]) + '" data-en="' + esc(arr[1]) + '">' + esc(t(arr[0], arr[1])) + '</' + tag + '>'; }
+
+  var grid = document.getElementById('grid');
+  function cardHTML(tool, i) {
+    return '<a class="card" href="' + tool.href + '" style="--i:' + i + '" data-i="' + i + '">' + (tool.art ? tool.art() : '') +
+      '<div class="body">' + tx(tool.tag, 'span', 'tag') + tx(tool.name, 'h2', 'name') + tx(tool.desc, 'p', 'desc') +
+      '<div class="go"><span>' + esc(tool.href) + '</span>' + ARROW + '</div></div></a>';
+  }
+  function ghostHTML(i) {
+    return '<div class="card ghost" style="--i:' + i + '"><span class="yl-dots" aria-hidden="true"><i></i><i></i><i></i></span>' +
+      tx(['Kolejne narzędzie wkrótce', 'Next tool coming soon'], 'p', 't') + tx(['Tu dokończysz zdanie.', 'This is where the sentence ends.'], 'p', 's') + '</div>';
+  }
+
+  function norm(s) { return String(s).toLowerCase().replace(/ł/g, 'l').normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  var countEl = document.getElementById('count'), input = document.getElementById('f');
+
+  var firstRender = true;
+  function render(query) {
+    var q = norm(query || '').trim(), shown = [];
+    grid.classList.toggle('still', !firstRender);
+    firstRender = false;
+    TOOLS.forEach(function (tool) {
+      var hay = norm(tool.name.concat(tool.desc, tool.tag, [tool.words]).join(' '));
+      if (!q || q.split(/\s+/).every(function (w) { return hay.indexOf(w) >= 0; })) shown.push(tool);
+    });
+    var html = shown.map(cardHTML).join('');
+    if (!q) html += ghostHTML(shown.length);
+    if (q && !shown.length) html = '<p class="empty" data-pl="Nic nie pasuje. Spróbuj innego słowa…" data-en="Nothing matches. Try another word…">' + esc(t('Nic nie pasuje. Spróbuj innego słowa…', 'Nothing matches. Try another word…')) + '</p>';
+    grid.innerHTML = html;
+    countEl.textContent = q ? t('Pasuje: ', 'Matches: ') + shown.length : '';
+    grid.querySelectorAll('a.card').forEach(function (c) {
+      c.addEventListener('pointermove', function (ev) {
+        var r = c.getBoundingClientRect();
+        c.style.setProperty('--mx', (ev.clientX - r.left) + 'px');
+        c.style.setProperty('--my', (ev.clientY - r.top) + 'px');
+      });
+    });
+  }
+
+  var h1 = document.getElementById('h1');
+  function hero(animate) {
+    var words = t('Narzędzia, które dokańczają za ciebie', 'Tools that finish what you start').split(' ');
+    h1.classList.toggle('still', !animate);
+    h1.innerHTML = words.map(function (w, i) { return '<span class="w" style="--i:' + i + '">' + esc(w) + '</span>'; }).join(' ') +
+      ' <span class="yl-dots w" style="--i:' + words.length + '" aria-hidden="true"><i></i><i></i><i></i></span>';
+  }
+  function titles() { document.title = 'Yllipsis-skiid777'; }
+
+  hero(true);
+  render('');
+  titles();
+  var meta = document.querySelector('meta[name="description"]');
+
+  input.addEventListener('input', function () { render(input.value); });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === '/' && document.activeElement !== input && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName)) { ev.preventDefault(); input.focus(); }
+    else if (ev.key === 'Escape' && document.activeElement === input) { input.value = ''; render(''); input.blur(); }
+  });
+  document.addEventListener('yllipsis:lang', function () {
+    hero(false);
+    titles();
+    render(input.value);
+    if (meta) meta.setAttribute('content', t('Małe narzędzia w przeglądarce. Ty zaczynasz zdanie, narzędzie dopowiada resztę.', 'Small tools in your browser. You start the sentence, the tool fills in the rest.'));
+  });
+})();
+</script>
+</body>
+</html>

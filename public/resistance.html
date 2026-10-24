@@ -1,0 +1,487 @@
+<!doctype html>
+<html lang="pl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kalkulator rezystorów · Yllipsis-skiid777</title>
+<meta name="description" content="Kalkulator kodu kolorów rezystorów: kolory na wartość i wartość na kolory, 4, 5 i 6 pasków, tolerancja, szeregi E.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<script src="/assets/site.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--y-bg); }
+body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: var(--y-bg); color: var(--y-fg); font-family: var(--y-font-display); }
+.wrap { width: 100%; max-width: 1320px; margin-inline: auto; padding-inline: clamp(16px, 3vw, 32px); }
+main { flex: 1; padding-block: clamp(28px, 5vw, 56px) 56px; }
+h1 { margin: 0; font-weight: 800; font-stretch: 112%; font-size: clamp(2.2rem, 6vw, 4.4rem); line-height: 0.98; letter-spacing: -0.04em; text-wrap: balance; animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+.lead { margin: 14px 0 0; max-width: 56ch; color: var(--y-fg2); font-size: clamp(1rem, 1.6vw, 1.15rem); text-wrap: pretty; animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s backwards; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+
+.stage { margin-top: 28px; padding: clamp(16px, 3vw, 32px); background: var(--y-surface); border: 1px solid var(--y-line); border-radius: 22px; display: grid; justify-items: center; gap: 18px; animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards; }
+#rsvg { width: 100%; max-width: 720px; height: auto; display: block; overflow: visible; }
+.bd { x: 0; y: 40px; width: 22px; height: 90px; stroke: rgba(0, 0, 0, 0.32); stroke-width: 1.2; transition: transform 0.5s cubic-bezier(0.3, 1.2, 0.4, 1), fill 0.35s ease, opacity 0.3s ease; }
+#rsvg.init .bd { transition: none; }
+.readout { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 6px 22px; }
+#val { font-weight: 800; font-stretch: 112%; font-size: clamp(2.6rem, 8vw, 4.6rem); line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+#tolv { font: 600 clamp(1.1rem, 2.6vw, 1.5rem) var(--y-font-mono); color: var(--y-accent); }
+#rkm { font: 500 1rem var(--y-font-mono); color: var(--y-fg2); padding: 3px 10px; border: 1px solid var(--y-line); border-radius: 999px; background: var(--y-bg); }
+
+.calc { margin-top: 20px; display: grid; grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); gap: 20px; align-items: start; }
+.panel { min-width: 0; padding: clamp(16px, 2.5vw, 26px); border: 1px solid var(--y-line); border-radius: 22px; display: grid; gap: 22px; animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s backwards; }
+.calc .panel:nth-child(2) { animation-delay: 0.4s; }
+.lbl { display: block; margin-bottom: 8px; font: 600 0.72rem var(--y-font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--y-fg2); }
+.field { position: relative; }
+#valin { width: 100%; padding: 14px 52px 14px 16px; border: 1px solid var(--y-line); border-radius: 14px; background: var(--y-bg); color: var(--y-fg); font: 600 1.5rem var(--y-font-mono); transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+#valin:focus { outline: none; border-color: var(--y-accent); box-shadow: 0 0 0 4px var(--y-accent-soft); }
+.field .om { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font: 600 1.3rem var(--y-font-mono); color: var(--y-fg2); pointer-events: none; }
+.msg { margin: 8px 0 0; min-height: 1.3em; font-size: 0.88rem; color: var(--y-fg2); }
+.msg.err { color: #d03030; }
+:root[data-theme="dark"] .msg.err { color: #ff7a7a; }
+
+.seg { display: inline-grid; grid-template-columns: repeat(3, 1fr); padding: 3px; border: 1px solid var(--y-line); border-radius: 999px; background: var(--y-surface); }
+.seg button { border: 0; border-radius: 999px; padding: 8px 16px; background: none; color: var(--y-fg2); font: 600 0.82rem var(--y-font-mono); cursor: pointer; transition: background 0.3s ease, color 0.3s ease; }
+.seg button[aria-checked="true"] { background: var(--y-fg); color: var(--y-bg); }
+.seg button:not([aria-checked="true"]):hover { color: var(--y-fg); }
+.seg button:focus-visible, .sw:focus-visible, .chip:focus-visible { outline: 2px solid var(--y-accent); outline-offset: 2px; }
+
+.facts { margin: 0; display: grid; gap: 0; }
+.facts > div { display: flex; justify-content: space-between; gap: 16px; padding: 11px 0; border-top: 1px solid var(--y-line); }
+.facts dt { color: var(--y-fg2); font-size: 0.92rem; }
+.facts dd { margin: 0; font: 600 0.95rem var(--y-font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: grid; gap: 2px; padding: 8px 14px; border: 1px solid var(--y-line); border-radius: 12px; background: none; color: var(--y-fg2); font: 500 0.78rem var(--y-font-mono); text-align: left; cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease, transform 0.25s ease; }
+.chip b { font-weight: 600; font-size: 0.9rem; color: var(--y-fg); }
+.chip:hover { border-color: var(--y-fg2); transform: translateY(-2px); }
+.chip.on { background: var(--y-fg); border-color: var(--y-fg); color: var(--y-bg); }
+.chip.on b { color: var(--y-bg); }
+.hint { margin: 10px 0 0; font-size: 0.84rem; color: var(--y-fg2); max-width: 52ch; }
+
+.gh { margin: 0 0 8px; font: 600 0.72rem var(--y-font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--y-fg2); }
+.group { display: block; }
+.group + .group { margin-top: 14px; }
+.opts { display: flex; flex-wrap: wrap; gap: 4px; }
+.sw { display: grid; justify-items: center; gap: 6px; min-width: 46px; padding: 7px 4px 6px; border: 1px solid transparent; border-radius: 12px; background: none; color: var(--y-fg2); font: 500 0.7rem var(--y-font-mono); cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease; }
+.sw i { display: block; width: 28px; height: 28px; border-radius: 50%; background: var(--c); border: 1px solid color-mix(in srgb, var(--y-fg) 30%, transparent); transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1), box-shadow 0.25s ease; }
+.sw i.none { background: repeating-linear-gradient(45deg, transparent 0 4px, var(--y-line) 4px 5px); border-style: dashed; }
+.sw:hover i { transform: scale(1.14); }
+.sw[aria-checked="true"] { border-color: var(--y-fg); background: var(--y-surface); color: var(--y-fg); }
+.sw[aria-checked="true"] i { transform: scale(1.1); box-shadow: 0 0 0 3px var(--y-bg), 0 0 0 5px var(--y-accent); }
+
+@media (max-width: 900px) { .calc { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) {
+  h1, .lead, .stage, .panel { animation: none; }
+  .bd, .sw i, .chip { transition: none; }
+}
+</style>
+</head>
+<body>
+<div id="yl-bar" data-crumb-pl="Kalkulator rezystorów" data-crumb-en="Resistor calculator"></div>
+<main class="wrap">
+  <h1 data-pl="Kalkulator rezystorów" data-en="Resistor calculator">Kalkulator rezystorów</h1>
+  <p class="lead" data-pl="Wpisz wartość, a paski ułożą się same. Kliknij kolory, a wartość policzy się sama." data-en="Type a value and the bands set themselves. Click the colours and the value works itself out.">Wpisz wartość, a paski ułożą się same. Kliknij kolory, a wartość policzy się sama.</p>
+
+  <section class="stage" aria-label="Rezystor">
+    <svg id="rsvg" class="init" viewBox="0 0 600 170" role="img">
+      <defs>
+        <clipPath id="bodyclip"><rect x="100" y="40" width="400" height="90" rx="34"/></clipPath>
+        <linearGradient id="shade" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#ffffff" stop-opacity="0.55"/>
+          <stop offset="0.45" stop-color="#ffffff" stop-opacity="0"/>
+          <stop offset="1" stop-color="#000000" stop-opacity="0.3"/>
+        </linearGradient>
+      </defs>
+      <line x1="14" y1="85" x2="110" y2="85" stroke="#9a9fa8" stroke-width="9" stroke-linecap="round"/>
+      <line x1="490" y1="85" x2="586" y2="85" stroke="#9a9fa8" stroke-width="9" stroke-linecap="round"/>
+      <rect x="100" y="40" width="400" height="90" rx="34" fill="#d9c79d"/>
+      <g id="bands" clip-path="url(#bodyclip)"></g>
+      <rect x="100" y="40" width="400" height="90" rx="34" fill="url(#shade)" pointer-events="none"/>
+    </svg>
+    <div class="readout">
+      <div id="val" aria-live="polite"></div>
+      <div id="tolv"></div>
+      <div id="rkm" title="Zapis RKM"></div>
+    </div>
+  </section>
+
+  <div class="calc">
+    <section class="panel">
+      <div>
+        <label class="lbl" for="valin" data-pl="Wartość" data-en="Value">Wartość</label>
+        <div class="field">
+          <input id="valin" type="text" inputmode="text" autocomplete="off" spellcheck="false" data-attr="placeholder" data-pl="np. 4k7, 220, 2,2M" data-en="e.g. 4k7, 220, 2.2M" placeholder="np. 4k7, 220, 2,2M">
+          <span class="om" aria-hidden="true">Ω</span>
+        </div>
+        <p class="msg" id="msg" aria-live="polite"></p>
+      </div>
+      <div>
+        <span class="lbl" id="nlbl" data-pl="Liczba pasków" data-en="Number of bands">Liczba pasków</span>
+        <div class="seg" id="nseg" role="radiogroup" aria-labelledby="nlbl"></div>
+      </div>
+      <dl class="facts">
+        <div><dt data-pl="Zakres wg tolerancji" data-en="Range within tolerance">Zakres wg tolerancji</dt><dd id="fRange"></dd></div>
+        <div><dt data-pl="Cyfry i mnożnik" data-en="Digits and multiplier">Cyfry i mnożnik</dt><dd id="fDig"></dd></div>
+        <div id="rowTc"><dt data-pl="Współczynnik temperaturowy" data-en="Temperature coefficient">Współczynnik temperaturowy</dt><dd id="fTc"></dd></div>
+      </dl>
+      <div>
+        <span class="lbl" data-pl="Najbliższa wartość z szeregu" data-en="Nearest standard value">Najbliższa wartość z szeregu</span>
+        <div class="chips" id="chips"></div>
+        <p class="hint" data-pl="Wypełniony szereg zawiera dokładnie tę wartość. Kliknij, żeby wybrać najbliższą." data-en="A filled series contains exactly this value. Click one to pick its nearest value.">Wypełniony szereg zawiera dokładnie tę wartość. Kliknij, żeby wybrać najbliższą.</p>
+      </div>
+    </section>
+
+    <section class="panel" id="pickers" aria-label="Paski"></section>
+  </div>
+</main>
+<div id="yl-foot"></div>
+
+<script>
+(function () {
+  'use strict';
+  var Y = window.Yllipsis;
+  var t = function (pl, en) { return Y.t(pl, en); };
+
+  var COLORS = {
+    black: { h: '#141414', pl: 'czarny', en: 'black' },
+    brown: { h: '#7a4a2b', pl: 'brązowy', en: 'brown' },
+    red: { h: '#d62d2d', pl: 'czerwony', en: 'red' },
+    orange: { h: '#f28a1c', pl: 'pomarańczowy', en: 'orange' },
+    yellow: { h: '#f5d33b', pl: 'żółty', en: 'yellow' },
+    green: { h: '#2f9e55', pl: 'zielony', en: 'green' },
+    blue: { h: '#2459d6', pl: 'niebieski', en: 'blue' },
+    violet: { h: '#8140c8', pl: 'fioletowy', en: 'violet' },
+    grey: { h: '#8d8d8d', pl: 'szary', en: 'grey' },
+    white: { h: '#f6f6f6', pl: 'biały', en: 'white' },
+    gold: { h: '#c9a227', pl: 'złoty', en: 'gold' },
+    silver: { h: '#c3c6cb', pl: 'srebrny', en: 'silver' },
+    none: { h: 'transparent', pl: 'brak paska', en: 'no band' }
+  };
+  var DIG = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'grey', 'white'];
+  var MULT = { silver: -2, gold: -1, black: 0, brown: 1, red: 2, orange: 3, yellow: 4, green: 5, blue: 6, violet: 7, grey: 8, white: 9 };
+  var EXP_COLOR = {};
+  Object.keys(MULT).forEach(function (k) { EXP_COLOR[MULT[k]] = k; });
+  var TOL_KEYS = ['brown', 'red', 'green', 'blue', 'violet', 'gold', 'silver', 'none'];
+  var TOL = { brown: 1, red: 2, green: 0.5, blue: 0.25, violet: 0.1, gold: 5, silver: 10, none: 20 };
+  var TC_KEYS = ['black', 'brown', 'red', 'orange', 'yellow', 'green', 'blue', 'violet', 'grey'];
+  var TC = { black: 250, brown: 100, red: 50, orange: 15, yellow: 25, green: 20, blue: 10, violet: 5, grey: 1 };
+  var SERIES = {
+    E12: [1.0, 1.2, 1.5, 1.8, 2.2, 2.7, 3.3, 3.9, 4.7, 5.6, 6.8, 8.2],
+    E24: [1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2.0, 2.2, 2.4, 2.7, 3.0, 3.3, 3.6, 3.9, 4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5, 8.2, 9.1],
+    E96: [1.00, 1.02, 1.05, 1.07, 1.10, 1.13, 1.15, 1.18, 1.21, 1.24, 1.27, 1.30, 1.33, 1.37, 1.40, 1.43, 1.47, 1.50, 1.54, 1.58, 1.62, 1.65, 1.69, 1.74, 1.78, 1.82, 1.87, 1.91, 1.96, 2.00, 2.05, 2.10, 2.15, 2.21, 2.26, 2.32, 2.37, 2.43, 2.49, 2.55, 2.61, 2.67, 2.74, 2.80, 2.87, 2.94, 3.01, 3.09, 3.16, 3.24, 3.32, 3.40, 3.48, 3.57, 3.65, 3.74, 3.83, 3.92, 4.02, 4.12, 4.22, 4.32, 4.42, 4.53, 4.64, 4.75, 4.87, 4.99, 5.11, 5.23, 5.36, 5.49, 5.62, 5.76, 5.90, 6.04, 6.19, 6.34, 6.49, 6.65, 6.81, 6.98, 7.15, 7.32, 7.50, 7.68, 7.87, 8.06, 8.25, 8.45, 8.66, 8.87, 9.09, 9.31, 9.53, 9.76]
+  };
+  var POS = { 4: [150, 196, 242, 420], 5: [140, 180, 220, 260, 420], 6: [130, 168, 206, 244, 384, 428] };
+
+  var S = { n: 4, d: [4, 7, 0], e: 2, tol: 'gold', tc: 'brown' };
+  var approx = false;
+  var errKind = null;
+
+  var svg = document.getElementById('rsvg');
+  var bandsG = document.getElementById('bands');
+  var inputEl = document.getElementById('valin');
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  var bandEls = [];
+  for (var i = 0; i < 6; i++) {
+    var r = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+    r.setAttribute('class', 'bd');
+    bandsG.appendChild(r);
+    bandEls.push(r);
+  }
+
+  function digitCount() { return S.n === 4 ? 2 : 3; }
+  function pow10(e) { return e >= 0 ? Math.pow(10, e) : 1 / Math.pow(10, -e); }
+  function current() {
+    var m = 0;
+    for (var i = 0; i < digitCount(); i++) m = m * 10 + S.d[i];
+    return S.e >= 0 ? m * Math.pow(10, S.e) : m / Math.pow(10, -S.e);
+  }
+
+  function num(x) {
+    var s = String(x);
+    return Y.lang === 'pl' ? s.replace('.', ',') : s;
+  }
+  function pick(v, p) {
+    var r = parseFloat(v.toPrecision(p));
+    var d = 1, u = 'Ω', l = 'R';
+    if (r >= 1e9) { d = 1e9; u = 'GΩ'; l = 'G'; }
+    else if (r >= 1e6) { d = 1e6; u = 'MΩ'; l = 'M'; }
+    else if (r >= 1e3) { d = 1e3; u = 'kΩ'; l = 'k'; }
+    return { n: parseFloat((r / d).toPrecision(p)), u: u, l: l };
+  }
+  function fmt(v, p) { var k = pick(v, p || 4); return num(k.n) + ' ' + k.u; }
+  function rkm(v) {
+    var k = pick(v, 4), s = String(k.n);
+    if (s.indexOf('.') < 0) return s + k.l;
+    var p = s.split('.');
+    return (p[0] === '0' ? '' : p[0]) + k.l + p[1];
+  }
+  function inputText(v) { var k = pick(v, 4); return num(k.n) + (k.l === 'R' ? '' : k.l); }
+  function urlText(v) { var k = pick(v, 4); return String(k.n) + (k.l === 'R' ? '' : k.l); }
+  function multCaption(e) {
+    var v = pow10(e);
+    var k = pick(v, 3);
+    return '×' + num(k.n) + (k.l === 'R' ? '' : k.l);
+  }
+
+  function mulOf(c) { return { '': 1, r: 1, k: 1e3, m: 1e6, g: 1e9 }[c.toLowerCase()]; }
+  function parse(s) {
+    s = s.trim().replace(/\s+/g, '').replace(/Ω|ohms?/gi, '');
+    var m = /^(\d+)([rkmg])(\d+)$/i.exec(s);
+    if (m) return mulOf(m[2]) * parseFloat(m[1] + '.' + m[3]);
+    m = /^(\d+(?:[.,]\d+)?|[.,]\d+)([rkmg]?)$/i.exec(s);
+    if (!m) return null;
+    return parseFloat(m[1].replace(',', '.')) * mulOf(m[2]);
+  }
+
+  function range(d) { return { min: Math.pow(10, d - 1) * 0.01, max: (Math.pow(10, d) - 1) * 1e9 }; }
+  function encode(v, d) {
+    var rg = range(d);
+    if (!(v >= rg.min * 0.9999) || !(v <= rg.max * 1.0001)) return null;
+    var lo = Math.pow(10, d - 1), hi = Math.pow(10, d), e, m, r;
+    for (e = -2; e <= 9; e++) {
+      m = v / pow10(e);
+      r = Math.round(m);
+      if (r >= lo && r < hi && Math.abs(m - r) <= 1e-6 * m) return { digits: String(r).split('').map(Number), e: e, exact: true };
+    }
+    e = Math.max(-2, Math.min(9, Math.floor(Math.log10(v)) - (d - 1)));
+    m = Math.round(v / pow10(e));
+    if (m >= hi) { m = Math.round(m / 10); e++; }
+    if (m < lo) m = lo;
+    return { digits: String(m).split('').map(Number), e: e, exact: false };
+  }
+
+  function setValue(v) {
+    var res = encode(v, digitCount());
+    if (!res) { errKind = 'range'; renderMsg(); return false; }
+    S.d = res.digits.concat([0, 0, 0]).slice(0, 3);
+    S.e = res.e;
+    approx = !res.exact;
+    errKind = null;
+    return true;
+  }
+
+  function bandColors() {
+    var c = [DIG[S.d[0]], DIG[S.d[1]]];
+    if (S.n > 4) c.push(DIG[S.d[2]]);
+    c.push(EXP_COLOR[S.e], S.tol);
+    if (S.n === 6) c.push(S.tc);
+    return c;
+  }
+
+  function groupsFor() {
+    var g = [{ k: 'd', i: 0 }, { k: 'd', i: 1 }];
+    if (S.n > 4) g.push({ k: 'd', i: 2 });
+    g.push({ k: 'm' }, { k: 't' });
+    if (S.n === 6) g.push({ k: 'c' });
+    return g;
+  }
+  function groupLabel(g) {
+    if (g.k === 'd') return t('Cyfra ', 'Digit ') + (g.i + 1);
+    if (g.k === 'm') return t('Mnożnik', 'Multiplier');
+    if (g.k === 't') return t('Tolerancja', 'Tolerance');
+    return t('Współczynnik temperaturowy (ppm/K)', 'Temperature coefficient (ppm/K)');
+  }
+  function groupOptions(g) {
+    if (g.k === 'd') return (g.i === 0 ? DIG.slice(1) : DIG).map(function (c) { return { c: c, cap: String(DIG.indexOf(c)) }; });
+    if (g.k === 'm') {
+      var out = [];
+      for (var e = -2; e <= 9; e++) out.push({ c: EXP_COLOR[e], cap: multCaption(e) });
+      return out;
+    }
+    if (g.k === 't') return TOL_KEYS.map(function (c) { return { c: c, cap: '±' + num(TOL[c]) + '%' }; });
+    return TC_KEYS.map(function (c) { return { c: c, cap: String(TC[c]) }; });
+  }
+  function groupSelected(g) {
+    if (g.k === 'd') return DIG[S.d[g.i]];
+    if (g.k === 'm') return EXP_COLOR[S.e];
+    if (g.k === 't') return S.tol;
+    return S.tc;
+  }
+
+  var pickersEl = document.getElementById('pickers');
+  function buildPickers() {
+    pickersEl.innerHTML = groupsFor().map(function (g, gi) {
+      var sel = groupSelected(g);
+      var id = 'g' + gi;
+      return '<div class="group"><h3 class="gh" id="' + id + '">' + groupLabel(g) + '</h3><div class="opts" role="radiogroup" aria-labelledby="' + id + '">' +
+        groupOptions(g).map(function (o) {
+          var name = COLORS[o.c][Y.lang];
+          return '<button type="button" class="sw" role="radio" aria-checked="' + (o.c === sel) + '" tabindex="' + (o.c === sel ? 0 : -1) + '" data-g="' + gi + '" data-c="' + o.c + '" aria-label="' + name + ', ' + o.cap + '" title="' + name + '">' +
+            '<i class="' + (o.c === 'none' ? 'none' : '') + '" style="--c:' + COLORS[o.c].h + '"></i><span>' + o.cap + '</span></button>';
+        }).join('') + '</div></div>';
+    }).join('');
+  }
+  function syncPickers() {
+    groupsFor().forEach(function (g, gi) {
+      var sel = groupSelected(g);
+      pickersEl.querySelectorAll('.sw[data-g="' + gi + '"]').forEach(function (b) {
+        var on = b.dataset.c === sel;
+        b.setAttribute('aria-checked', on);
+        b.tabIndex = on ? 0 : -1;
+      });
+    });
+  }
+
+  function choose(gi, color) {
+    var g = groupsFor()[gi];
+    if (g.k === 'd') S.d[g.i] = DIG.indexOf(color);
+    else if (g.k === 'm') S.e = MULT[color];
+    else if (g.k === 't') S.tol = color;
+    else S.tc = color;
+    approx = false;
+    errKind = null;
+    inputEl.value = inputText(current());
+    render();
+  }
+  pickersEl.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.sw');
+    if (b) choose(+b.dataset.g, b.dataset.c);
+  });
+  pickersEl.addEventListener('keydown', function (ev) {
+    var b = ev.target.closest('.sw');
+    if (!b) return;
+    var dir = { ArrowRight: 1, ArrowDown: 1, ArrowLeft: -1, ArrowUp: -1 }[ev.key];
+    if (!dir) return;
+    ev.preventDefault();
+    var all = Array.prototype.slice.call(b.parentNode.children);
+    var next = all[(all.indexOf(b) + dir + all.length) % all.length];
+    next.focus();
+    choose(+next.dataset.g, next.dataset.c);
+  });
+
+  var nseg = document.getElementById('nseg');
+  function buildSeg() {
+    nseg.innerHTML = [4, 5, 6].map(function (n) {
+      return '<button type="button" role="radio" aria-checked="' + (n === S.n) + '" data-n="' + n + '">' + n + ' ' + t('pasków', 'bands') + '</button>';
+    }).join('');
+  }
+  nseg.addEventListener('click', function (ev) {
+    var b = ev.target.closest('button');
+    if (!b || +b.dataset.n === S.n) return;
+    var v = current();
+    S.n = +b.dataset.n;
+    if (setValue(v)) { buildSeg(); buildPickers(); render(); }
+  });
+
+  function nearest(list, v) {
+    var dec = Math.floor(Math.log10(v)), mm = v / Math.pow(10, dec), best = null, bd = Infinity;
+    list.concat([10]).forEach(function (c) {
+      var dist = Math.abs(Math.log(mm / c));
+      if (dist < bd) { bd = dist; best = c; }
+    });
+    return { value: parseFloat((best * Math.pow(10, dec)).toPrecision(6)), exact: Math.abs(mm - best) < 0.0005 };
+  }
+  function buildChips(v) {
+    var el = document.getElementById('chips');
+    el.innerHTML = Object.keys(SERIES).map(function (name) {
+      var n = nearest(SERIES[name], v);
+      return '<button type="button" class="chip' + (n.exact ? ' on' : '') + '" data-v="' + n.value + '" aria-pressed="' + n.exact + '">' + name + '<b>' + fmt(n.value, 3) + '</b></button>';
+    }).join('');
+  }
+  document.getElementById('chips').addEventListener('click', function (ev) {
+    var b = ev.target.closest('.chip');
+    if (!b) return;
+    var v = parseFloat(b.dataset.v);
+    if (setValue(v)) { inputEl.value = inputText(current()); render(); }
+  });
+
+  var msgEl = document.getElementById('msg');
+  function renderMsg() {
+    var text = '', err = false;
+    if (errKind === 'parse') { text = t('Nie rozumiem tej wartości. Przykłady: 4k7, 220, 2,2M.', 'Cannot read that value. Examples: 4k7, 220, 2.2M.'); err = true; }
+    else if (errKind === 'range') {
+      var rg = range(digitCount());
+      text = t('Poza zakresem dla ' + S.n + ' pasków: od ' + fmt(rg.min, 3) + ' do ' + fmt(rg.max, 3) + '.', 'Out of range for ' + S.n + ' bands: ' + fmt(rg.min, 3) + ' to ' + fmt(rg.max, 3) + '.');
+      err = true;
+    } else if (approx) {
+      text = t('Tej wartości nie da się zapisać dokładnie na ' + S.n + ' paskach. Pokazano najbliższą: ' + fmt(current(), 4) + '.' + (S.n < 6 ? ' Spróbuj więcej pasków.' : ''),
+        'This value cannot be written exactly with ' + S.n + ' bands. Showing the nearest: ' + fmt(current(), 4) + '.' + (S.n < 6 ? ' Try more bands.' : ''));
+    }
+    msgEl.textContent = text;
+    msgEl.classList.toggle('err', err);
+  }
+
+  var valEl = document.getElementById('val'), lastVal = '';
+  function render() {
+    var v = current(), cols = bandColors(), n = S.n;
+    bandEls.forEach(function (el, i) {
+      var on = i < cols.length;
+      var col = on ? cols[i] : null;
+      el.style.transform = 'translateX(' + POS[n][on ? i : POS[n].length - 1] + 'px)';
+      el.style.fill = on ? COLORS[col].h : 'transparent';
+      el.style.strokeDasharray = col === 'none' ? '4 3' : 'none';
+      el.style.opacity = on ? 1 : 0;
+    });
+
+    var text = fmt(v, 4);
+    valEl.textContent = text;
+    if (text !== lastVal && !reduce.matches && !svg.classList.contains('init')) {
+      valEl.animate([{ opacity: 0.35, transform: 'translateY(8px)' }, { opacity: 1, transform: 'none' }], { duration: 260, easing: 'ease-out' });
+    }
+    lastVal = text;
+
+    var tol = TOL[S.tol];
+    document.getElementById('tolv').textContent = '± ' + num(tol) + ' %';
+    var rk = document.getElementById('rkm');
+    rk.textContent = rkm(v);
+    rk.title = t('Zapis RKM, jak na schematach', 'RKM code, as on schematics');
+    document.getElementById('fRange').textContent = fmt(v * (1 - tol / 100), 5) + ' – ' + fmt(v * (1 + tol / 100), 5);
+
+    var digits = '';
+    for (var i = 0; i < digitCount(); i++) digits += S.d[i];
+    document.getElementById('fDig').textContent = digits + ' × ' + num(pow10(S.e));
+    document.getElementById('rowTc').hidden = n !== 6;
+    document.getElementById('fTc').textContent = '±' + TC[S.tc] + ' ppm/K';
+
+    svg.setAttribute('aria-label', t('Rezystor ', 'Resistor ') + text + ' ±' + num(tol) + '%, ' + t('paski: ', 'bands: ') + cols.map(function (c) { return COLORS[c][Y.lang]; }).join(', '));
+    buildChips(v);
+    syncPickers();
+    renderMsg();
+    var st = { v: urlText(v), n: n, t: S.tol };
+    if (n === 6) st.tc = S.tc;
+    Y.setParams(st);
+  }
+
+  function loadFromUrl() {
+    var p = Y.params();
+    if (!p.has('v')) return;
+    var n = +p.get('n'), tol = p.get('t'), tc = p.get('tc');
+    if (POS[n]) S.n = n;
+    if (TOL_KEYS.indexOf(tol) >= 0) S.tol = tol;
+    if (TC_KEYS.indexOf(tc) >= 0) S.tc = tc;
+    var v = parse(p.get('v'));
+    if (v === null) { errKind = 'parse'; return; }
+    setValue(v);
+  }
+
+  inputEl.addEventListener('input', function () {
+    var raw = inputEl.value;
+    if (!raw.trim()) { errKind = null; approx = false; renderMsg(); return; }
+    var v = parse(raw);
+    if (v === null) { errKind = 'parse'; renderMsg(); return; }
+    if (setValue(v)) render();
+  });
+
+  document.addEventListener('yllipsis:lang', function () {
+    document.title = t('Kalkulator rezystorów · Yllipsis-skiid777', 'Resistor calculator · Yllipsis-skiid777');
+    inputEl.value = inputText(current());
+    buildSeg();
+    buildPickers();
+    render();
+  });
+
+  document.title = t('Kalkulator rezystorów · Yllipsis-skiid777', 'Resistor calculator · Yllipsis-skiid777');
+  loadFromUrl();
+  inputEl.value = inputText(current());
+  buildSeg();
+  buildPickers();
+  render();
+  requestAnimationFrame(function () { requestAnimationFrame(function () { svg.classList.remove('init'); }); });
+})();
+</script>
+</body>
+</html>

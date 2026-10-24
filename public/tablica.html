@@ -1,0 +1,1320 @@
+<!doctype html>
+<html lang="pl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tablica Mendelejewa · Yllipsis-skiid777</title>
+<meta name="description" content="Interaktywny układ okresowy pierwiastków z kartami szczegółów.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<script src="/assets/site.js"></script>
+<style>
+
+:root {
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  --bg: #eef1f6;
+  --surface: #ffffff;
+  --surface-2: #f3f5f9;
+  --fg: #0f1a2c;
+  --fg-2: #4a566b;
+  --line: #d3d9e4;
+  --line-2: #e4e8f0;
+  --accent: #1f4fd8;
+  --accent-fg: #ffffff;
+  --shadow: rgba(15, 26, 44, 0.2);
+  --scrim: rgba(12, 18, 32, 0.55);
+
+  --h-alk: 4;
+  --h-ae: 26;
+  --h-tm: 48;
+  --h-pt: 96;
+  --h-mt: 160;
+  --h-nm: 200;
+  --h-ng: 250;
+  --h-ln: 292;
+  --h-ac: 330;
+  --cs: 76%;
+  --cl: 85%;
+  --on-cell: #0f1a2c;
+  --ms: 78%;
+  --ml: 40%;
+
+  --ramp-lo: #e8f0fb;
+  --ramp-hi: #1b3f8f;
+  --on-lo: #0f1a2c;
+  --on-hi: #ffffff;
+  --na: #e1e5ec;
+  --na-fg: #6f7a90;
+
+  --st-solid: #b8c5df;
+  --st-solid-fg: #0f1a2c;
+  --st-liq: #ffc766;
+  --st-liq-fg: #2a1a00;
+  --st-gas: #d3f0f8;
+  --st-gas-fg: #06323f;
+
+  --stage: #0d1424;
+  --stage-fg: #e8eefc;
+  --ring: #2b3756;
+  --dot: #8b97ae;
+  --bar: #8a9cc9;
+  --e-s: 90%;
+  --e-l: 68%;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0b1019;
+    --surface: #131b2a;
+    --surface-2: #0f1622;
+    --fg: #e8edf7;
+    --fg-2: #9aa6bd;
+    --line: #26324a;
+    --line-2: #1d2639;
+    --accent: #7ea2ff;
+    --accent-fg: #0b1019;
+    --shadow: rgba(0, 0, 0, 0.6);
+    --scrim: rgba(3, 6, 12, 0.74);
+    --cs: 46%;
+    --cl: 25%;
+    --on-cell: #eef3fd;
+    --ms: 86%;
+    --ml: 68%;
+    --ramp-lo: #162136;
+    --ramp-hi: #8fb4ff;
+    --on-lo: #e6ecfa;
+    --on-hi: #0b1019;
+    --na: #182133;
+    --na-fg: #7684a0;
+    --st-solid: #2b3a5a;
+    --st-solid-fg: #e0e8fa;
+    --st-liq: #e8a23a;
+    --st-liq-fg: #1d1200;
+    --st-gas: #0f4150;
+    --st-gas-fg: #c8f3ff;
+    --stage: #070b13;
+    --ring: #25304b;
+    --dot: #5f6c87;
+    --bar: #5a6d9b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b1019;
+  --surface: #131b2a;
+  --surface-2: #0f1622;
+  --fg: #e8edf7;
+  --fg-2: #9aa6bd;
+  --line: #26324a;
+  --line-2: #1d2639;
+  --accent: #7ea2ff;
+  --accent-fg: #0b1019;
+  --shadow: rgba(0, 0, 0, 0.6);
+  --scrim: rgba(3, 6, 12, 0.74);
+  --cs: 46%;
+  --cl: 25%;
+  --on-cell: #eef3fd;
+  --ms: 86%;
+  --ml: 68%;
+  --ramp-lo: #162136;
+  --ramp-hi: #8fb4ff;
+  --on-lo: #e6ecfa;
+  --on-hi: #0b1019;
+  --na: #182133;
+  --na-fg: #7684a0;
+  --st-solid: #2b3a5a;
+  --st-solid-fg: #e0e8fa;
+  --st-liq: #e8a23a;
+  --st-liq-fg: #1d1200;
+  --st-gas: #0f4150;
+  --st-gas-fg: #c8f3ff;
+  --stage: #070b13;
+  --ring: #25304b;
+  --dot: #5f6c87;
+  --bar: #5a6d9b;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+img { max-width: 100%; }
+[hidden] { display: none !important; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-display);
+  font-size: 15px;
+  line-height: 1.5;
+}
+button, input, select { font: inherit; color: inherit; }
+button { cursor: pointer; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.page { max-width: 1320px; margin-inline: auto; padding-inline: clamp(16px, 3vw, 32px); padding-block: 22px 40px; }
+
+.top h1 {
+  margin: 0;
+  font-size: clamp(1.9rem, 4.6vw, 3.1rem);
+  font-weight: 800;
+  font-stretch: 112%;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  text-wrap: balance;
+}
+.top h1 .t2 { font-weight: 300; font-stretch: 100%; }
+.top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.lang { flex: none; margin-top: 4px; }
+.lang button { min-width: 42px; padding-inline: 10px; letter-spacing: 0.04em; }
+.lead { margin: 10px 0 0; max-width: 62ch; color: var(--fg-2); text-wrap: pretty; }
+.spec {
+  margin-top: 16px;
+  height: 5px;
+  border-radius: 3px;
+  background: linear-gradient(90deg,
+    hsl(var(--h-alk) 80% 62%), hsl(var(--h-ae) 85% 60%), hsl(var(--h-tm) 90% 58%), hsl(var(--h-pt) 60% 52%),
+    hsl(var(--h-mt) 65% 46%), hsl(var(--h-nm) 80% 55%), hsl(var(--h-ng) 75% 66%), hsl(var(--h-ln) 65% 62%), hsl(var(--h-ac) 75% 64%));
+  opacity: 0.9;
+}
+
+.controls { display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: center; margin-top: 18px; }
+.seg { display: inline-flex; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); padding: 3px; gap: 2px; max-width: 100%; }
+.seg button { border: 0; background: transparent; padding: 7px 13px; border-radius: 6px; font-weight: 600; font-size: 0.88rem; color: var(--fg-2); white-space: nowrap; }
+.seg button[aria-checked="true"] { background: var(--accent); color: var(--accent-fg); }
+.seg button:not([aria-checked="true"]):hover { background: var(--surface-2); color: var(--fg); }
+.field { position: relative; display: block; min-width: 0; }
+.field select, .field input {
+  appearance: none;
+  height: 38px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  padding: 0 12px;
+  font-size: 0.9rem;
+  min-width: 0;
+}
+.field select { padding-right: 32px; font-weight: 500; }
+.field.sel::after { content: ""; position: absolute; right: 13px; top: 15px; width: 7px; height: 7px; border-right: 2px solid var(--fg-2); border-bottom: 2px solid var(--fg-2); transform: rotate(45deg); pointer-events: none; }
+.field input { width: min(260px, 100%); }
+.search { width: min(330px, 100%); }
+.search input { width: 100%; }
+.sugg { position: absolute; z-index: 20; top: 44px; left: 0; width: min(420px, calc(100vw - 32px)); max-height: min(70vh, 460px); overflow-y: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; box-shadow: 0 14px 34px var(--shadow); padding: 6px; }
+.sg { display: flex; align-items: center; gap: 10px; width: 100%; text-align: left; border: 0; background: transparent; border-radius: 7px; padding: 5px 8px; }
+.sg[aria-selected="true"], .sg:hover { background: var(--surface-2); }
+.sg i { flex: none; width: 36px; height: 36px; border-radius: 4px; display: grid; place-items: center; font-style: normal; font-weight: 700; font-stretch: 106%; background: hsl(var(--h) var(--cs) var(--cl)); color: var(--on-cell); border: 1px solid hsl(var(--h) 40% 45% / 0.4); }
+.sg span { min-width: 0; }
+.sg b { display: block; font-weight: 600; font-size: 0.92rem; }
+.sg b em { font-style: normal; font-weight: 400; color: var(--fg-2); }
+.sg small { display: block; font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg-2); }
+.sg-note { padding: 6px 8px; font-size: 0.78rem; color: var(--fg-2); text-wrap: pretty; }
+.sg-ex { display: flex; flex-wrap: wrap; gap: 6px; padding: 2px 8px 8px; }
+.sg-ex button { border: 1px solid var(--line); background: var(--surface-2); border-radius: 999px; padding: 3px 10px; font-size: 0.78rem; font-family: var(--font-mono); }
+.sg-ex button:hover { border-color: var(--fg-2); }
+.field input::placeholder { color: var(--fg-2); opacity: 0.8; }
+.btn { height: 38px; padding: 0 14px; border-radius: 9px; border: 1px solid var(--line); background: var(--surface); font-weight: 600; font-size: 0.88rem; }
+.btn:hover { background: var(--surface-2); }
+.count { font-family: var(--font-mono); font-size: 0.78rem; color: var(--fg-2); }
+
+.legend { margin-top: 14px; min-height: 44px; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { display: inline-flex; align-items: center; gap: 8px; padding: 5px 11px 5px 6px; border: 1px solid var(--line); background: var(--surface); border-radius: 999px; font-size: 0.82rem; font-weight: 500; }
+.chip i { width: 16px; height: 16px; border-radius: 4px; background: hsl(var(--h) var(--cs) var(--cl)); border: 1px solid hsl(var(--h) 40% 50% / 0.5); }
+.chip b { font-family: var(--font-mono); font-weight: 500; font-size: 0.72rem; color: var(--fg-2); }
+.chip:hover { border-color: var(--fg-2); }
+.chip[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent); }
+.hint { margin: 8px 0 0; color: var(--fg-2); font-size: 0.8rem; }
+
+.tctl { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.tread { font-family: var(--font-mono); font-size: 1.05rem; font-weight: 600; min-width: 11.5ch; font-variant-numeric: tabular-nums; }
+.tread small { display: block; font-size: 0.72rem; font-weight: 400; color: var(--fg-2); }
+.tslide { flex: 1 1 260px; min-width: 0; max-width: 560px; accent-color: var(--accent); height: 28px; }
+.presets { display: flex; flex-wrap: wrap; gap: 6px; }
+.presets button { border: 1px solid var(--line); background: var(--surface); border-radius: 999px; padding: 4px 11px; font-size: 0.78rem; font-weight: 500; }
+.presets button:hover { border-color: var(--fg-2); }
+.tsum { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 10px; font-size: 0.82rem; }
+.tsum span { display: inline-flex; align-items: center; gap: 6px; }
+.tsum i { width: 14px; height: 14px; border-radius: 3px; display: inline-block; }
+.i-solid { background: var(--st-solid); } .i-liquid { background: var(--st-liq); }
+.i-gas { background: var(--st-gas); background-image: radial-gradient(var(--st-gas-fg) 0.9px, transparent 1.2px); background-size: 4px 4px; }
+.i-na { background: var(--na); }
+.tsum b { font-family: var(--font-mono); font-weight: 600; }
+
+.ramp { display: flex; align-items: center; gap: 10px; max-width: 520px; font-family: var(--font-mono); font-size: 0.76rem; }
+.rampbar { flex: 1; height: 12px; border-radius: 6px; background: linear-gradient(90deg, var(--ramp-lo), var(--ramp-hi)); border: 1px solid var(--line); }
+.pdesc { margin: 8px 0 0; max-width: 70ch; color: var(--fg-2); font-size: 0.84rem; }
+
+.scroller { margin-top: 14px; overflow-x: auto; padding-bottom: 8px; }
+.pt {
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns: 1.5rem repeat(18, minmax(0, 1fr));
+  grid-template-rows: auto auto repeat(7, auto) 0.9rem repeat(2, auto);
+  gap: 3px;
+  min-width: 820px;
+}
+.blk { grid-row: 1; font-family: var(--font-mono); font-size: 0.66rem; color: var(--fg-2); text-align: center; border-bottom: 1px solid var(--line); letter-spacing: 0.08em; text-transform: uppercase; padding-bottom: 2px; }
+.gn, .pn { font-family: var(--font-mono); font-size: 0.68rem; color: var(--fg-2); display: grid; place-items: center; }
+.pn { font-size: 0.72rem; }
+.frow { grid-column: 1 / 4; font-size: 0.72rem; color: var(--fg-2); text-align: right; align-self: center; padding-right: 6px; }
+.ph { display: grid; place-items: center; text-align: center; font-family: var(--font-mono); font-size: clamp(0.5rem, 0.95cqi, 0.72rem); color: var(--fg-2); border: 1px dashed var(--line); border-radius: 3px; line-height: 1.15; }
+
+.el {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1 / 1.06;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid hsl(var(--h) 40% 45% / 0.35);
+  border-radius: 3px;
+  background: hsl(var(--h) var(--cs) var(--cl));
+  color: var(--on-cell);
+  transition: transform 0.14s ease, box-shadow 0.14s ease, opacity 0.2s ease;
+}
+.el .num { position: absolute; left: 4px; top: 2px; font-family: var(--font-mono); font-size: clamp(0.5rem, 0.95cqi, 0.7rem); opacity: 0.8; line-height: 1.2; }
+.el .sym { font-size: clamp(1rem, 2.3cqi, 1.85rem); font-weight: 700; font-stretch: 108%; line-height: 1; letter-spacing: -0.01em; margin-top: -2px; }
+.el .nm, .el .val { position: absolute; left: 1px; right: 1px; bottom: 3px; text-align: center; font-size: clamp(0.5rem, 0.9cqi, 0.66rem); line-height: 1.1; white-space: nowrap; overflow: hidden; text-overflow: clip; opacity: 0.85; }
+.el .val { font-family: var(--font-mono); opacity: 1; font-weight: 500; }
+.el .val, .heat .el .nm { display: none; }
+.heat .el .val { display: block; }
+@container (max-width: 1000px) { .el .nm, .el .val, .heat .el .val { display: none !important; } }
+.l-en .el .nm { font-size: clamp(0.4rem, 0.7cqi, 0.58rem); }
+.el.pm::after { content: ""; position: absolute; right: 4px; top: 4px; width: 6px; height: 6px; background: currentColor; transform: rotate(45deg); opacity: 0.75; }
+.el.pred { border-style: dashed; border-color: var(--fg-2); }
+.el.dim { opacity: 0.2; }
+.el.hit { box-shadow: 0 0 0 2px var(--accent); z-index: 2; }
+@media (hover: hover) {
+  .el:hover { transform: translateY(-2px) scale(1.08); box-shadow: 0 8px 16px var(--shadow); z-index: 3; opacity: 1; }
+}
+.el:focus-visible { z-index: 4; }
+
+.heat .el { background: var(--ramp-lo); background: color-mix(in oklab, var(--ramp-lo), var(--ramp-hi) calc(var(--t) * 100%)); color: var(--on-lo); border-color: var(--line); }
+.heat .el[data-hi] { color: var(--on-hi); }
+.heat .el.na { background: var(--na); color: var(--na-fg); }
+.st .el { border-color: var(--line); }
+.st .el[data-st="solid"] { background: var(--st-solid); color: var(--st-solid-fg); }
+.st .el[data-st="liquid"] { background: var(--st-liq); color: var(--st-liq-fg); }
+.st .el[data-st="gas"] { background: var(--st-gas); color: var(--st-gas-fg); }
+.st .el[data-st="gas"]::before { content: ""; position: absolute; inset: 0; border-radius: 2px; background-image: radial-gradient(currentColor 0.8px, transparent 1.2px); background-size: 6px 6px; opacity: 0.2; pointer-events: none; }
+.el .sym { position: relative; }
+.st .el[data-st="na"] { background: var(--na); color: var(--na-fg); }
+.el.est { border-style: dashed; border-color: var(--fg-2); }
+
+.hov { grid-column: 4 / 14; grid-row: 3 / 6; display: flex; gap: 14px; align-items: center; padding: 6px 4px; min-width: 0; overflow: hidden; }
+.hov .tile { flex: none; width: clamp(64px, 8.5cqi, 104px); aspect-ratio: 1 / 1.06; }
+.hov-t { min-width: 0; }
+.hov h2 { margin: 0; font-size: clamp(1.1rem, 2.2cqi, 1.7rem); font-weight: 800; font-stretch: 108%; line-height: 1.1; }
+.hov h2 small { font-family: var(--font-mono); font-size: 0.5em; font-weight: 400; color: var(--fg-2); margin-left: 4px; }
+.hov p { margin: 4px 0 0; font-size: clamp(0.72rem, 1.05cqi, 0.86rem); color: var(--fg-2); text-wrap: pretty; }
+.hov .hf { color: var(--fg); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.hov .mono { font-family: var(--font-mono); }
+.hov.idle { align-items: flex-start; flex-direction: column; justify-content: center; gap: 6px; }
+.hov.idle p { max-width: 62ch; }
+.tile { position: relative; display: grid; place-items: center; border-radius: 4px; background: hsl(var(--h) var(--cs) var(--cl)); color: var(--on-cell); border: 1px solid hsl(var(--h) 40% 45% / 0.4); }
+.tile .num { position: absolute; left: 7%; top: 5%; font-family: var(--font-mono); font-size: 0.8rem; }
+.tile .sym { font-size: clamp(1.9rem, 4.5cqi, 3.3rem); font-weight: 800; font-stretch: 112%; line-height: 1; }
+.tile .mass { position: absolute; bottom: 5%; left: 0; right: 0; text-align: center; font-family: var(--font-mono); font-size: 0.68rem; opacity: 0.85; }
+.dia { display: inline-block; width: 8px; height: 8px; background: var(--fg); transform: rotate(45deg); margin: 0 4px 1px 2px; opacity: 0.75; }
+
+.foot { margin-top: 26px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--fg-2); font-size: 0.78rem; display: grid; gap: 4px; max-width: 100ch; }
+.foot p { margin: 0; }
+.foot a { color: var(--accent); }
+
+.scrim { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: max(16px, env(safe-area-inset-top, 0px)) 16px max(16px, env(safe-area-inset-bottom, 0px)); background: var(--scrim); animation: fade 0.2s ease; }
+.scrim[hidden] { display: none; }
+.card {
+  position: relative;
+  width: min(940px, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 24px 60px var(--shadow);
+  animation: pop 0.28s cubic-bezier(0.2, 0.85, 0.25, 1);
+}
+.chead { position: sticky; top: 0; z-index: 5; display: flex; align-items: center; gap: 8px; padding: 10px 14px; background: var(--surface); border-bottom: 1px solid var(--line-2); }
+.chead .pos { font-family: var(--font-mono); font-size: 0.76rem; color: var(--fg-2); margin-right: auto; }
+.cbtn { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 11px; border: 1px solid var(--line); background: var(--surface); border-radius: 8px; font-size: 0.8rem; font-weight: 600; }
+.cbtn:hover { background: var(--surface-2); }
+.cbtn kbd { font-family: var(--font-mono); font-size: 0.7rem; color: var(--fg-2); }
+.cbtn.x { width: 34px; padding: 0; justify-content: center; font-size: 1.1rem; line-height: 1; }
+.cbody { padding: 18px 18px 22px; display: grid; gap: 22px; animation: swap 0.22s ease; }
+
+.hero { display: grid; grid-template-columns: minmax(0, 270px) minmax(0, 1fr); gap: 22px; align-items: start; }
+.stage { margin: 0; position: relative; aspect-ratio: 1; border-radius: 12px; background: radial-gradient(circle at 50% 50%, hsl(var(--h) 40% 16%) 0%, var(--stage) 62%); overflow: hidden; }
+.stage svg { width: 100%; height: 100%; display: block; }
+.orb { transform-origin: 120px 120px; animation: spin linear infinite; }
+.orb.rev { animation-direction: reverse; }
+.stage figcaption { position: absolute; left: 10px; bottom: 8px; right: 10px; font-family: var(--font-mono); font-size: 0.68rem; color: var(--stage-fg); opacity: 0.75; display: flex; justify-content: space-between; gap: 8px; }
+.lc { min-width: 0; display: grid; gap: 10px; align-content: start; }
+.lc .tnote { margin: 0; }
+.shells { display: flex; flex-wrap: wrap; gap: 6px; }
+.sc { display: inline-flex; align-items: baseline; gap: 7px; border: 1px solid var(--line); background: var(--surface-2); border-radius: 7px; padding: 4px 10px; font-family: var(--font-mono); font-size: 0.86rem; }
+.sc b { font-weight: 700; }
+.sc span { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--fg-2); }
+.sc.outer { border-color: hsl(var(--h) var(--ms) var(--ml)); }
+.sc:hover, .sc.on { background: var(--surface); border-color: var(--fg-2); }
+.ring { transition: stroke 0.15s ease, stroke-width 0.15s ease; }
+.ring.hl { stroke: hsl(var(--h) 85% 72%); stroke-width: 2.4; }
+.rt { font-family: var(--font-mono); font-size: 7.6px; font-weight: 600; fill: var(--stage-fg); stroke: var(--stage); stroke-width: 2.8px; paint-order: stroke; stroke-linejoin: round; }
+.rt.hl { fill: hsl(var(--h) 90% 82%); }
+.id { display: flex; gap: 16px; align-items: stretch; min-width: 0; }
+.id .tile { flex: none; width: 104px; height: 110px; }
+.id-t { min-width: 0; }
+.eyebrow { margin: 0; font-family: var(--font-mono); font-size: 0.74rem; color: var(--fg-2); text-transform: uppercase; letter-spacing: 0.06em; }
+.id h2 { margin: 4px 0 0; font-size: clamp(2rem, 5vw, 2.9rem); font-weight: 800; font-stretch: 115%; letter-spacing: -0.02em; line-height: 1; overflow-wrap: anywhere; }
+.id .en { margin: 6px 0 0; font-family: var(--font-mono); font-size: 0.8rem; color: var(--fg-2); }
+.pills { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+.pill { display: inline-flex; align-items: center; gap: 7px; padding: 4px 11px 4px 8px; border-radius: 999px; border: 1px solid var(--line); font-size: 0.8rem; font-weight: 500; background: var(--surface-2); }
+.pill i { width: 12px; height: 12px; border-radius: 3px; background: hsl(var(--h) var(--cs) var(--cl)); border: 1px solid hsl(var(--h) 40% 45% / 0.5); }
+.pill i.s-solid { background: var(--st-solid); border-color: var(--line); }
+.pill i.s-liquid { background: var(--st-liq); border-color: var(--line); }
+.pill i.s-gas { background: var(--st-gas); background-image: radial-gradient(var(--st-gas-fg) 0.9px, transparent 1.2px); background-size: 4px 4px; border-color: var(--line); }
+.pill i.s-na { background: var(--na); border-color: var(--line); }
+.look { margin: 14px 0 0; color: var(--fg-2); font-size: 0.92rem; }
+.look b { color: var(--fg); font-weight: 600; }
+.fact { margin: 14px 0 0; font-size: 1.02rem; line-height: 1.5; text-wrap: pretty; }
+
+.cols { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 30px; }
+.sec { min-width: 0; }
+.sec.full { grid-column: 1 / -1; }
+.sec h3 { margin: 0 0 10px; font-size: 0.74rem; font-family: var(--font-mono); font-weight: 600; letter-spacing: 0.09em; text-transform: uppercase; color: var(--fg-2); display: flex; align-items: center; gap: 10px; }
+.sec h3::after { content: ""; flex: 1; height: 1px; background: var(--line-2); }
+.prop { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 16px; padding: 9px 0; border-bottom: 1px solid var(--line-2); align-items: center; }
+.prop:last-child { border-bottom: 0; }
+.pk { font-size: 0.8rem; color: var(--fg-2); display: block; }
+.pv { font-family: var(--font-mono); font-size: 0.98rem; font-weight: 600; display: block; font-variant-numeric: tabular-nums; }
+.pv.na { color: var(--fg-2); font-weight: 400; font-size: 0.86rem; }
+.pr { font-size: 0.72rem; color: var(--fg-2); font-family: var(--font-mono); }
+.pn2 { font-size: 0.72rem; color: var(--fg-2); display: block; margin-top: 2px; }
+.ps { min-width: 0; }
+.ps svg { width: 100%; height: 22px; display: block; overflow: visible; }
+.pax { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 0.64rem; color: var(--fg-2); }
+.dot { fill: var(--dot); opacity: 0.55; }
+.dot.me { fill: hsl(var(--h) var(--ms) var(--ml)); opacity: 1; stroke: var(--surface); stroke-width: 2; }
+.axis { stroke: var(--line); stroke-width: 1; }
+
+.tbar { display: flex; height: 16px; border-radius: 4px; overflow: hidden; border: 1px solid var(--line); background: var(--na); }
+.tbar i { display: block; height: 100%; }
+.tmark { position: relative; height: 20px; }
+.tmark span { position: absolute; top: 0; transform: translateX(-50%); font-family: var(--font-mono); font-size: 0.64rem; color: var(--fg-2); white-space: nowrap; }
+.tmark span::before { content: ""; display: block; width: 1px; height: 6px; background: var(--fg-2); margin: 0 auto 1px; }
+.tmark span.room { color: var(--fg); font-weight: 600; }
+.tmark span.room::before { height: 10px; background: var(--fg); margin-top: -4px; }
+.tnote { margin: 8px 0 0; font-size: 0.82rem; color: var(--fg-2); }
+.tkey { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; font-size: 0.76rem; color: var(--fg-2); }
+.tkey span { display: inline-flex; align-items: center; gap: 6px; }
+.tkey i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
+
+.sh { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 600; margin: 0 0 12px; }
+.sh em { font-style: normal; color: var(--fg-2); font-weight: 400; font-size: 0.78rem; }
+.cfgl { display: flex; flex-wrap: wrap; gap: 6px; }
+.cc { font-family: var(--font-mono); font-size: 0.82rem; border: 1px solid var(--line); border-radius: 6px; padding: 3px 8px 5px; background: var(--surface-2); min-width: 54px; }
+.cc b { font-weight: 600; }
+.cc .fb { display: block; height: 3px; border-radius: 2px; margin-top: 3px; background: var(--line); overflow: hidden; }
+.cc .fb i { display: block; height: 100%; background: hsl(var(--h) var(--ms) var(--ml)); }
+.cc.outer { border-color: hsl(var(--h) var(--ms) var(--ml)); }
+.ion svg { width: 100%; height: auto; display: block; overflow: visible; }
+.bar { fill: var(--bar); }
+.bar.jump { fill: hsl(var(--h) var(--ms) var(--ml)); }
+.ion .cap { margin: 8px 0 0; font-size: 0.82rem; color: var(--fg-2); text-wrap: pretty; }
+.tx { font-family: var(--font-mono); font-size: 9px; fill: var(--fg-2); }
+
+.hist { display: grid; gap: 8px; margin: 0; }
+.hist div { display: grid; grid-template-columns: 8.5rem minmax(0, 1fr); gap: 10px; }
+.hist dt { color: var(--fg-2); font-size: 0.82rem; }
+.hist dd { margin: 0; font-size: 0.92rem; text-wrap: pretty; }
+.uses { display: flex; flex-wrap: wrap; gap: 6px; margin: 0; padding: 0; list-style: none; }
+.uses li { border: 1px solid var(--line); border-radius: 6px; padding: 4px 10px; font-size: 0.85rem; background: var(--surface-2); }
+.mend { border: 1px solid var(--line); border-radius: 10px; padding: 14px; background: var(--surface-2); }
+.mend p { margin: 0 0 10px; font-size: 0.88rem; text-wrap: pretty; }
+.mend table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.mend th, .mend td { text-align: left; padding: 5px 8px 5px 0; border-bottom: 1px solid var(--line-2); font-variant-numeric: tabular-nums; }
+.mend th { font-weight: 500; color: var(--fg-2); font-size: 0.76rem; font-family: var(--font-mono); }
+.mend td:not(:first-child) { font-family: var(--font-mono); font-weight: 600; }
+.mend tr:last-child td { border-bottom: 0; }
+.mini { display: flex; flex-wrap: wrap; gap: 4px; }
+.mini button { width: 44px; height: 44px; border-radius: 4px; border: 1px solid hsl(var(--h) 40% 45% / 0.4); background: hsl(var(--h) var(--cs) var(--cl)); color: var(--on-cell); font-weight: 700; font-size: 0.95rem; font-stretch: 106%; position: relative; padding: 0; }
+.mini button small { position: absolute; left: 3px; top: 1px; font-family: var(--font-mono); font-size: 0.55rem; font-weight: 400; opacity: 0.8; }
+.mini button[aria-current="true"] { outline: 2px solid var(--accent); outline-offset: 1px; }
+.mini button:hover { transform: translateY(-1px); }
+.cfoot { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; font-size: 0.82rem; color: var(--fg-2); }
+.cfoot a { color: var(--accent); font-weight: 600; }
+
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes fade { from { opacity: 0; } }
+@keyframes pop { from { opacity: 0; transform: scale(0.72); } }
+@keyframes swap { from { opacity: 0; transform: translateY(6px); } }
+@keyframes sheet { from { transform: translateY(40px); opacity: 0; } }
+
+@media (max-width: 720px) {
+  .hero { grid-template-columns: minmax(0, 1fr); }
+  .lc { max-width: 320px; margin-inline: auto; width: 100%; }
+  .shells { justify-content: center; }
+  .cols { grid-template-columns: minmax(0, 1fr); }
+  .prop { grid-template-columns: minmax(0, 1fr); }
+  .hist div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .cbtn kbd { display: none; }
+}
+@media (max-width: 640px) {
+  .scrim { place-items: end stretch; padding: 0; }
+  .card { width: 100%; max-height: 94%; border-radius: 16px 16px 0 0; animation: sheet 0.26s ease; padding-bottom: env(safe-area-inset-bottom, 0px); }
+  .id .tile { width: 88px; height: 93px; }
+  .chead .yl-share { width: 34px; padding: 0; justify-content: center; }
+  .chead .yl-share-tx { display: none; }
+  .chead .yl-burst { left: 50%; }
+}
+.chead .yl-share { height: 34px; border-radius: 8px; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+:root[data-theme="light"], :root[data-theme="dark"] {
+  --bg: var(--y-bg);
+  --surface: var(--y-bg);
+  --surface-2: var(--y-surface);
+  --fg: var(--y-fg);
+  --fg-2: var(--y-fg2);
+  --line: var(--y-line);
+  --accent: var(--y-accent);
+}
+:root[data-theme="light"] {
+  --line-2: #efefef;
+  --accent-fg: #ffffff;
+  --shadow: rgba(0, 0, 0, 0.2);
+  --scrim: rgba(0, 0, 0, 0.55);
+  --on-cell: #0a0a0a;
+  --on-lo: #0a0a0a;
+  --ramp-lo: #f1f1f1;
+  --na: #ececec;
+  --na-fg: #707070;
+  --st-solid: #cfcfcf;
+  --st-solid-fg: #0a0a0a;
+  --stage: #0a0a0a;
+  --ring: #2a2a2a;
+  --dot: #8a8a8a;
+  --bar: #9a9a9a;
+}
+:root[data-theme="dark"] {
+  --line-2: #1c1c1c;
+  --accent-fg: #0a0a0a;
+  --shadow: rgba(0, 0, 0, 0.7);
+  --scrim: rgba(0, 0, 0, 0.78);
+  --on-cell: #f4f4f4;
+  --on-lo: #eeeeee;
+  --on-hi: #0a0a0a;
+  --ramp-lo: #1a1a1a;
+  --na: #1a1a1a;
+  --na-fg: #808080;
+  --st-solid: #333333;
+  --st-solid-fg: #eeeeee;
+  --stage: #000000;
+  --ring: #2a2a2a;
+  --dot: #666666;
+  --bar: #6a6a6a;
+}
+</style>
+</head>
+<body>
+<div id="yl-bar" data-crumb-pl="Tablica Mendelejewa" data-crumb-en="Mendeleev's Table"></div>
+<div class="page" id="app">
+  <header class="top">
+    <h1><span class="t1" data-pl="Układ okresowy" data-en="Periodic Table">Układ okresowy</span> <span class="t2" data-pl="Mendelejewa" data-en="of Mendeleev">Mendelejewa</span></h1>
+    <p class="lead" data-pl="118 pierwiastków w jednym miejscu. Kliknij kafelek, żeby otworzyć kartę z modelem atomu, konfiguracją elektronów, porównaniem z resztą tablicy i historią odkrycia." data-en="118 elements in one place. Click a tile to open a card with the atom model, electron configuration, a comparison with the rest of the table and the history of its discovery.">118 pierwiastków w jednym miejscu. Kliknij kafelek, żeby otworzyć kartę z modelem atomu, konfiguracją elektronów, porównaniem z resztą tablicy i historią odkrycia.</p>
+    <div class="spec" aria-hidden="true"></div>
+  </header>
+
+  <section class="controls" data-attr="aria-label" data-pl="Sterowanie widokiem" data-en="View controls" aria-label="Sterowanie widokiem">
+    <div class="seg" role="radiogroup" data-attr="aria-label" data-pl="Widok tablicy" data-en="Table view" aria-label="Widok tablicy">
+      <button type="button" role="radio" aria-checked="true" data-mode="cat" data-pl="Kategorie" data-en="Categories">Kategorie</button>
+      <button type="button" role="radio" aria-checked="false" data-mode="state" data-pl="Stan skupienia" data-en="State of matter">Stan skupienia</button>
+      <button type="button" role="radio" aria-checked="false" data-mode="prop" data-pl="Właściwość" data-en="Property">Właściwość</button>
+    </div>
+    <label class="field sel" id="propWrap" hidden><span class="vh" data-pl="Właściwość do pokazania" data-en="Property to show">Właściwość do pokazania</span><select id="propSel"></select></label>
+    <div class="field search"><label class="vh" for="q" data-pl="Szukaj pierwiastka" data-en="Search elements">Szukaj pierwiastka</label><input id="q" type="search" data-attr="placeholder" data-pl="Szukaj: Fe, żelazo, iron, gazy szlachetne…" data-en="Search: Fe, iron, żelazo, noble gas…" placeholder="Szukaj: Fe, żelazo, iron, gazy szlachetne…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="sugg" aria-autocomplete="list"><div class="sugg" id="sugg" role="listbox" data-attr="aria-label" data-pl="Wyniki wyszukiwania" data-en="Search results" aria-label="Wyniki wyszukiwania" hidden></div></div>
+    <button type="button" class="btn" id="rnd" data-pl="Losuj pierwiastek" data-en="Random element">Losuj pierwiastek</button>
+    <span class="count" id="cnt" aria-live="polite"></span>
+  </section>
+
+  <section class="legend" id="legend"></section>
+
+  <div class="scroller" tabindex="-1"><div class="pt" id="pt" role="group" data-attr="aria-label" data-pl="Układ okresowy pierwiastków" data-en="Periodic table of the elements" aria-label="Układ okresowy pierwiastków"></div></div>
+
+  <footer class="foot" id="foot"></footer>
+</div>
+
+<div class="scrim" id="scrim" hidden>
+  <div class="card" id="card" role="dialog" aria-modal="true" aria-labelledby="ctitle">
+    <div class="chead">
+      <span class="pos" id="cpos"></span>
+      <button type="button" class="cbtn" id="cprev" data-attr="aria-label" data-pl="Poprzedni pierwiastek" data-en="Previous element" aria-label="Poprzedni pierwiastek"><kbd>←</kbd><span id="cprevl"></span></button>
+      <button type="button" class="cbtn" id="cnext" data-attr="aria-label" data-pl="Następny pierwiastek" data-en="Next element" aria-label="Następny pierwiastek"><span id="cnextl"></span><kbd>→</kbd></button>
+      <span data-yl-share></span>
+      <button type="button" class="cbtn x" id="cclose" data-attr="aria-label" data-pl="Zamknij kartę" data-en="Close card" aria-label="Zamknij kartę">×</button>
+    </div>
+    <div class="cbody" id="cbody"></div>
+  </div>
+</div>
+<div id="yl-foot"></div>
+<script>
+(function () {
+  'use strict';
+  var EL = [{"z":1,"s":"H","en":"Hydrogen","pl":"Wodór","yr":"1766","yre":"1766","et":"Z gr. hydro + genes: „tworzący wodę”.","ete":"From Greek hydro + genes, \"water-forming\". Polish wodór means the same: \"water-maker\".","lk":"bezbarwny gaz bez zapachu","lke":"colorless, odorless gas","us":["paliwo rakietowe","synteza amoniaku","ogniwa paliwowe","rafinacja ropy"],"use":["rocket fuel","ammonia synthesis","fuel cells","oil refining"],"fc":"Stanowi ok. 75% zwykłej materii Wszechświata (masowo). W Słońcu co sekundę ok. 600 mln ton wodoru zamienia się w hel.","fce":"About 75% of ordinary matter in the universe by mass. Every second the Sun fuses roughly 600 million tonnes of hydrogen into helium.","m":1.008,"c":"nm","per":1,"grp":1,"blk":"s","x":1,"y":1,"sh":[1],"cfg":"1s1","cfs":"1s1","enp":2.2,"ea":72.769,"ie":[1312],"d":8.988e-05,"mp":13.99,"bp":20.271,"mh":28.836,"r":53,"disc":"Henry Cavendish"},{"z":2,"s":"He","en":"Helium","pl":"Hel","yr":"1895","yre":"1895","et":"Z gr. helios – Słońce. Wykryty w widmie Słońca w 1868 r., na Ziemi dopiero w 1895 r.","ete":"From Greek helios, \"Sun\". Seen in the Sun's spectrum in 1868, found on Earth only in 1895.","lk":"bezbarwny gaz bez zapachu","lke":"colorless, odorless gas","us":["balony i sterowce","chłodzenie magnesów w rezonansie magnetycznym","mieszanki do nurkowania"],"use":["balloons and airships","cooling MRI magnets","diving gas mixtures"],"fc":"Jedyny pierwiastek, który najpierw znaleziono na Słońcu. Pod normalnym ciśnieniem nie krzepnie nawet w pobliżu zera bezwzględnego.","fce":"The only element found first on the Sun. At normal pressure it never freezes, not even near absolute zero.","m":4.0026022,"c":"ng","per":1,"grp":18,"blk":"s","x":18,"y":1,"sh":[2],"cfg":"1s2","cfs":"1s2","ea":-48,"ie":[2372.3,5250.5],"d":0.0001786,"mp":0.95,"bp":4.222,"r":31,"disc":"Pierre Janssen","nosolid":1},{"z":3,"s":"Li","en":"Lithium","pl":"Lit","yr":"1817","yre":"1817","et":"Z gr. lithos – kamień (znaleziony w minerale, nie w popiele roślin).","ete":"From Greek lithos, \"stone\": it was found in a mineral, unlike sodium and potassium, which came from plant ash.","lk":"srebrzystobiały, bardzo miękki metal","lke":"soft, silvery-white metal","us":["akumulatory litowo-jonowe","leki stabilizujące nastrój","smary","szkło i ceramika"],"use":["lithium-ion batteries","mood-stabilizing drugs","lubricants","glass and ceramics"],"fc":"Najlżejszy metal – pływa po oleju i da się go kroić nożem. Barwi płomień na karminowo.","fce":"The lightest metal: it floats on oil and can be cut with a knife. It colors a flame crimson.","m":6.94,"c":"alk","per":2,"grp":1,"blk":"s","x":1,"y":2,"sh":[2,1],"cfg":"1s2 2s1","cfs":"[He] 2s1","enp":0.98,"ea":59.6326,"ie":[520.2,7298.1,11815],"d":0.534,"mp":453.65,"bp":1603,"mh":24.86,"r":167,"disc":"Johan August Arfwedson"},{"z":4,"s":"Be","en":"Beryllium","pl":"Beryl","yr":"1798","yre":"1798","et":"Od minerału berylu.","ete":"From the mineral beryl.","lk":"stalowoszary, lekki i sztywny metal","lke":"light, stiff, steel-gray metal","us":["okienka lamp rentgenowskich","stopy miedzi z berylem","zwierciadła teleskopów"],"use":["X-ray tube windows","copper-beryllium alloys","telescope mirrors"],"fc":"Zwierciadła Kosmicznego Teleskopu Jamesa Webba to pozłacany beryl. Pył i związki berylu są silnie toksyczne.","fce":"The mirrors of the James Webb Space Telescope are gold-coated beryllium. Beryllium dust and compounds are highly toxic.","m":9.01218315,"c":"ae","per":2,"grp":2,"blk":"s","x":2,"y":2,"sh":[2,2],"cfg":"1s2 2s2","cfs":"[He] 2s2","enp":1.57,"ea":-48,"ie":[899.5,1757.1,14848.7,21006.6],"d":1.85,"mp":1560,"bp":2742,"mh":16.443,"r":112,"disc":"Louis Nicolas Vauquelin"},{"z":5,"s":"B","en":"Boron","pl":"Bor","yr":"1808","yre":"1808","et":"Od arab. buraq i pers. burah – boraks.","ete":"From Arabic buraq and Persian burah, \"borax\".","lk":"czarnobrunatny, twardy proszek lub kryształy","lke":"hard, dark brown powder or crystals","us":["szkło borokrzemowe","detergenty i wybielacze","włókna i kompozyty","nawozy"],"use":["borosilicate glass","detergents and bleaches","fibers and composites","fertilizers"],"fc":"Szkło borokrzemowe znosi gwałtowne zmiany temperatury, więc robi się z niego naczynia laboratoryjne. Bor jest potrzebny roślinom.","fce":"Borosilicate glass survives sudden temperature changes, which is why laboratory glassware is made of it. Plants need boron.","m":10.81,"c":"mt","per":2,"grp":13,"blk":"p","x":13,"y":2,"sh":[2,3],"cfg":"1s2 2s2 2p1","cfs":"[He] 2s2 2p1","enp":2.04,"ea":26.989,"ie":[800.6,2427.1,3659.7,25025.8,32826.7],"d":2.08,"mp":2349,"bp":4200,"mh":11.087,"r":87,"disc":"Joseph Louis Gay-Lussac"},{"z":6,"s":"C","en":"Carbon","pl":"Węgiel","yr":"starożytność","yre":"antiquity","et":"Łac. carbo – węgiel drzewny.","ete":"From Latin carbo, \"charcoal\". Polish węgiel means \"coal\".","lk":"czarny (grafit) albo przezroczysty (diament)","lke":"black (graphite) or transparent (diamond)","us":["stal","paliwa","grafit w ołówkach","diament","włókna węglowe","filtry"],"use":["steel","fuels","graphite in pencils","diamond","carbon fiber","filters"],"fc":"Diament i grafit to ten sam pierwiastek, tylko inaczej ułożony. Węgiel jest szkieletem chemii organicznej – znane są miliony jego związków.","fce":"Diamond and graphite are the same element arranged differently. Carbon is the backbone of organic chemistry, with millions of known compounds.","m":12.011,"c":"nm","per":2,"grp":14,"blk":"p","x":14,"y":2,"sh":[2,4],"cfg":"1s2 2s2 2p2","cfs":"[He] 2s2 2p2","enp":2.55,"ea":121.7763,"ie":[1086.5,2352.6,4620.5,6222.7,37831,47277],"d":1.821,"mp":4600,"mh":8.517,"r":67,"disc":"starożytny Egipt","disce":"ancient Egypt","sub":3915},{"z":7,"s":"N","en":"Nitrogen","pl":"Azot","yr":"1772","yre":"1772","et":"Z gr. a-zoe: „nie podtrzymujący życia”.","ete":"From Greek a-zoe, \"without life\". The Polish name azot comes from the same root.","lk":"bezbarwny gaz bez zapachu","lke":"colorless, odorless gas","us":["nawozy","ciekły azot jako chłodziwo","atmosfera ochronna w opakowaniach"],"use":["fertilizers","liquid nitrogen as a coolant","protective atmosphere for packaged food"],"fc":"Stanowi 78% objętości powietrza. Potrójne wiązanie N≡N jest tak mocne, że cząsteczki azotu z powietrza prawie nie reagują.","fce":"78% of air by volume. The triple bond N≡N is so strong that the nitrogen in air barely reacts.","m":14.007,"c":"nm","per":2,"grp":15,"blk":"p","x":15,"y":2,"sh":[2,5],"cfg":"1s2 2s2 2p3","cfs":"[He] 2s2 2p3","enp":3.04,"ea":-6.8,"ie":[1402.3,2856,4578.1,7475,9444.9,53266.6,64360],"d":0.001251,"mp":63.15,"bp":77.355,"r":56,"disc":"Daniel Rutherford"},{"z":8,"s":"O","en":"Oxygen","pl":"Tlen","yr":"1774","yre":"1774","et":"Polska nazwa nawiązuje do tlenia się. Fr. oxygène – z gr. „tworzący kwasy”.","ete":"From Greek, \"acid-former\" (French oxygène). Polish tlen refers to smoldering (tlić się).","lk":"bezbarwny gaz bez zapachu (ciekły jest bladoniebieski)","lke":"colorless, odorless gas (pale blue as a liquid)","us":["oddychanie","stal (konwertory tlenowe)","spawanie","medycyna"],"use":["breathing","steelmaking","welding","medicine"],"fc":"Najobficiej występujący pierwiastek skorupy ziemskiej (ok. 46% masy). Ciekły tlen jest przyciągany przez magnes.","fce":"The most abundant element in Earth's crust (about 46% by mass). Liquid oxygen is attracted to a magnet.","m":15.999,"c":"nm","per":2,"grp":16,"blk":"p","x":16,"y":2,"sh":[2,6],"cfg":"1s2 2s2 2p4","cfs":"[He] 2s2 2p4","enp":3.44,"ea":140.976,"ie":[1313.9,3388.3,5300.5,7469.2,10989.5,13326.5,71330,84078],"d":0.001429,"mp":54.36,"bp":90.188,"r":48,"disc":"Carl Wilhelm Scheele"},{"z":9,"s":"F","en":"Fluorine","pl":"Fluor","yr":"1886","yre":"1886","et":"Łac. fluere – płynąć (minerał fluoryt był topnikiem).","ete":"From Latin fluere, \"to flow\": the mineral fluorite was used as a flux.","lk":"bladożółty gaz o ostrym zapachu","lke":"pale yellow gas with a sharp smell","us":["pasty do zębów","teflon","chłodziwa","wzbogacanie uranu"],"use":["toothpaste","Teflon","refrigerants","uranium enrichment"],"fc":"Najbardziej elektroujemny pierwiastek. Henri Moissan wydzielił go w 1886 r. i dostał za to Nagrodę Nobla (1906).","fce":"The most electronegative element. Henri Moissan isolated it in 1886 and won the Nobel Prize for it in 1906.","m":18.9984031636,"c":"nm","per":2,"grp":17,"blk":"p","x":17,"y":2,"sh":[2,7],"cfg":"1s2 2s2 2p5","cfs":"[He] 2s2 2p5","enp":3.98,"ea":328.1649,"ie":[1681,3374.2,6050.4,8407.7,11022.7,15164.1,17868,92038.1,106434.3],"d":0.001696,"mp":53.48,"bp":85.03,"r":42,"disc":"André-Marie Ampère"},{"z":10,"s":"Ne","en":"Neon","pl":"Neon","yr":"1898","yre":"1898","et":"Z gr. neos – nowy.","ete":"From Greek neos, \"new\".","lk":"bezbarwny gaz; w wyładowaniu świeci czerwonopomarańczowo","lke":"colorless gas; glows red-orange in a discharge","us":["reklamy świetlne","lasery He-Ne","chłodzenie kriogeniczne"],"use":["advertising signs","He-Ne lasers","cryogenic cooling"],"fc":"Odkryty w 1898 r. przez Ramsaya i Traversa w skroplonym powietrzu. Tylko neon daje czerwonopomarańczową poświatę – inne kolory reklam to inne gazy lub luminofory.","fce":"Found by Ramsay and Travers in 1898 in liquefied air. Only neon glows red-orange; other colors of \"neon\" signs come from other gases or phosphors.","m":20.17976,"c":"ng","per":2,"grp":18,"blk":"p","x":18,"y":2,"sh":[2,8],"cfg":"1s2 2s2 2p6","cfs":"[He] 2s2 2p6","ea":-116,"ie":[2080.7,3952.3,6122,9371,12177,15238,19999,23069.5,115379.5,131432],"d":0.0009002,"mp":24.56,"bp":27.104,"r":38,"disc":"Morris Travers"},{"z":11,"s":"Na","en":"Sodium","pl":"Sód","yr":"1807","yre":"1807","et":"Od arab. natrun – soda; łacińska nazwa natrium dała symbol Na.","ete":"From Arabic natrun, \"soda\". Latin natrium gave the symbol Na.","lk":"srebrzystobiały, miękki metal","lke":"soft, silvery-white metal","us":["sól kuchenna","soda","lampy sodowe","chłodzenie reaktorów prędkich"],"use":["table salt","soda","sodium lamps","coolant in fast reactors"],"fc":"Gwałtownie reaguje z wodą. W ciele człowieka reguluje gospodarkę wodną i pracę nerwów.","fce":"Reacts violently with water. In the human body it regulates water balance and nerve signals.","m":22.989769282,"c":"alk","per":3,"grp":1,"blk":"s","x":1,"y":3,"sh":[2,8,1],"cfg":"1s2 2s2 2p6 3s1","cfs":"[Ne] 3s1","enp":0.93,"ea":52.867,"ie":[495.8,4562,6910.3,9543,13354,16613,20117,25496,28932,141362,159076],"d":0.968,"mp":370.944,"bp":1156.09,"mh":28.23,"r":190,"disc":"Humphry Davy"},{"z":12,"s":"Mg","en":"Magnesium","pl":"Magnez","yr":"1755","yre":"1755","et":"Od Magnezji – krainy w Grecji.","ete":"Named after Magnesia, a region of Greece.","lk":"srebrzystobiały, lekki metal","lke":"light, silvery-white metal","us":["lekkie stopy","flesze","leki","rozjaśnianie zapraw"],"use":["lightweight alloys","flares","medicines","mortar additives"],"fc":"Jest centralnym atomem chlorofilu. Płonie oślepiająco białym płomieniem, którego nie gasi się wodą.","fce":"The central atom of chlorophyll. It burns with a dazzling white flame that water cannot put out.","m":24.305,"c":"ae","per":3,"grp":2,"blk":"s","x":2,"y":3,"sh":[2,8,2],"cfg":"1s2 2s2 2p6 3s2","cfs":"[Ne] 3s2","enp":1.31,"ea":-40,"ie":[737.7,1450.7,7732.7,10542.5,13630,18020,21711,25661,31653,35458,169988,189368],"d":1.738,"mp":923,"bp":1363,"mh":24.869,"r":145,"disc":"Joseph Black"},{"z":13,"s":"Al","en":"Aluminium","pl":"Glin","yr":"1825","yre":"1825","et":"Polska nazwa od gliny. Łac. alumen – ałun.","ete":"From Latin alumen, \"alum\". Polish glin comes from glina, \"clay\".","lk":"srebrzystobiały, lekki metal","lke":"light, silvery-white metal","us":["puszki","samoloty","folia","przewody elektryczne","okna"],"use":["cans","aircraft","foil","power lines","window frames"],"fc":"Najpowszechniejszy metal skorupy ziemskiej. W XIX w. był droższy od złota, aż do wynalezienia taniej elektrolizy (1886).","fce":"The most abundant metal in Earth's crust. In the 19th century it was dearer than gold, until cheap electrolysis arrived in 1886.","m":26.98153857,"c":"pt","per":3,"grp":13,"blk":"p","x":13,"y":3,"sh":[2,8,3],"cfg":"1s2 2s2 2p6 3s2 3p1","cfs":"[Ne] 3s2 3p1","enp":1.61,"ea":41.762,"ie":[577.5,1816.7,2744.8,11577,14842,18379,23326,27465,31853,38473,42647,201266,222316],"d":2.7,"mp":933.47,"bp":2743,"mh":24.2,"r":118},{"z":14,"s":"Si","en":"Silicon","pl":"Krzem","yr":"1824","yre":"1824","et":"Polska nazwa od krzemienia. Łac. silex – krzemień.","ete":"From Latin silex, \"flint\". Polish krzem comes from krzemień, \"flint\".","lk":"szaroniebieski, błyszczący półmetal","lke":"shiny blue-gray metalloid","us":["układy scalone","ogniwa fotowoltaiczne","szkło","silikony"],"use":["microchips","solar cells","glass","silicones"],"fc":"Drugi po tlenie pierwiastek skorupy ziemskiej. Od niego wzięła nazwę Dolina Krzemowa.","fce":"The second most abundant element in Earth's crust after oxygen. Silicon Valley is named after it.","m":28.085,"c":"mt","per":3,"grp":14,"blk":"p","x":14,"y":3,"sh":[2,8,4],"cfg":"1s2 2s2 2p6 3s2 3p2","cfs":"[Ne] 3s2 3p2","enp":1.9,"ea":134.0684,"ie":[786.5,1577.1,3231.6,4355.5,16091,19805,23780,29287,33878,38726,45962,50502,235196,257923],"d":2.329,"mp":1687,"bp":3538,"mh":19.789,"r":111,"disc":"Jöns Jacob Berzelius"},{"z":15,"s":"P","en":"Phosphorus","pl":"Fosfor","yr":"1669","yre":"1669","et":"Z gr. phosphoros – niosący światło.","ete":"From Greek phosphoros, \"light-bringer\".","lk":"biały (woskowy), czerwony lub czarny, zależnie od odmiany","lke":"white (waxy), red or black, depending on the form","us":["nawozy","zapałki","detergenty","DNA i ATP w komórkach"],"use":["fertilizers","matches","detergents","DNA and ATP in cells"],"fc":"Odkryty w 1669 r. przez Henniga Branda, który destylował mocz. Biały fosfor świeci w ciemności i może zapalić się sam.","fce":"Discovered in 1669 by Hennig Brand, who distilled urine. White phosphorus glows in the dark and can ignite on its own.","m":30.9737619985,"c":"nm","per":3,"grp":15,"blk":"p","x":15,"y":3,"sh":[2,8,5],"cfg":"1s2 2s2 2p6 3s2 3p3","cfs":"[Ne] 3s2 3p3","enp":2.19,"ea":72.037,"ie":[1011.8,1907,2914.1,4963.6,6273.9,21267,25431,29872,35905,40950,46261,54110,59024,271791,296195],"d":1.823,"mp":317.3,"bp":554,"mh":23.824,"r":98,"disc":"Hennig Brand"},{"z":16,"s":"S","en":"Sulfur","pl":"Siarka","yr":"starożytność","yre":"antiquity","et":"Łac. sulphur – znana od starożytności.","ete":"From Latin sulphur; known since antiquity.","lk":"żółte, kruche ciało stałe","lke":"yellow, brittle solid","us":["kwas siarkowy","wulkanizacja gumy","zapałki","nawozy"],"use":["sulfuric acid","vulcanized rubber","matches","fertilizers"],"fc":"Spalanie siarki daje SO₂. W XX w. Polska należała do największych producentów siarki na świecie (Tarnobrzeg).","fce":"Burning sulfur gives SO₂. In the 20th century Poland was among the world's largest sulfur producers (Tarnobrzeg).","m":32.06,"c":"nm","per":3,"grp":16,"blk":"p","x":16,"y":3,"sh":[2,8,6],"cfg":"1s2 2s2 2p6 3s2 3p4","cfs":"[Ne] 3s2 3p4","enp":2.58,"ea":200.4101,"ie":[999.6,2252,3357,4556,7004.3,8495.8,27107,31719,36621,43177,48710,54460,62930,68216,311048,337138],"d":2.07,"mp":388.36,"bp":717.8,"mh":22.75,"r":88,"disc":"starożytne Chiny","disce":"ancient China"},{"z":17,"s":"Cl","en":"Chlorine","pl":"Chlor","yr":"1774","yre":"1774","et":"Z gr. chloros – żółtozielony.","ete":"From Greek chloros, \"yellow-green\".","lk":"żółtozielony gaz o duszącym zapachu","lke":"yellow-green gas with a choking smell","us":["dezynfekcja wody","PVC","wybielacze","sól kuchenna (NaCl)"],"use":["water disinfection","PVC","bleaches","table salt (NaCl)"],"fc":"Użyty jako broń w 1915 r. pod Ypres. Dziś ratuje życie: chlorowanie wody ograniczyło epidemie cholery i tyfusu.","fce":"Used as a weapon at Ypres in 1915. Today it saves lives: chlorinating water curbed cholera and typhoid epidemics.","m":35.45,"c":"nm","per":3,"grp":17,"blk":"p","x":17,"y":3,"sh":[2,8,7],"cfg":"1s2 2s2 2p6 3s2 3p5","cfs":"[Ne] 3s2 3p5","enp":3.16,"ea":348.575,"ie":[1251.2,2298,3822,5158.6,6542,9362,11018,33604,38600,43961,51068,57119,63363,72341,78095,352994,380760],"d":0.0032,"mp":171.6,"bp":239.11,"r":79,"disc":"Carl Wilhelm Scheele"},{"z":18,"s":"Ar","en":"Argon","pl":"Argon","yr":"1894","yre":"1894","et":"Z gr. argos – leniwy, bezczynny.","ete":"From Greek argos, \"lazy\" or \"idle\".","lk":"bezbarwny gaz bez zapachu","lke":"colorless, odorless gas","us":["spawanie","żarówki","atmosfera ochronna"],"use":["welding","light bulbs","protective atmosphere"],"fc":"Trzeci składnik powietrza (ok. 0,93%) – jest go ponad 20 razy więcej niż dwutlenku węgla.","fce":"The third component of air (about 0.93%), more than 20 times as abundant as carbon dioxide.","m":39.9481,"c":"ng","per":3,"grp":18,"blk":"p","x":18,"y":3,"sh":[2,8,8],"cfg":"1s2 2s2 2p6 3s2 3p6","cfs":"[Ne] 3s2 3p6","ea":-96,"ie":[1520.6,2665.8,3931,5771,7238,8781,11995,13842,40760,46186,52002,59653,66199,72918,82473,88576,397605,427066],"d":0.001784,"mp":83.81,"bp":87.302,"r":71,"disc":"Lord Rayleigh"},{"z":19,"s":"K","en":"Potassium","pl":"Potas","yr":"1807","yre":"1807","et":"Od potażu – popiołu z garnka. Łacińska nazwa kalium dała symbol K.","ete":"From \"potash\", the ash of burnt plants in a pot. Latin kalium gave the symbol K.","lk":"srebrzystobiały, bardzo miękki metal","lke":"soft, silvery-white metal","us":["nawozy","praca serca i nerwów","mydła"],"use":["fertilizers","heart and nerve function","soaps"],"fc":"Banany zawierają radioaktywny izotop ⁴⁰K (ok. 0,012% potasu). Barwi płomień na fioletowo.","fce":"Bananas contain radioactive ⁴⁰K (about 0.012% of their potassium). It colors a flame violet.","m":39.09831,"c":"alk","per":4,"grp":1,"blk":"s","x":1,"y":4,"sh":[2,8,8,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s1","cfs":"[Ar] 4s1","enp":0.82,"ea":48.383,"ie":[418.8,3052,4420,5877,7975,9590,11343,14944,16963.7,48610,54490,60730,68950,75900,83080,93400,99710,444880,476063],"d":0.862,"mp":336.7,"bp":1032,"mh":29.6,"r":243,"disc":"Humphry Davy"},{"z":20,"s":"Ca","en":"Calcium","pl":"Wapń","yr":"1808","yre":"1808","et":"Polska nazwa od wapna. Łac. calx – wapno.","ete":"From Latin calx, \"lime\". Polish wapń comes from wapno, \"lime\".","lk":"srebrzystobiały, miękki metal","lke":"soft, silvery-white metal","us":["cement","wapno","kości i zęby","suplementy"],"use":["cement","lime","bones and teeth","supplements"],"fc":"Najobficiej występujący metal w ciele człowieka (ok. 1,5% masy).","fce":"The most abundant metal in the human body (about 1.5% of body mass).","m":40.0784,"c":"ae","per":4,"grp":2,"blk":"s","x":2,"y":4,"sh":[2,8,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2","cfs":"[Ar] 4s2","enp":1,"ea":2.37,"ie":[589.8,1145.4,4912.4,6491,8153,10496,12270,14206,18191,20385,57110,63410,70110,78890,86310,94000,104900,111711,494850,527762],"d":1.55,"mp":1115,"bp":1757,"mh":25.929,"r":194,"disc":"Humphry Davy"},{"z":21,"s":"Sc","en":"Scandium","pl":"Skand","yr":"1879","yre":"1879","et":"Od Skandynawii.","ete":"After Scandinavia.","lk":"srebrzystobiały metal o lekko żółtawym odcieniu","lke":"silvery-white metal with a slight yellow tint","us":["lekkie stopy aluminium (rowery, sprzęt sportowy)","lampy metalohalogenkowe"],"use":["lightweight aluminium alloys (bicycles, sports gear)","metal-halide lamps"],"fc":"Mendelejew przewidział go w 1871 r. jako „ekabor”. Lars Nilson znalazł go w 1879 r., a jego własności zgodziły się z przewidywaniami.","fce":"Mendeleev predicted it in 1871 as \"eka-boron\". Lars Nilson found it in 1879, and its properties matched the predictions.","m":44.9559085,"c":"tm","per":4,"grp":3,"blk":"d","x":3,"y":4,"sh":[2,8,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d1","cfs":"[Ar] 3d1 4s2","enp":1.36,"ea":18,"ie":[633.1,1235,2388.6,7090.6,8843,10679,13310,15250,17370,21726,24102,66320,73010,80160,89490,97400,105600,117000,124270,547530,582163],"d":2.985,"mp":1814,"bp":3109,"mh":25.52,"r":184,"disc":"Lars Fredrik Nilson","pm":1},{"z":22,"s":"Ti","en":"Titanium","pl":"Tytan","yr":"1791","yre":"1791","et":"Od Tytanów z mitologii greckiej.","ete":"After the Titans of Greek mythology.","lk":"srebrzystoszary, wytrzymały metal","lke":"strong, silvery-gray metal","us":["samoloty","implanty","okulary","biel tytanowa (TiO₂)"],"use":["aircraft","implants","spectacle frames","titanium white (TiO₂)"],"fc":"Wytrzymały jak stal, a ok. 45% lżejszy. Organizm go nie odrzuca, dlatego robi się z niego implanty.","fce":"As strong as steel but about 45% lighter. The body does not reject it, which is why implants are made of it.","m":47.8671,"c":"tm","per":4,"grp":4,"blk":"d","x":4,"y":4,"sh":[2,8,10,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d2","cfs":"[Ar] 3d2 4s2","enp":1.54,"ea":7.289,"ie":[658.8,1309.8,2652.5,4174.6,9581,11533,13590,16440,18530,20833,25575,28125,76015,83280,90880,100700,109100,117800,129900,137530,602930,639294],"d":4.506,"mp":1941,"bp":3560,"mh":25.06,"r":176,"disc":"William Gregor"},{"z":23,"s":"V","en":"Vanadium","pl":"Wanad","yr":"1801","yre":"1801","et":"Od Vanadis – przydomku nordyckiej bogini Freyi.","ete":"After Vanadis, another name of the Norse goddess Freyja.","lk":"srebrzystoszary metal","lke":"silvery-gray metal","us":["stale narzędziowe","akumulatory przepływowe","katalizatory"],"use":["tool steels","flow batteries","catalysts"],"fc":"Odkryty dwa razy: w 1801 r. w Meksyku (uznano go za chrom) i ponownie w 1830 r. przez Sefströma.","fce":"Discovered twice: in 1801 in Mexico (and then dismissed as chromium) and again in 1830 by Sefström.","m":50.94151,"c":"tm","per":4,"grp":5,"blk":"d","x":5,"y":4,"sh":[2,8,11,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d3","cfs":"[Ar] 3d3 4s2","enp":1.63,"ea":50.911,"ie":[650.9,1414,2830,4507,6298.7,12363,14530,16730,19860,22240,24670,29730,32446,86450,94170,102300,112700,121600,130700,143400,151440,661050,699144],"d":6,"mp":2183,"bp":3680,"mh":24.89,"r":171,"disc":"Andrés Manuel del Río"},{"z":24,"s":"Cr","en":"Chromium","pl":"Chrom","yr":"1797","yre":"1797","et":"Z gr. chroma – barwa.","ete":"From Greek chroma, \"color\".","lk":"srebrzystoszary, połyskliwy metal","lke":"shiny silvery-gray metal","us":["stal nierdzewna","chromowanie","pigmenty","garbowanie skór"],"use":["stainless steel","chrome plating","pigments","leather tanning"],"fc":"Domieszka chromu nadaje rubinowi czerwień, a szmaragdowi zieleń.","fce":"A trace of chromium makes ruby red and emerald green.","m":51.99616,"c":"tm","per":4,"grp":6,"blk":"d","x":6,"y":4,"sh":[2,8,13,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s1 3d5","cfs":"[Ar] 3d5 4s1","enp":1.66,"ea":65.21,"ie":[652.9,1590.6,2987,4743,6702,8744.9,15455,17820,20190,23580,26130,28750,34230,37066,97510,105800,114300,125300,134700,144300,157700,166090,721870,761733],"d":7.19,"mp":2180,"bp":2944,"mh":23.35,"r":166,"disc":"Louis Nicolas Vauquelin"},{"z":25,"s":"Mn","en":"Manganese","pl":"Mangan","yr":"1774","yre":"1774","et":"Prawdopodobnie od Magnezji lub łac. magnes.","ete":"Probably from Magnesia, or from Latin magnes, \"magnet\".","lk":"srebrzystoszary, kruchy metal","lke":"brittle silvery-gray metal","us":["stal","baterie alkaliczne","nawozy mikroelementowe"],"use":["steel","alkaline batteries","micronutrient fertilizers"],"fc":"Większość produkcji idzie do hutnictwa – mangan czyni stal twardszą i odporniejszą na uderzenia.","fce":"Most of it goes into steelmaking, where it makes steel harder and more resistant to impact.","m":54.9380443,"c":"tm","per":4,"grp":7,"blk":"d","x":7,"y":4,"sh":[2,8,13,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d5","cfs":"[Ar] 3d5 4s2","enp":1.55,"ea":-50,"ie":[717.3,1509,3248,4940,6990,9220,11500,18770,21400,23960,27590,30330,33150,38880,41987,109480,118100,127100,138600,148500,158600,172500,181380,785450,827067],"d":7.21,"mp":1519,"bp":2334,"mh":26.32,"r":161,"disc":"Torbern Olof Bergman"},{"z":26,"s":"Fe","en":"Iron","pl":"Żelazo","yr":"starożytność","yre":"antiquity","et":"Łac. ferrum dało symbol Fe.","ete":"Latin ferrum gave the symbol Fe. The English word \"iron\" is of Germanic origin.","lk":"srebrzystoszary, połyskliwy metal","lke":"shiny silvery-gray metal","us":["stal","magnesy","hemoglobina we krwi"],"use":["steel","magnets","hemoglobin in blood"],"fc":"Jądro Ziemi to głównie żelazo. W gwiazdach synteza jąder cięższych od żelaza już nie uwalnia energii.","fce":"Earth's core is mostly iron. In stars, fusing nuclei heavier than iron no longer releases energy.","m":55.8452,"c":"tm","per":4,"grp":8,"blk":"d","x":8,"y":4,"sh":[2,8,14,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d6","cfs":"[Ar] 3d6 4s2","enp":1.83,"ea":14.785,"ie":[762.5,1561.9,2957,5290,7240,9560,12060,14580,22540,25290,28000,31920,34830,37840,44100,47206,122200,131000,140500,152600,163000,173600,188100,195200,851800,895161],"d":7.874,"mp":1811,"bp":3134,"mh":25.1,"r":156,"disc":"znany od ok. 5000 r. p.n.e.","disce":"known since about 5000 BC"},{"z":27,"s":"Co","en":"Cobalt","pl":"Kobalt","yr":"1735","yre":"1735","et":"Niem. Kobold – skrzat; górnicy winili go za zatrucia i brak srebra w rudzie.","ete":"From German Kobold, \"goblin\": miners blamed it for poisoning and for ore that gave no silver.","lk":"srebrzystoszary, połyskliwy metal","lke":"shiny silvery-gray metal","us":["akumulatory litowo-jonowe","magnesy","stopy superodporne"],"use":["lithium-ion batteries","magnets","superalloys"],"fc":"Jest centralnym atomem witaminy B₁₂. Niebieski pigment kobaltowy barwi ceramikę od wieków.","fce":"The central atom of vitamin B₁₂. Blue cobalt pigment has colored ceramics for centuries.","m":58.9331944,"c":"tm","per":4,"grp":9,"blk":"d","x":9,"y":4,"sh":[2,8,15,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d7","cfs":"[Ar] 3d7 4s2","enp":1.88,"ea":63.898,"ie":[760.4,1648,3232,4950,7670,9840,12440,15230,17959,26570,29400,32400,36600,39700,42800,49396,52737,134810,145170,154700,167400,178100,189300,204500,214100,920870,966023],"d":8.9,"mp":1768,"bp":3200,"mh":24.81,"r":152,"disc":"Georg Brandt"},{"z":28,"s":"Ni","en":"Nickel","pl":"Nikiel","yr":"1751","yre":"1751","et":"Niem. Kupfernickel – „miedziany diabeł”: ruda wyglądała jak miedź, a miedzi nie dawała.","ete":"From German Kupfernickel, \"copper demon\": the ore looked like copper but yielded none.","lk":"srebrzystobiały, połyskliwy metal","lke":"shiny silvery-white metal","us":["stal nierdzewna","monety","akumulatory","galwanizacja"],"use":["stainless steel","coins","batteries","electroplating"],"fc":"Uczula wiele osób, dlatego ogranicza się go w biżuterii. Razem z żelazem tworzy jądro Ziemi.","fce":"Many people are allergic to it, so it is limited in jewelry. Together with iron it makes up Earth's core.","m":58.69344,"c":"tm","per":4,"grp":10,"blk":"d","x":10,"y":4,"sh":[2,8,16,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d8","cfs":"[Ar] 3d8 4s2","enp":1.91,"ea":111.65,"ie":[737.1,1753,3395,5300,7339,10400,12800,15600,18600,21670,30970,34000,37100,41500,44800,48100,55101,58570,148700,159000,169400,182700,194000,205600,221400,231490,992718,1039668],"d":8.908,"mp":1728,"bp":3003,"mh":26.07,"r":149,"disc":"Axel Fredrik Cronstedt"},{"z":29,"s":"Cu","en":"Copper","pl":"Miedź","yr":"starożytność","yre":"antiquity","et":"Łac. cuprum, od Cypru – stąd symbol Cu.","ete":"From Latin cuprum, after Cyprus, hence the symbol Cu.","lk":"czerwonawy, połyskliwy metal","lke":"shiny reddish metal","us":["przewody elektryczne","rury","monety","mosiądz i brąz"],"use":["electrical wiring","pipes","coins","brass and bronze"],"fc":"Z czasem pokrywa się zieloną patyną – tak wygląda Statua Wolności. Bakterie giną na jej powierzchni.","fce":"It slowly turns green with a patina, as on the Statue of Liberty. Bacteria die on its surface.","m":63.5463,"c":"tm","per":4,"grp":11,"blk":"d","x":11,"y":4,"sh":[2,8,18,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s1 3d10","cfs":"[Ar] 3d10 4s1","enp":1.9,"ea":119.235,"ie":[745.5,1957.9,3555,5536,7700,9900,13400,16000,19200,22400,25600,35600,38700,42000,46700,50200,53700,61100,64702,163700,174100,184900,198800,210500,222700,239100,249660,1067358,1116105],"d":8.96,"mp":1357.77,"bp":2835,"mh":24.44,"r":145,"disc":"Bliski Wschód (starożytność)","disce":"Middle East (antiquity)"},{"z":30,"s":"Zn","en":"Zinc","pl":"Cynk","yr":"1746","yre":"1746","et":"Niem. Zink.","ete":"From German Zink.","lk":"niebieskawobiały metal","lke":"bluish-white metal","us":["ocynkowanie stali","baterie","mosiądz","maści"],"use":["galvanizing steel","batteries","brass","ointments"],"fc":"Potrzebny w ciele człowieka dla setek enzymów. Cynk na blasze chroni stal przed rdzą.","fce":"Needed by hundreds of enzymes in the human body. A zinc coating protects steel from rust.","m":65.382,"c":"tm","per":4,"grp":12,"blk":"d","x":12,"y":4,"sh":[2,8,18,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10","cfs":"[Ar] 3d10 4s2","enp":1.65,"ea":-58,"ie":[906.4,1733.3,3833,5731,7970,10400,12900,16800,19600,23000,26400,29990,40490,43800,47300,52300,55900,59700,67300,71200,179100],"d":7.14,"mp":692.68,"bp":1180,"mh":25.47,"r":142,"disc":"Indie (starożytność)","disce":"India (antiquity)"},{"z":31,"s":"Ga","en":"Gallium","pl":"Gal","yr":"1875","yre":"1875","et":"Od łac. Gallia – Francja.","ete":"From Latin Gallia, France.","lk":"srebrzysty, miękki metal","lke":"soft, silvery metal","us":["diody LED","półprzewodniki (GaAs, GaN)","ładowarki GaN"],"use":["LEDs","semiconductors (GaAs, GaN)","GaN chargers"],"fc":"Topi się w dłoni (ok. 30 °C). Mendelejew przewidział go jako „ekaglin”; Lecoq de Boisbaudran zmierzył najpierw gęstość 4,7, Mendelejew twierdził, że powinno być ok. 5,9 – i miał rację.","fce":"It melts in your hand (about 30 °C). Mendeleev predicted it as \"eka-aluminium\". Lecoq de Boisbaudran first measured a density of 4.7; Mendeleev insisted it should be about 5.9, and he was right.","m":69.7231,"c":"pt","per":4,"grp":13,"blk":"p","x":13,"y":4,"sh":[2,8,18,3],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p1","cfs":"[Ar] 3d10 4s2 4p1","enp":1.81,"ea":41,"ie":[578.8,1979.3,2963,6180],"d":5.91,"mp":302.9146,"bp":2673,"mh":25.86,"r":136,"disc":"Lecoq de Boisbaudran","pm":1},{"z":32,"s":"Ge","en":"Germanium","pl":"German","yr":"1886","yre":"1886","et":"Od łac. Germania – Niemcy.","ete":"From Latin Germania, Germany.","lk":"szarobiały, błyszczący półmetal","lke":"shiny gray-white metalloid","us":["światłowody","optyka podczerwieni","ogniwa kosmiczne"],"use":["optical fibers","infrared optics","space solar cells"],"fc":"Przewidziany w 1871 r. jako „ekakrzem”, odkryty przez Winklera w 1886 r. Pierwszy tranzystor (1947) był germanowy.","fce":"Predicted in 1871 as \"eka-silicon\" and discovered by Winkler in 1886. The first transistor (1947) was made of germanium.","m":72.6308,"c":"mt","per":4,"grp":14,"blk":"p","x":14,"y":4,"sh":[2,8,18,4],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p2","cfs":"[Ar] 3d10 4s2 4p2","enp":2.01,"ea":118.9352,"ie":[762,1537.5,3302.1,4411,9020],"d":5.323,"mp":1211.4,"bp":3106,"mh":23.222,"r":125,"disc":"Clemens Winkler","pm":1},{"z":33,"s":"As","en":"Arsenic","pl":"Arsen","yr":"ok. 1250","yre":"c. 1250","et":"Z gr. arsenikon – żółty barwnik (aurypigment).","ete":"From Greek arsenikon, \"yellow pigment\" (orpiment).","lk":"szary, kruchy półmetal","lke":"gray, brittle metalloid","us":["półprzewodniki (GaAs)","konserwanty drewna (dawniej)","trucizny"],"use":["semiconductors (GaAs)","wood preservatives (formerly)","poisons"],"fc":"Przez wieki zwany królem trucicieli. Związki arsenu zatruwają studnie m.in. w Bangladeszu.","fce":"For centuries known as the king of poisons. Arsenic compounds contaminate wells, for example in Bangladesh.","m":74.9215956,"c":"mt","per":4,"grp":15,"blk":"p","x":15,"y":4,"sh":[2,8,18,5],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p3","cfs":"[Ar] 3d10 4s2 4p3","enp":2.18,"ea":77.65,"ie":[947,1798,2735,4837,6043,12310],"d":5.727,"mp":1090,"mh":24.64,"r":114,"disc":"epoka brązu","disce":"Bronze Age","sub":887},{"z":34,"s":"Se","en":"Selenium","pl":"Selen","yr":"1817","yre":"1817","et":"Z gr. selene – Księżyc.","ete":"From Greek selene, \"Moon\".","lk":"szary lub czerwony, zależnie od odmiany","lke":"gray or red, depending on the form","us":["szkło (odbarwianie i czerwień)","ogniwa","suplementy"],"use":["glass (decolorizing and red color)","solar cells","supplements"],"fc":"Jego przewodnictwo rośnie pod wpływem światła – wykorzystywano go w pierwszych fotokopiarkach. W ciele potrzebny w śladowych ilościach.","fce":"Its conductivity rises in light, so it was used in early photocopiers. The body needs it in trace amounts.","m":78.9718,"c":"nm","per":4,"grp":16,"blk":"p","x":16,"y":4,"sh":[2,8,18,6],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p4","cfs":"[Ar] 3d10 4s2 4p4","enp":2.55,"ea":194.9587,"ie":[941,2045,2973.7,4144,6590,7880,14990],"d":4.81,"mp":494,"bp":958,"mh":25.363,"r":103,"disc":"Jöns Jakob Berzelius"},{"z":35,"s":"Br","en":"Bromine","pl":"Brom","yr":"1826","yre":"1826","et":"Z gr. bromos – smród.","ete":"From Greek bromos, \"stench\".","lk":"czerwonobrunatna, dymiąca ciecz","lke":"dark red-brown, fuming liquid","us":["środki zmniejszające palność","dezynfekcja basenów","leki"],"use":["flame retardants","pool disinfection","medicines"],"fc":"W warunkach pokojowych ciekły są tylko dwa pierwiastki: brom i rtęć.","fce":"Only two elements are liquid at room temperature: bromine and mercury.","m":79.904,"c":"nm","per":4,"grp":17,"blk":"p","x":17,"y":4,"sh":[2,8,18,7],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p5","cfs":"[Ar] 3d10 4s2 4p5","enp":2.96,"ea":324.537,"ie":[1139.9,2103,3470,4560,5760,8550,9940,18600],"d":3.1028,"mp":265.8,"bp":332,"r":94,"disc":"Antoine Jérôme Balard"},{"z":36,"s":"Kr","en":"Krypton","pl":"Krypton","yr":"1898","yre":"1898","et":"Z gr. kryptos – ukryty.","ete":"From Greek kryptos, \"hidden\".","lk":"bezbarwny gaz bez zapachu","lke":"colorless, odorless gas","us":["lampy","lasery","okna zespolone"],"use":["lamps","lasers","double-glazed windows"],"fc":"Od 1960 do 1983 r. metr był zdefiniowany przez długość fali światła kryptonu-86.","fce":"From 1960 to 1983 the metre was defined by the wavelength of light from krypton-86.","m":83.7982,"c":"ng","per":4,"grp":18,"blk":"p","x":18,"y":4,"sh":[2,8,18,8],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6","cfs":"[Ar] 3d10 4s2 4p6","enp":3,"ea":-96,"ie":[1350.8,2350.4,3565,5070,6240,7570,10710,12138,22274,25880,29700,33800,37700,43100,47500,52200,57100,61800,75800,80400,85300,90400,96300,101400,111100,116290,282500,296200,311400,326200],"d":0.003749,"mp":115.78,"bp":119.93,"r":88,"disc":"William Ramsay"},{"z":37,"s":"Rb","en":"Rubidium","pl":"Rubid","yr":"1861","yre":"1861","et":"Łac. rubidus – ciemnoczerwony (od czerwonych linii widmowych).","ete":"From Latin rubidus, \"deep red\", after the red lines in its spectrum.","lk":"srebrzystobiały, miękki metal","lke":"soft, silvery-white metal","us":["zegary atomowe","badania chłodzenia atomów","fotokomórki"],"use":["atomic clocks","atom-cooling research","photocells"],"fc":"Odkryty przez Bunsena i Kirchhoffa dzięki spektroskopii. W 1995 r. ochłodzono jego atomy do kondensatu Bosego–Einsteina.","fce":"Found by Bunsen and Kirchhoff through spectroscopy. In 1995 its atoms were cooled to a Bose–Einstein condensate.","m":85.46783,"c":"alk","per":5,"grp":1,"blk":"s","x":1,"y":5,"sh":[2,8,18,8,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1","cfs":"[Kr] 5s1","enp":0.82,"ea":46.884,"ie":[403,2633,3860,5080,6850,8140,9570,13120,14500,26740],"d":1.532,"mp":312.45,"bp":961,"mh":31.06,"r":265,"disc":"Robert Bunsen"},{"z":38,"s":"Sr","en":"Strontium","pl":"Stront","yr":"1790","yre":"1790","et":"Od wsi Strontian w Szkocji.","ete":"After the village of Strontian in Scotland.","lk":"srebrzystożółtawy, miękki metal","lke":"soft, silvery-yellowish metal","us":["czerwone ognie sztuczne","zegary optyczne","magnesy ferrytowe"],"use":["red fireworks","optical clocks","ferrite magnets"],"fc":"Płomień strontu jest karminowy – stąd czerwień w fajerwerkach. Izotop ⁹⁰Sr jest groźnym produktem rozszczepienia.","fce":"Strontium burns carmine red, which gives fireworks their red. The isotope ⁹⁰Sr is a dangerous fission product.","m":87.621,"c":"ae","per":5,"grp":2,"blk":"s","x":2,"y":5,"sh":[2,8,18,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2","cfs":"[Kr] 5s2","enp":0.95,"ea":5.023,"ie":[549.5,1064.2,4138,5500,6910,8760,10230,11800,15600,17100,31270],"d":2.64,"mp":1050,"bp":1650,"mh":26.4,"r":219,"disc":"William Cruickshank"},{"z":39,"s":"Y","en":"Yttrium","pl":"Itr","yr":"1794","yre":"1794","et":"Od wsi Ytterby w Szwecji.","ete":"After the village of Ytterby in Sweden.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["luminofory (czerwień w ekranach)","lasery YAG","nadprzewodniki YBCO"],"use":["phosphors (red in screens)","YAG lasers","YBCO superconductors"],"fc":"Cztery pierwiastki noszą nazwę od jednej szwedzkiej wsi: itr, iterb, terb i erb.","fce":"Four elements are named after one Swedish village: yttrium, ytterbium, terbium and erbium.","m":88.905842,"c":"tm","per":5,"grp":3,"blk":"d","x":3,"y":5,"sh":[2,8,18,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d1","cfs":"[Kr] 4d1 5s2","enp":1.22,"ea":29.6,"ie":[600,1180,1980,5847,7430,8970,11190,12450,14110,18400,19900,36090],"d":4.472,"mp":1799,"bp":3203,"mh":26.53,"r":212,"disc":"Johan Gadolin"},{"z":40,"s":"Zr","en":"Zirconium","pl":"Cyrkon","yr":"1789","yre":"1789","et":"Z arab. i pers. zargun – złotawy (od minerału cyrkonu).","ete":"From Arabic and Persian zargun, \"golden\", after the mineral zircon.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["koszulki prętów paliwowych","ceramika","implanty"],"use":["fuel rod cladding","ceramics","implants"],"fc":"Prawie nie pochłania neutronów, dlatego okrywa pręty paliwowe w reaktorach jądrowych.","fce":"It barely absorbs neutrons, so it clads fuel rods in nuclear reactors.","m":91.2242,"c":"tm","per":5,"grp":4,"blk":"d","x":4,"y":5,"sh":[2,8,18,10,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d2","cfs":"[Kr] 4d2 5s2","enp":1.33,"ea":41.806,"ie":[640.1,1270,2218,3313,7752,9500],"d":6.52,"mp":2128,"bp":4650,"mh":25.36,"r":206,"disc":"Martin Heinrich Klaproth"},{"z":41,"s":"Nb","en":"Niobium","pl":"Niob","yr":"1801","yre":"1801","et":"Od Niobe, córki Tantala – pierwiastek jest bliźniaczo podobny do tantalu.","ete":"After Niobe, daughter of Tantalus, because the element is a near twin of tantalum.","lk":"szarobłękitny metal","lke":"gray-blue metal","us":["stale stopowe","nadprzewodzące magnesy","rakiety"],"use":["alloy steels","superconducting magnets","rockets"],"fc":"Nadprzewodzące magnesy z niobu pracują m.in. w Wielkim Zderzaczu Hadronów. Ok. 90% światowej produkcji pochodzi z Brazylii.","fce":"Niobium superconducting magnets work in the Large Hadron Collider. About 90% of world production comes from Brazil.","m":92.906372,"c":"tm","per":5,"grp":5,"blk":"d","x":5,"y":5,"sh":[2,8,18,12,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1 4d4","cfs":"[Kr] 4d4 5s1","enp":1.6,"ea":88.516,"ie":[652.1,1380,2416,3700,4877,9847,12100],"d":8.57,"mp":2750,"bp":5017,"mh":24.6,"r":198,"disc":"Charles Hatchett"},{"z":42,"s":"Mo","en":"Molybdenum","pl":"Molibden","yr":"1778","yre":"1778","et":"Z gr. molybdos – ołów (mylono go z galeną).","ete":"From Greek molybdos, \"lead\": it was mistaken for galena.","lk":"srebrzystoszary metal","lke":"silvery-gray metal","us":["stale stopowe","katalizatory","smary (MoS₂)"],"use":["alloy steels","catalysts","lubricants (MoS₂)"],"fc":"Atom molibdenu pracuje w enzymach bakterii wiążących azot z powietrza.","fce":"A molybdenum atom sits in the enzymes of bacteria that fix nitrogen from the air.","m":95.951,"c":"tm","per":5,"grp":6,"blk":"d","x":6,"y":5,"sh":[2,8,18,13,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1 4d5","cfs":"[Kr] 4d5 5s1","enp":2.16,"ea":72.1,"ie":[684.3,1560,2618,4480,5257,6640.8,12125,13860,15835,17980,20190,22219,26930,29196,52490,55000,61400,67700,74000,80400,87000,93400,98420,104400,121900,127700,133800,139800,148100,154500],"d":10.28,"mp":2896,"bp":4912,"mh":24.06,"r":190,"disc":"Carl Wilhelm Scheele"},{"z":43,"s":"Tc","en":"Technetium","pl":"Technet","yr":"1937","yre":"1937","et":"Z gr. technetos – sztuczny.","ete":"From Greek technetos, \"artificial\".","lk":"srebrzystoszary, radioaktywny metal","lke":"silvery-gray radioactive metal","us":["diagnostyka medyczna (⁹⁹ᵐTc)","skanowanie narządów"],"use":["medical diagnostics (⁹⁹ᵐTc)","organ scans"],"fc":"Pierwszy pierwiastek otrzymany sztucznie (Perrier i Segrè). Nie ma trwałych izotopów. Mendelejew przewidział go jako „ekamangan”.","fce":"The first element made artificially (Perrier and Segrè). It has no stable isotopes. Mendeleev predicted it as \"eka-manganese\".","m":98,"c":"tm","per":5,"grp":7,"blk":"d","x":7,"y":5,"sh":[2,8,18,13,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d5","cfs":"[Kr] 4d5 5s2","enp":1.9,"ea":53,"ie":[702,1470,2850],"d":11,"mp":2430,"bp":4538,"mh":24.27,"r":183,"disc":"Emilio Segrè","pm":1},{"z":44,"s":"Ru","en":"Ruthenium","pl":"Ruten","yr":"1844","yre":"1844","et":"Od łac. Ruthenia – Ruś.","ete":"After Latin Ruthenia, Rus.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["styki elektryczne","katalizatory","stopy platynowców"],"use":["electrical contacts","catalysts","platinum-group alloys"],"fc":"Odkryty przez Karla Clausa w Kazaniu, który nazwał go na cześć Rosji.","fce":"Discovered by Karl Claus in Kazan, who named it in honor of Russia.","m":101.072,"c":"tm","per":5,"grp":8,"blk":"d","x":8,"y":5,"sh":[2,8,18,15,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1 4d7","cfs":"[Kr] 4d7 5s1","enp":2.2,"ea":100.96,"ie":[710.2,1620,2747],"d":12.45,"mp":2607,"bp":4423,"mh":24.06,"r":178,"disc":"Karl Ernst Claus"},{"z":45,"s":"Rh","en":"Rhodium","pl":"Rod","yr":"1803","yre":"1803","et":"Z gr. rhodon – róża (różowe sole).","ete":"From Greek rhodon, \"rose\": its salts are pink.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["katalizatory samochodowe","lustra","biżuteria"],"use":["car catalytic converters","mirrors","jewelry"],"fc":"Jeden z najdroższych metali; jego cena bywała wielokrotnie wyższa niż złota.","fce":"One of the most expensive metals; its price has often been several times that of gold.","m":102.905502,"c":"tm","per":5,"grp":9,"blk":"d","x":9,"y":5,"sh":[2,8,18,16,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1 4d8","cfs":"[Kr] 4d8 5s1","enp":2.28,"ea":110.27,"ie":[719.7,1740,2997],"d":12.41,"mp":2237,"bp":3968,"mh":24.98,"r":173,"disc":"William Hyde Wollaston"},{"z":46,"s":"Pd","en":"Palladium","pl":"Pallad","yr":"1803","yre":"1803","et":"Od planetoidy Pallas.","ete":"After the asteroid Pallas.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["katalizatory spalin","elektronika","biżuteria"],"use":["exhaust catalysts","electronics","jewelry"],"fc":"Pochłania kilkaset swoich objętości wodoru.","fce":"It absorbs several hundred times its own volume of hydrogen.","m":106.421,"c":"tm","per":5,"grp":10,"blk":"d","x":10,"y":5,"sh":[2,8,18,18],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 4d10","cfs":"[Kr] 4d10","enp":2.2,"ea":54.24,"ie":[804.4,1870,3177],"d":12.023,"mp":1828.05,"bp":3236,"mh":25.98,"r":169,"disc":"William Hyde Wollaston"},{"z":47,"s":"Ag","en":"Silver","pl":"Srebro","yr":"starożytność","yre":"antiquity","et":"Łac. argentum dało symbol Ag.","ete":"Latin argentum gave the symbol Ag.","lk":"białoszary, bardzo błyszczący metal","lke":"white-gray, very shiny metal","us":["biżuteria","lustra","elektronika","fotografia"],"use":["jewelry","mirrors","electronics","photography"],"fc":"Najlepiej przewodzi prąd i ciepło ze wszystkich metali.","fce":"The best conductor of electricity and heat of all metals.","m":107.86822,"c":"tm","per":5,"grp":11,"blk":"d","x":11,"y":5,"sh":[2,8,18,18,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s1 4d10","cfs":"[Kr] 4d10 5s1","enp":1.93,"ea":125.862,"ie":[731,2070,3361],"d":10.49,"mp":1234.93,"bp":2435,"mh":25.35,"r":165,"disc":"nieznany (przed 5000 r. p.n.e.)","disce":"unknown (before 5000 BC)"},{"z":48,"s":"Cd","en":"Cadmium","pl":"Kadm","yr":"1817","yre":"1817","et":"Z gr. kadmeia – ruda cynku.","ete":"From Greek kadmeia, \"zinc ore\".","lk":"srebrzystobiały, miękki metal","lke":"soft, silvery-white metal","us":["akumulatory Ni-Cd","pigmenty","powłoki"],"use":["Ni-Cd batteries","pigments","coatings"],"fc":"Toksyczny metal ciężki – w UE jest ograniczany. Gromadzi się w nerkach.","fce":"A toxic heavy metal, restricted in the EU. It accumulates in the kidneys.","m":112.4144,"c":"tm","per":5,"grp":12,"blk":"d","x":12,"y":5,"sh":[2,8,18,18,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10","cfs":"[Kr] 4d10 5s2","enp":1.69,"ea":-68,"ie":[867.8,1631.4,3616],"d":8.65,"mp":594.22,"bp":1040,"mh":26.02,"r":161,"disc":"Karl Samuel Leberecht Hermann"},{"z":49,"s":"In","en":"Indium","pl":"Ind","yr":"1863","yre":"1863","et":"Od indygo – niebieskiej linii w jego widmie.","ete":"After indigo, the color of a blue line in its spectrum.","lk":"srebrzystobiały, bardzo miękki metal","lke":"very soft, silvery-white metal","us":["ekrany dotykowe (ITO)","lutowie","półprzewodniki"],"use":["touchscreens (ITO)","solder","semiconductors"],"fc":"Cienka warstwa tlenku indu i cyny jest przezroczysta i przewodzi prąd – dlatego działają ekrany dotykowe.","fce":"A thin layer of indium tin oxide is transparent and conducts electricity, which is how touchscreens work.","m":114.8181,"c":"pt","per":5,"grp":13,"blk":"p","x":13,"y":5,"sh":[2,8,18,18,3],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p1","cfs":"[Kr] 4d10 5s2 5p1","enp":1.78,"ea":37.043,"ie":[558.3,1820.7,2704,5210],"d":7.31,"mp":429.7485,"bp":2345,"mh":26.74,"r":156,"disc":"Ferdinand Reich"},{"z":50,"s":"Sn","en":"Tin","pl":"Cyna","yr":"starożytność","yre":"antiquity","et":"Łac. stannum dało symbol Sn.","ete":"Latin stannum gave the symbol Sn. The word \"tin\" is of Germanic origin.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["puszki (blacha biała)","lutowie","brąz"],"use":["tin cans (tinplate)","solder","bronze"],"fc":"Dodana do miedzi daje brąz – od niego nazwano epokę. W silnym mrozie przechodzi w szarą odmianę i kruszy się („zaraza cynowa”).","fce":"Added to copper it makes bronze, which gave its name to an age. In deep cold it turns into a gray form and crumbles (\"tin pest\").","m":118.7107,"c":"pt","per":5,"grp":14,"blk":"p","x":14,"y":5,"sh":[2,8,18,18,4],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p2","cfs":"[Kr] 4d10 5s2 5p2","enp":1.96,"ea":107.2984,"ie":[708.6,1411.8,2943,3930.3,7456],"d":7.365,"mp":505.08,"bp":2875,"mh":27.112,"r":145,"disc":"nieznany (przed 3500 r. p.n.e.)","disce":"unknown (before 3500 BC)"},{"z":51,"s":"Sb","en":"Antimony","pl":"Antymon","yr":"starożytność","yre":"antiquity","et":"Z gr. anti + monos – „niechętny samotności”. Łac. stibium dało symbol Sb.","ete":"From Greek anti + monos, \"not found alone\". Latin stibium gave the symbol Sb.","lk":"srebrzystoszary, kruchy półmetal","lke":"brittle silvery-gray metalloid","us":["środki zmniejszające palność","stopy z ołowiem","półprzewodniki"],"use":["flame retardants","lead alloys","semiconductors"],"fc":"W starożytności kobiety malowały nim brwi i powieki.","fce":"In antiquity women used it to paint their eyebrows and eyelids.","m":121.7601,"c":"mt","per":5,"grp":15,"blk":"p","x":15,"y":5,"sh":[2,8,18,18,5],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p3","cfs":"[Kr] 4d10 5s2 5p3","enp":2.05,"ea":101.059,"ie":[834,1594.9,2440,4260,5400,10400],"d":6.697,"mp":903.78,"bp":1908,"mh":25.23,"r":133,"disc":"nieznany (przed 3000 r. p.n.e.)","disce":"unknown (before 3000 BC)"},{"z":52,"s":"Te","en":"Tellurium","pl":"Tellur","yr":"1782","yre":"1782","et":"Od łac. tellus – Ziemia.","ete":"From Latin tellus, \"Earth\".","lk":"srebrzystobiały, kruchy półmetal","lke":"brittle silvery-white metalloid","us":["ogniwa słoneczne CdTe","stopy","pamięci optyczne"],"use":["CdTe solar cells","alloys","optical discs"],"fc":"Mimo większej masy atomowej stoi przed jodem – Mendelejew ustawił go według własności, a nie masy.","fce":"Although heavier than iodine, it comes before it in the table: Mendeleev ordered it by properties, not by mass.","m":127.603,"c":"mt","per":5,"grp":16,"blk":"p","x":16,"y":5,"sh":[2,8,18,18,6],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p4","cfs":"[Kr] 4d10 5s2 5p4","enp":2.1,"ea":190.161,"ie":[869.3,1790,2698,3610,5668,6820,13200],"d":6.24,"mp":722.66,"bp":1261,"mh":25.73,"r":123,"disc":"Franz-Joseph Müller von Reichenstein"},{"z":53,"s":"I","en":"Iodine","pl":"Jod","yr":"1811","yre":"1811","et":"Z gr. iodes – fiołkowy (kolor pary).","ete":"From Greek iodes, \"violet\", the color of its vapor.","lk":"ciemnofioletowe, błyszczące kryształy","lke":"dark violet, shiny crystals","us":["odkażanie ran","sól jodowana","kontrast w RTG"],"use":["disinfecting wounds","iodized salt","X-ray contrast"],"fc":"Potrzebny do hormonów tarczycy – stąd jodowanie soli. Po ogrzaniu sublimuje w fioletową parę.","fce":"Needed for thyroid hormones, hence iodized salt. When heated it sublimes into a violet vapor.","m":126.904473,"c":"nm","per":5,"grp":17,"blk":"p","x":17,"y":5,"sh":[2,8,18,18,7],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p5","cfs":"[Kr] 4d10 5s2 5p5","enp":2.66,"ea":295.1531,"ie":[1008.4,1845.9,3180],"d":4.933,"mp":386.85,"bp":457.4,"r":115,"disc":"Bernard Courtois"},{"z":54,"s":"Xe","en":"Xenon","pl":"Ksenon","yr":"1898","yre":"1898","et":"Z gr. xenos – obcy.","ete":"From Greek xenos, \"stranger\".","lk":"bezbarwny gaz bez zapachu","lke":"colorless, odorless gas","us":["lampy ksenonowe","napęd jonowy sond","znieczulenie"],"use":["xenon lamps","ion thrusters for spacecraft","anesthesia"],"fc":"Napęd jonowy sond kosmicznych używa ksenonu jako paliwa. Pierwsze związki gazów szlachetnych otrzymano w 1962 r.","fce":"Ion thrusters of space probes use xenon as propellant. The first noble gas compounds were made in 1962.","m":131.2936,"c":"ng","per":5,"grp":18,"blk":"p","x":18,"y":5,"sh":[2,8,18,18,8],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6","cfs":"[Kr] 4d10 5s2 5p6","enp":2.6,"ea":-77,"ie":[1170.4,2046.4,3099.4],"d":0.005894,"mp":161.4,"bp":165.051,"r":108,"disc":"William Ramsay"},{"z":55,"s":"Cs","en":"Cesium","pl":"Cez","yr":"1860","yre":"1860","et":"Łac. caesius – błękitnoszary (od linii w widmie).","ete":"From Latin caesius, \"sky blue\", after lines in its spectrum.","lk":"złotawy, bardzo miękki metal","lke":"soft, golden metal","us":["zegary atomowe","płuczki wiertnicze","fotokomórki"],"use":["atomic clocks","drilling fluids","photocells"],"fc":"Od 1967 r. sekunda to 9 192 631 770 okresów promieniowania atomu cezu-133. Topi się już w ok. 28 °C.","fce":"Since 1967 the second has been defined as 9,192,631,770 periods of radiation from a cesium-133 atom. Cesium melts at about 28 °C.","m":132.905451966,"c":"alk","per":6,"grp":1,"blk":"s","x":1,"y":6,"sh":[2,8,18,18,8,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s1","cfs":"[Xe] 6s1","enp":0.79,"ea":45.505,"ie":[375.7,2234.3,3400],"d":1.93,"mp":301.7,"bp":944,"mh":32.21,"r":298,"disc":"Robert Bunsen"},{"z":56,"s":"Ba","en":"Barium","pl":"Bar","yr":"1774","yre":"1774","et":"Z gr. barys – ciężki.","ete":"From Greek barys, \"heavy\".","lk":"srebrzystobiały, miękki metal","lke":"soft, silvery-white metal","us":["kontrast w RTG przewodu pokarmowego","zielone fajerwerki","płuczki wiertnicze"],"use":["X-ray contrast for the digestive tract","green fireworks","drilling fluids"],"fc":"Rozpuszczalne sole baru są trujące, ale nierozpuszczalny siarczan baru jest bezpieczny i pokazuje żołądek na zdjęciu RTG.","fce":"Soluble barium salts are poisonous, but insoluble barium sulfate is safe and shows the stomach on an X-ray.","m":137.3277,"c":"ae","per":6,"grp":2,"blk":"s","x":2,"y":6,"sh":[2,8,18,18,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2","cfs":"[Xe] 6s2","enp":0.89,"ea":13.954,"ie":[502.9,965.2,3600],"d":3.51,"mp":1000,"bp":2118,"mh":28.07,"r":253,"disc":"Carl Wilhelm Scheele"},{"z":57,"s":"La","en":"Lanthanum","pl":"Lantan","yr":"1839","yre":"1839","et":"Z gr. lanthanein – być ukrytym.","ete":"From Greek lanthanein, \"to lie hidden\".","lk":"srebrzystobiały, miękki metal","lke":"soft, silvery-white metal","us":["soczewki optyczne","akumulatory NiMH","katalizatory krakingu"],"use":["optical lenses","NiMH batteries","cracking catalysts"],"fc":"Dał nazwę całej grupie lantanowców.","fce":"It gave its name to the whole group of lanthanides.","m":138.905477,"c":"ln","per":6,"grp":3,"blk":"f","x":3,"y":9,"sh":[2,8,18,18,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 5d1","cfs":"[Xe] 5d16s2","enp":1.1,"ea":53,"ie":[538.1,1067,1850.3,4819,5940],"d":6.162,"mp":1193,"bp":3737,"mh":27.11,"r":226,"disc":"Carl Gustaf Mosander"},{"z":58,"s":"Ce","en":"Cerium","pl":"Cer","yr":"1803","yre":"1803","et":"Od planetoidy Ceres.","ete":"After the asteroid Ceres.","lk":"srebrzystoszary metal","lke":"silvery-gray metal","us":["krzemienie do zapalniczek","katalizatory","polerowanie szkła"],"use":["lighter flints","catalysts","glass polishing"],"fc":"Najobficiej występujący z metali ziem rzadkich. Stop cerowy iskrzy przy tarciu.","fce":"The most abundant of the rare earth metals. Cerium alloy sparks when struck.","m":140.1161,"c":"ln","per":6,"grp":3,"blk":"f","x":4,"y":9,"sh":[2,8,18,19,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 5d1 4f1","cfs":"[Xe] 4f1 5d1 6s2","enp":1.12,"ea":55,"ie":[534.4,1050,1949,3547,6325,7490],"d":6.77,"mp":1068,"bp":3716,"mh":26.94,"r":210,"disc":"Martin Heinrich Klaproth"},{"z":59,"s":"Pr","en":"Praseodymium","pl":"Prazeodym","yr":"1885","yre":"1885","et":"Z gr. prasios didymos – zielony bliźniak.","ete":"From Greek prasios didymos, \"green twin\".","lk":"srebrzystożółty metal","lke":"silvery-yellow metal","us":["magnesy","szkło ochronne","żółtozielone pigmenty"],"use":["magnets","protective glass","yellow-green pigments"],"fc":"Wyodrębniony z „didymu”, który okazał się mieszaniną dwóch pierwiastków: prazeodymu i neodymu.","fce":"Separated from \"didymium\", which turned out to be a mixture of two elements: praseodymium and neodymium.","m":140.907662,"c":"ln","per":6,"grp":3,"blk":"f","x":5,"y":9,"sh":[2,8,18,21,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f3","cfs":"[Xe] 4f3 6s2","enp":1.13,"ea":93,"ie":[527,1020,2086,3761,5551],"d":6.77,"mp":1208,"bp":3403,"mh":27.2,"r":247,"disc":"Carl Auer von Welsbach"},{"z":60,"s":"Nd","en":"Neodymium","pl":"Neodym","yr":"1885","yre":"1885","et":"Z gr. neos didymos – nowy bliźniak.","ete":"From Greek neos didymos, \"new twin\".","lk":"srebrzystożółty metal","lke":"silvery-yellow metal","us":["najsilniejsze magnesy trwałe","turbiny wiatrowe","głośniki","lasery"],"use":["the strongest permanent magnets","wind turbines","speakers","lasers"],"fc":"Magnesy neodymowe (NdFeB) to najsilniejsze magnesy trwałe.","fce":"Neodymium magnets (NdFeB) are the strongest permanent magnets.","m":144.2423,"c":"ln","per":6,"grp":3,"blk":"f","x":6,"y":9,"sh":[2,8,18,22,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f4","cfs":"[Xe] 4f4 6s2","enp":1.14,"ea":184.87,"ie":[533.1,1040,2130,3900],"d":7.01,"mp":1297,"bp":3347,"mh":27.45,"r":206,"disc":"Carl Auer von Welsbach"},{"z":61,"s":"Pm","en":"Promethium","pl":"Promet","yr":"1945","yre":"1945","et":"Od Prometeusza, który ukradł bogom ogień.","ete":"After Prometheus, who stole fire from the gods.","lk":"srebrzysty, radioaktywny metal","lke":"silvery radioactive metal","us":["świecące farby (dawniej)","baterie jądrowe"],"use":["glow-in-the-dark paints (formerly)","nuclear batteries"],"fc":"Nie ma trwałych izotopów; w skorupie ziemskiej jest go śladowo. Znaleziony w odpadach reaktora w 1945 r.","fce":"It has no stable isotopes and occurs in Earth's crust only in traces. Identified in reactor waste in 1945.","m":145,"c":"ln","per":6,"grp":3,"blk":"f","x":7,"y":9,"sh":[2,8,18,23,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f5","cfs":"[Xe] 4f5 6s2","enp":1.13,"ea":12.45,"ie":[540,1050,2150,3970],"d":7.26,"mp":1315,"bp":3273,"r":205,"disc":"Chien Shiung Wu"},{"z":62,"s":"Sm","en":"Samarium","pl":"Samar","yr":"1879","yre":"1879","et":"Od minerału samarskitu.","ete":"After the mineral samarskite.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["magnesy SmCo odporne na ciepło","katalizatory","radiofarmaceutyki"],"use":["heat-resistant SmCo magnets","catalysts","radiopharmaceuticals"],"fc":"Nazwa pochodzi od minerału samarskitu, który z kolei nazwano na cześć rosyjskiego urzędnika górniczego.","fce":"The mineral samarskite was in turn named after a Russian mining official.","m":150.362,"c":"ln","per":6,"grp":3,"blk":"f","x":8,"y":9,"sh":[2,8,18,24,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f6","cfs":"[Xe] 4f6 6s2","enp":1.17,"ea":15.63,"ie":[544.5,1070,2260,3990],"d":7.52,"mp":1345,"bp":2173,"mh":29.54,"r":238,"disc":"Lecoq de Boisbaudran"},{"z":63,"s":"Eu","en":"Europium","pl":"Europ","yr":"1901","yre":"1901","et":"Od Europy.","ete":"After Europe.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["luminofory czerwone i niebieskie","zabezpieczenia banknotów euro"],"use":["red and blue phosphors","anti-counterfeit marks on euro banknotes"],"fc":"W banknotach euro luminofory świecą w świetle UV i utrudniają fałszowanie.","fce":"In euro banknotes, phosphors glow under UV light and make forgery harder.","m":151.9641,"c":"ln","per":6,"grp":3,"blk":"f","x":9,"y":9,"sh":[2,8,18,25,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f7","cfs":"[Xe] 4f7 6s2","enp":1.2,"ea":11.2,"ie":[547.1,1085,2404,4120],"d":5.264,"mp":1099,"bp":1802,"mh":27.66,"r":231,"disc":"Eugène-Anatole Demarçay"},{"z":64,"s":"Gd","en":"Gadolinium","pl":"Gadolin","yr":"1880","yre":"1880","et":"Od chemika Johana Gadolina.","ete":"After the chemist Johan Gadolin.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["kontrast w rezonansie magnetycznym","pręty regulacyjne reaktorów"],"use":["MRI contrast","reactor control rods"],"fc":"Związki gadolinu poprawiają obraz w rezonansie magnetycznym.","fce":"Gadolinium compounds improve the image in magnetic resonance imaging.","m":157.253,"c":"ln","per":6,"grp":3,"blk":"f","x":10,"y":9,"sh":[2,8,18,25,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f7 5d1","cfs":"[Xe] 4f7 5d1 6s2","enp":1.2,"ea":13.22,"ie":[593.4,1170,1990,4250],"d":7.9,"mp":1585,"bp":3273,"mh":37.03,"r":233,"disc":"Jean Charles Galissard de Marignac"},{"z":65,"s":"Tb","en":"Terbium","pl":"Terb","yr":"1843","yre":"1843","et":"Od wsi Ytterby w Szwecji.","ete":"After the village of Ytterby in Sweden.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["zielone luminofory (lampy, ekrany)","czujniki"],"use":["green phosphors (lamps, screens)","sensors"],"fc":"Jeden z czterech pierwiastków nazwanych od szwedzkiej wsi Ytterby.","fce":"One of four elements named after the Swedish village of Ytterby.","m":158.925352,"c":"ln","per":6,"grp":3,"blk":"f","x":11,"y":9,"sh":[2,8,18,27,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f9","cfs":"[Xe] 4f9 6s2","enp":1.1,"ea":112.4,"ie":[565.8,1110,2114,3839],"d":8.23,"mp":1629,"bp":3396,"mh":28.91,"r":225,"disc":"Carl Gustaf Mosander"},{"z":66,"s":"Dy","en":"Dysprosium","pl":"Dysproz","yr":"1886","yre":"1886","et":"Z gr. dysprositos – trudny do zdobycia.","ete":"From Greek dysprositos, \"hard to get\".","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["magnesy odporne na temperaturę","auta elektryczne","nośniki danych"],"use":["temperature-resistant magnets","electric cars","data storage"],"fc":"Nazwa mówi, jak trudno było go wydzielić z mieszaniny z holmem.","fce":"Its name tells how hard it was to separate from holmium.","m":162.5001,"c":"ln","per":6,"grp":3,"blk":"f","x":12,"y":9,"sh":[2,8,18,28,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f10","cfs":"[Xe] 4f10 6s2","enp":1.22,"ea":33.96,"ie":[573,1130,2200,3990],"d":8.54,"mp":1680,"bp":2840,"mh":27.7,"r":228,"disc":"Lecoq de Boisbaudran"},{"z":67,"s":"Ho","en":"Holmium","pl":"Holm","yr":"1878","yre":"1878","et":"Od łac. Holmia – Sztokholm.","ete":"From Latin Holmia, Stockholm.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["lasery medyczne (kruszenie kamieni nerkowych)","magnesy"],"use":["medical lasers (kidney stone removal)","magnets"],"fc":"Spośród naturalnych pierwiastków ma największy moment magnetyczny.","fce":"It has the largest magnetic moment of any naturally occurring element.","m":164.930332,"c":"ln","per":6,"grp":3,"blk":"f","x":13,"y":9,"sh":[2,8,18,29,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f11","cfs":"[Xe] 4f11 6s2","enp":1.23,"ea":32.61,"ie":[581,1140,2204,4100],"d":8.79,"mp":1734,"bp":2873,"mh":27.15,"r":226,"disc":"Marc Delafontaine"},{"z":68,"s":"Er","en":"Erbium","pl":"Erb","yr":"1843","yre":"1843","et":"Od wsi Ytterby w Szwecji.","ete":"After the village of Ytterby in Sweden.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["wzmacniacze światłowodowe","lasery medyczne","różowe szkło"],"use":["fiber-optic amplifiers","medical lasers","pink glass"],"fc":"Światłowody domieszkowane erbem wzmacniają sygnał na trasach transoceanicznych.","fce":"Erbium-doped optical fibers boost the signal on transoceanic cables.","m":167.2593,"c":"ln","per":6,"grp":3,"blk":"f","x":14,"y":9,"sh":[2,8,18,30,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f12","cfs":"[Xe] 4f12 6s2","enp":1.24,"ea":30.1,"ie":[589.3,1150,2194,4120],"d":9.066,"mp":1802,"bp":3141,"mh":28.12,"r":226,"disc":"Carl Gustaf Mosander"},{"z":69,"s":"Tm","en":"Thulium","pl":"Tul","yr":"1879","yre":"1879","et":"Od Thule – mitycznej krainy na północy.","ete":"After Thule, the legendary land in the far north.","lk":"srebrzystoszary metal","lke":"silvery-gray metal","us":["przenośne źródła promieni X","lasery"],"use":["portable X-ray sources","lasers"],"fc":"Jeden z najrzadszych lantanowców występujących w przyrodzie.","fce":"One of the rarest lanthanides found in nature.","m":168.934222,"c":"ln","per":6,"grp":3,"blk":"f","x":15,"y":9,"sh":[2,8,18,31,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f13","cfs":"[Xe] 4f13 6s2","enp":1.25,"ea":99,"ie":[596.7,1160,2285,4120],"d":9.32,"mp":1818,"bp":2223,"mh":27.03,"r":222,"disc":"Per Teodor Cleve"},{"z":70,"s":"Yb","en":"Ytterbium","pl":"Iterb","yr":"1878","yre":"1878","et":"Od wsi Ytterby w Szwecji.","ete":"After the village of Ytterby in Sweden.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["zegary optyczne","lasery","stopy"],"use":["optical clocks","lasers","alloys"],"fc":"Zegary optyczne na iterbie należą do najdokładniejszych przyrządów pomiarowych.","fce":"Ytterbium optical clocks are among the most accurate measuring instruments.","m":173.0451,"c":"ln","per":6,"grp":3,"blk":"f","x":16,"y":9,"sh":[2,8,18,32,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14","cfs":"[Xe] 4f14 6s2","enp":1.1,"ea":-1.93,"ie":[603.4,1174.8,2417,4203],"d":6.9,"mp":1097,"bp":1469,"mh":26.74,"r":222,"disc":"Jean Charles Galissard de Marignac"},{"z":71,"s":"Lu","en":"Lutetium","pl":"Lutet","yr":"1907","yre":"1907","et":"Od łac. Lutetia – Paryż.","ete":"From Latin Lutetia, Paris.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["tomografy PET","terapia radioizotopowa (¹⁷⁷Lu)","katalizatory"],"use":["PET scanners","radionuclide therapy (¹⁷⁷Lu)","catalysts"],"fc":"Najgęstszy i najtwardszy z lantanowców, ostatni w ich szeregu.","fce":"The densest and hardest lanthanide, last in the series.","m":174.96681,"c":"ln","per":6,"grp":3,"blk":"d","x":17,"y":9,"sh":[2,8,18,32,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d1","cfs":"[Xe] 4f14 5d1 6s2","enp":1.27,"ea":33.4,"ie":[523.5,1340,2022.3,4370,6445],"d":9.841,"mp":1925,"bp":3675,"mh":26.86,"r":217,"disc":"Georges Urbain"},{"z":72,"s":"Hf","en":"Hafnium","pl":"Hafn","yr":"1923","yre":"1923","et":"Od łac. Hafnia – Kopenhaga.","ete":"From Latin Hafnia, Copenhagen.","lk":"srebrzystoszary metal","lke":"silvery-gray metal","us":["pręty regulacyjne reaktorów","tranzystory (HfO₂)","stopy"],"use":["reactor control rods","transistors (HfO₂)","alloys"],"fc":"Odkryty w 1923 r. w Kopenhadze – jego istnienie przewidywał model atomu Bohra.","fce":"Discovered in Copenhagen in 1923; Bohr's atomic model had predicted its existence.","m":178.492,"c":"tm","per":6,"grp":4,"blk":"d","x":4,"y":6,"sh":[2,8,18,32,10,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d2","cfs":"[Xe] 4f14 5d2 6s2","enp":1.3,"ea":17.18,"ie":[658.5,1440,2250,3216],"d":13.31,"mp":2506,"bp":4876,"mh":25.73,"r":208,"disc":"Dirk Coster"},{"z":73,"s":"Ta","en":"Tantalum","pl":"Tantal","yr":"1802","yre":"1802","et":"Od Tantala z mitologii greckiej.","ete":"After Tantalus of Greek mythology.","lk":"niebieskoszary, ciężki metal","lke":"blue-gray, heavy metal","us":["kondensatory w elektronice","implanty","narzędzia chirurgiczne"],"use":["capacitors in electronics","implants","surgical tools"],"fc":"Tak odporny na korozję, że organizm go nie odrzuca.","fce":"So resistant to corrosion that the body does not reject it.","m":180.947882,"c":"tm","per":6,"grp":5,"blk":"d","x":5,"y":6,"sh":[2,8,18,32,11,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d3","cfs":"[Xe] 4f14 5d3 6s2","enp":1.5,"ea":31,"ie":[761,1500],"d":16.69,"mp":3290,"bp":5731,"mh":25.36,"r":200,"disc":"Anders Gustaf Ekeberg"},{"z":74,"s":"W","en":"Tungsten","pl":"Wolfram","yr":"1783","yre":"1783","et":"Niem. Wolfram, a szw. tung sten – ciężki kamień. Stąd symbol W.","ete":"From German Wolfram. Swedish tung sten means \"heavy stone\". Hence the symbol W.","lk":"szarobiały, ciężki metal","lke":"gray-white, heavy metal","us":["elektrody do spawania","narzędzia z węglików","włókna żarówek"],"use":["welding electrodes","carbide tools","light bulb filaments"],"fc":"Ma najwyższą temperaturę topnienia ze wszystkich metali (ok. 3422 °C).","fce":"It has the highest melting point of all metals (about 3,422 °C).","m":183.841,"c":"tm","per":6,"grp":6,"blk":"d","x":6,"y":6,"sh":[2,8,18,32,12,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d4","cfs":"[Xe] 4f14 5d4 6s2","enp":2.36,"ea":78.76,"ie":[770,1700],"d":19.25,"mp":3695,"bp":6203,"mh":24.27,"r":193,"disc":"Carl Wilhelm Scheele"},{"z":75,"s":"Re","en":"Rhenium","pl":"Ren","yr":"1925","yre":"1925","et":"Od łac. Rhenus – Ren.","ete":"From Latin Rhenus, the Rhine.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["silniki odrzutowe","katalizatory","termopary"],"use":["jet engines","catalysts","thermocouples"],"fc":"Ostatni trwały pierwiastek, jaki odkryto w przyrodzie.","fce":"The last stable element to be discovered in nature.","m":186.2071,"c":"tm","per":6,"grp":7,"blk":"d","x":7,"y":6,"sh":[2,8,18,32,13,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d5","cfs":"[Xe] 4f14 5d5 6s2","enp":1.9,"ea":5.8273,"ie":[760,1260,2510,3640],"d":21.02,"mp":3459,"bp":5869,"mh":25.48,"r":188,"disc":"Masataka Ogawa"},{"z":76,"s":"Os","en":"Osmium","pl":"Osm","yr":"1803","yre":"1803","et":"Z gr. osme – zapach (lotny tlenek ostro pachnie).","ete":"From Greek osme, \"smell\": its volatile oxide smells sharp.","lk":"niebieskawosrebrzysty metal","lke":"bluish-silvery metal","us":["stopy na końcówki piór i styki","mikroskopia elektronowa"],"use":["pen tips and contacts","electron microscopy"],"fc":"Najgęstszy znany pierwiastek (ok. 22,59 g/cm³), nieznacznie przed irydem.","fce":"The densest known element (about 22.59 g/cm³), narrowly ahead of iridium.","m":190.233,"c":"tm","per":6,"grp":8,"blk":"d","x":8,"y":6,"sh":[2,8,18,32,14,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d6","cfs":"[Xe] 4f14 5d6 6s2","enp":2.2,"ea":103.99,"ie":[840,1600],"d":22.59,"mp":3306,"bp":5285,"mh":24.7,"r":185,"disc":"Smithson Tennant"},{"z":77,"s":"Ir","en":"Iridium","pl":"Iryd","yr":"1803","yre":"1803","et":"Od gr. iris – tęcza (barwne sole).","ete":"From Greek iris, \"rainbow\": its salts are colorful.","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["świece zapłonowe","tygle","stop wzorca metra"],"use":["spark plugs","crucibles","the old metre standard alloy"],"fc":"Warstwa irydu w skałach z granicy kredy i paleogenu to ślad uderzenia planetoidy sprzed 66 mln lat.","fce":"A layer of iridium in rocks at the Cretaceous–Paleogene boundary is a trace of an asteroid impact 66 million years ago.","m":192.2173,"c":"tm","per":6,"grp":9,"blk":"d","x":9,"y":6,"sh":[2,8,18,32,15,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d7","cfs":"[Xe] 4f14 5d7 6s2","enp":2.2,"ea":150.94,"ie":[880,1600],"d":22.56,"mp":2719,"bp":4403,"mh":25.1,"r":180,"disc":"Smithson Tennant"},{"z":78,"s":"Pt","en":"Platinum","pl":"Platyna","yr":"1735","yre":"1735","et":"Hiszp. platina – „srebereczko”.","ete":"From Spanish platina, \"little silver\".","lk":"srebrzystobiały metal","lke":"silvery-white metal","us":["katalizatory spalin","biżuteria","leki przeciwnowotworowe (cisplatyna)"],"use":["catalytic converters","jewelry","anticancer drugs (cisplatin)"],"fc":"Cisplatyna to jeden z podstawowych leków przeciwnowotworowych. Do 2019 r. wzorzec kilograma był ze stopu platyny z irydem.","fce":"Cisplatin is one of the basic anticancer drugs. Until 2019 the kilogram prototype was a platinum-iridium alloy.","m":195.0849,"c":"tm","per":6,"grp":10,"blk":"d","x":10,"y":6,"sh":[2,8,18,32,17,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s1 4f14 5d9","cfs":"[Xe] 4f14 5d9 6s1","enp":2.28,"ea":205.041,"ie":[870,1791],"d":21.45,"mp":2041.4,"bp":4098,"mh":25.86,"r":177,"disc":"Antonio de Ulloa"},{"z":79,"s":"Au","en":"Gold","pl":"Złoto","yr":"starożytność","yre":"antiquity","et":"Łac. aurum dało symbol Au.","ete":"Latin aurum gave the symbol Au. The word \"gold\" is of Germanic origin.","lk":"żółty, błyszczący metal","lke":"yellow, shiny metal","us":["biżuteria","elektronika","rezerwy walutowe","pokrycia zwierciadeł"],"use":["jewelry","electronics","currency reserves","mirror coatings"],"fc":"Prawie nie reaguje z niczym, więc nie matowieje. Całe dotąd wydobyte złoto zmieściłoby się w sześcianie o boku ok. 22 m.","fce":"It hardly reacts with anything, so it never tarnishes. All the gold ever mined would fit in a cube about 22 m on a side.","m":196.9665695,"c":"tm","per":6,"grp":11,"blk":"d","x":11,"y":6,"sh":[2,8,18,32,18,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s1 4f14 5d10","cfs":"[Xe] 4f14 5d10 6s1","enp":2.54,"ea":222.747,"ie":[890.1,1980],"d":19.3,"mp":1337.33,"bp":3243,"mh":25.418,"r":174,"disc":"Bliski Wschód (starożytność)","disce":"Middle East (antiquity)"},{"z":80,"s":"Hg","en":"Mercury","pl":"Rtęć","yr":"starożytność","yre":"antiquity","et":"Łac. hydrargyrum – srebrna woda. Stąd symbol Hg.","ete":"Latin hydrargyrum, \"silver water\", hence Hg.","lk":"srebrzystobiała ciecz","lke":"silvery-white liquid","us":["lampy","amalgamaty","wydobycie złota","dawniej termometry"],"use":["lamps","amalgams","gold extraction","formerly thermometers"],"fc":"Jedyny metal ciekły w temperaturze pokojowej. Jej opary są silnie trujące.","fce":"The only metal that is liquid at room temperature. Its vapors are very poisonous.","m":200.5923,"c":"tm","per":6,"grp":12,"blk":"d","x":12,"y":6,"sh":[2,8,18,32,18,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10","cfs":"[Xe] 4f14 5d10 6s2","enp":2,"ea":-48,"ie":[1007.1,1810,3300],"d":13.534,"mp":234.321,"bp":629.88,"mh":27.983,"r":171,"disc":"nieznany (przed 2000 r. p.n.e.)","disce":"unknown (before 2000 BC)"},{"z":81,"s":"Tl","en":"Thallium","pl":"Tal","yr":"1861","yre":"1861","et":"Z gr. thallos – zielona gałązka (zielona linia w widmie).","ete":"From Greek thallos, \"green twig\", after its green spectral line.","lk":"srebrzystobiały, miękki metal","lke":"soft, silvery-white metal","us":["detektory","szkło optyczne"],"use":["detectors","optical glass"],"fc":"To klasyczna, trudna do wykrycia trucizna – dawniej używano go jako trutki na szczury.","fce":"A classic, hard-to-detect poison, once used as rat poison.","m":204.38,"c":"pt","per":6,"grp":13,"blk":"p","x":13,"y":6,"sh":[2,8,18,32,18,3],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p1","cfs":"[Xe] 4f14 5d10 6s2 6p1","enp":1.62,"ea":36.4,"ie":[589.4,1971,2878],"d":11.85,"mp":577,"bp":1746,"mh":26.32,"r":156,"disc":"William Crookes"},{"z":82,"s":"Pb","en":"Lead","pl":"Ołów","yr":"starożytność","yre":"antiquity","et":"Łac. plumbum dało symbol Pb.","ete":"Latin plumbum gave the symbol Pb. The word \"lead\" is of Germanic origin.","lk":"niebieskoszary, miękki metal","lke":"soft, blue-gray metal","us":["akumulatory rozruchowe","osłony przed promieniowaniem","amunicja"],"use":["starter batteries","radiation shielding","ammunition"],"fc":"Rzymianie robili z niego rury – stąd łacińskie plumbum i angielskie plumber (hydraulik).","fce":"The Romans made pipes from it, hence Latin plumbum and English \"plumber\".","m":207.21,"c":"pt","per":6,"grp":14,"blk":"p","x":14,"y":6,"sh":[2,8,18,32,18,4],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p2","cfs":"[Xe] 4f14 5d10 6s2 6p2","enp":1.87,"ea":34.4204,"ie":[715.6,1450.5,3081.5,4083,6640],"d":11.34,"mp":600.61,"bp":2022,"mh":26.65,"r":154,"disc":"Bliski Wschód (starożytność)","disce":"Middle East (antiquity)"},{"z":83,"s":"Bi","en":"Bismuth","pl":"Bizmut","yr":"1753","yre":"1753","et":"Niem. Wismut.","ete":"From German Wismut.","lk":"srebrzystoróżowy, kruchy metal","lke":"brittle, silvery-pink metal","us":["kosmetyki","leki na żołądek","stopy łatwotopliwe"],"use":["cosmetics","stomach medicines","low-melting alloys"],"fc":"Uchodził za najcięższy trwały pierwiastek, ale rozpada się z okresem półtrwania miliard razy dłuższym niż wiek Wszechświata.","fce":"Once thought the heaviest stable element, but it decays with a half-life about a billion times longer than the age of the universe.","m":208.980401,"c":"pt","per":6,"grp":15,"blk":"p","x":15,"y":6,"sh":[2,8,18,32,18,5],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p3","cfs":"[Xe] 4f14 5d10 6s2 6p3","enp":2.02,"ea":90.924,"ie":[703,1610,2466,4370,5400,8520],"d":9.78,"mp":544.7,"bp":1837,"mh":25.52,"r":143,"disc":"Claude François Geoffroy"},{"z":84,"s":"Po","en":"Polonium","pl":"Polon","yr":"1898","yre":"1898","et":"Od Polski – ojczyzny Marii Skłodowskiej-Curie.","ete":"After Poland, homeland of Marie Skłodowska-Curie.","lk":"srebrzystoszary, silnie radioaktywny metal","lke":"silvery-gray, strongly radioactive metal","us":["eliminatory ładunków elektrostatycznych","źródła ciepła w sondach"],"use":["static eliminators","heat sources for space probes"],"fc":"Maria Skłodowska-Curie nazwała go tak w 1898 r., gdy Polski nie było na mapie Europy – chciała zwrócić uwagę na sprawę polską.","fce":"Marie Skłodowska-Curie named it in 1898, when Poland was not on the map of Europe, to draw attention to the Polish cause.","m":209,"c":"pt","per":6,"grp":16,"blk":"p","x":16,"y":6,"sh":[2,8,18,32,18,6],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p4","cfs":"[Xe] 4f14 5d10 6s2 6p4","enp":2,"ea":136,"ie":[812.1],"d":9.196,"mp":527,"bp":1235,"mh":26.4,"r":135,"disc":"Pierre Curie"},{"z":85,"s":"At","en":"Astatine","pl":"Astat","yr":"1940","yre":"1940","et":"Z gr. astatos – nietrwały.","ete":"From Greek astatos, \"unstable\".","lk":"przypuszczalnie ciemny półmetal, radioaktywny","lke":"presumably a dark metalloid, radioactive","us":["badania nad terapią celowaną (²¹¹At)"],"use":["research into targeted therapy (²¹¹At)"],"fc":"Najrzadszy pierwiastek występujący w przyrodzie – w całej skorupie ziemskiej jest go naraz co najwyżej kilkadziesiąt gramów.","fce":"The rarest element occurring in nature: at any moment Earth's crust holds at most a few dozen grams.","m":210,"c":"mt","per":6,"grp":17,"blk":"p","x":17,"y":6,"sh":[2,8,18,32,18,7],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p5","cfs":"[Xe] 4f14 5d10 6s2 6p5","enp":2.2,"ea":233,"ie":[899.003],"d":6.35,"mp":575,"bp":610,"r":127,"disc":"Dale R. Corson","est":1},{"z":86,"s":"Rn","en":"Radon","pl":"Radon","yr":"1900","yre":"1900","et":"Od radu, z którego powstaje.","ete":"After radium, from which it forms.","lk":"bezbarwny gaz, radioaktywny","lke":"colorless radioactive gas","us":["badania hydrologiczne i sejsmiczne"],"use":["hydrological and seismic research"],"fc":"Najcięższy gaz szlachetny. Gromadzi się w piwnicach i jest po paleniu jedną z głównych przyczyn raka płuc.","fce":"The heaviest noble gas. It collects in basements and, after smoking, is a leading cause of lung cancer.","m":222,"c":"ng","per":6,"grp":18,"blk":"p","x":18,"y":6,"sh":[2,8,18,32,18,8],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6","cfs":"[Xe] 4f14 5d10 6s2 6p6","enp":2.2,"ea":-68,"ie":[1037],"d":0.00973,"mp":202,"bp":211.5,"r":120,"disc":"Friedrich Ernst Dorn"},{"z":87,"s":"Fr","en":"Francium","pl":"Frans","yr":"1939","yre":"1939","et":"Od Francji.","ete":"After France.","lk":"radioaktywny metal (nie otrzymano widocznej próbki)","lke":"radioactive metal (no visible sample has been made)","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Odkryty w 1939 r. przez Marguerite Perey. Najtrwalszy izotop ma okres półtrwania ok. 22 minut.","fce":"Discovered in 1939 by Marguerite Perey. Its most stable isotope has a half-life of about 22 minutes.","m":223,"c":"alk","per":7,"grp":1,"blk":"s","x":1,"y":7,"sh":[2,8,18,32,18,8,1],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s1","cfs":"[Rn] 7s1","enp":0.79,"ea":46.89,"ie":[380],"d":1.87,"mp":300,"bp":950,"disc":"Marguerite Perey","est":1},{"z":88,"s":"Ra","en":"Radium","pl":"Rad","yr":"1898","yre":"1898","et":"Łac. radius – promień.","ete":"From Latin radius, \"ray\".","lk":"srebrzystobiały, radioaktywny metal","lke":"silvery-white, radioactive metal","us":["świecące farby (dawniej)","radioterapia"],"use":["glow-in-the-dark paints (formerly)","radiotherapy"],"fc":"Odkryty przez Marię Skłodowską-Curie i Piotra Curie. Jego sole słabo świecą w ciemności.","fce":"Discovered by Marie Skłodowska-Curie and Pierre Curie. Its salts glow faintly in the dark.","m":226,"c":"ae","per":7,"grp":2,"blk":"s","x":2,"y":7,"sh":[2,8,18,32,18,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2","cfs":"[Rn] 7s2","enp":0.9,"ea":9.6485,"ie":[509.3,979],"d":5.5,"mp":1233,"bp":2010,"disc":"Pierre Curie"},{"z":89,"s":"Ac","en":"Actinium","pl":"Aktyn","yr":"1899","yre":"1899","et":"Z gr. aktis – promień.","ete":"From Greek aktis, \"ray\".","lk":"srebrzystobiały, radioaktywny metal","lke":"silvery-white, radioactive metal","us":["źródła neutronów","terapia celowana (²²⁵Ac)"],"use":["neutron sources","targeted therapy (²²⁵Ac)"],"fc":"Jego związki świecą w ciemności bladoniebieskim blaskiem. Dał nazwę aktynowcom.","fce":"Its compounds glow pale blue in the dark. It gave its name to the actinides.","m":227,"c":"ac","per":7,"grp":3,"blk":"f","x":3,"y":10,"sh":[2,8,18,32,18,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 6d1","cfs":"[Rn] 6d1 7s2","enp":1.1,"ea":33.77,"ie":[499,1170],"d":10,"mp":1500,"bp":3500,"mh":27.2,"disc":"Friedrich Oskar Giesel"},{"z":90,"s":"Th","en":"Thorium","pl":"Tor","yr":"1829","yre":"1829","et":"Od Thora – nordyckiego boga piorunów.","ete":"After Thor, the Norse god of thunder.","lk":"srebrzystobiały, słabo radioaktywny metal","lke":"silvery-white, weakly radioactive metal","us":["siatki żarowe (dawniej)","elektrody do spawania","koncepcje reaktorów"],"use":["gas mantles (formerly)","welding electrodes","reactor concepts"],"fc":"W skorupie ziemskiej jest go ok. 3–4 razy więcej niż uranu.","fce":"Earth's crust contains about 3 to 4 times as much thorium as uranium.","m":232.03774,"c":"ac","per":7,"grp":3,"blk":"f","x":4,"y":10,"sh":[2,8,18,32,18,10,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 6d2","cfs":"[Rn] 6d2 7s2","enp":1.3,"ea":112.72,"ie":[587,1110,1930,2780],"d":11.724,"mp":2023,"bp":5061,"mh":26.23,"disc":"Jöns Jakob Berzelius"},{"z":91,"s":"Pa","en":"Protactinium","pl":"Protaktyn","yr":"1913","yre":"1913","et":"Z gr. protos + aktyn – poprzedza aktyn (rozpada się na niego).","ete":"From Greek protos + actinium: it comes before actinium, into which it decays.","lk":"srebrzystoszary, radioaktywny metal","lke":"silvery-gray radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Jeden z najrzadszych i najdroższych pierwiastków występujących w przyrodzie.","fce":"One of the rarest and most expensive naturally occurring elements.","m":231.035882,"c":"ac","per":7,"grp":3,"blk":"f","x":5,"y":10,"sh":[2,8,18,32,20,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f2 6d1","cfs":"[Rn] 5f2 6d1 7s2","enp":1.5,"ea":53.03,"ie":[568],"d":15.37,"mp":1841,"bp":4300,"disc":"William Crookes"},{"z":92,"s":"U","en":"Uranium","pl":"Uran","yr":"1789","yre":"1789","et":"Od planety Uran.","ete":"After the planet Uranus.","lk":"srebrzystoszary, ciężki, radioaktywny metal","lke":"silvery-gray, heavy, radioactive metal","us":["paliwo jądrowe","osłony","datowanie geologiczne"],"use":["nuclear fuel","shielding","geological dating"],"fc":"Rozszczepienie 1 kg uranu-235 daje energię porównywalną z ok. 20 tys. ton trotylu.","fce":"Fission of 1 kg of uranium-235 releases energy comparable to about 20,000 tonnes of TNT.","m":238.028913,"c":"ac","per":7,"grp":3,"blk":"f","x":6,"y":10,"sh":[2,8,18,32,21,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f3 6d1","cfs":"[Rn] 5f3 6d1 7s2","enp":1.38,"ea":50.94,"ie":[597.6,1420],"d":19.1,"mp":1405.3,"bp":4404,"mh":27.665,"disc":"Martin Heinrich Klaproth"},{"z":93,"s":"Np","en":"Neptunium","pl":"Neptun","yr":"1940","yre":"1940","et":"Od planety Neptun.","ete":"After the planet Neptune.","lk":"srebrzysty, radioaktywny metal","lke":"silvery radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Pierwszy pierwiastek transuranowy, otrzymany w 1940 r.","fce":"The first transuranium element, made in 1940.","m":237,"c":"ac","per":7,"grp":3,"blk":"f","x":7,"y":10,"sh":[2,8,18,32,22,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f4 6d1","cfs":"[Rn] 5f4 6d1 7s2","enp":1.36,"ea":45.85,"ie":[604.5],"d":20.45,"mp":912,"bp":4447,"mh":29.46,"disc":"Edwin McMillan"},{"z":94,"s":"Pu","en":"Plutonium","pl":"Pluton","yr":"1940","yre":"1940","et":"Od planety karłowatej Pluton.","ete":"After the dwarf planet Pluto.","lk":"srebrzystobiały, radioaktywny metal","lke":"silvery-white radioactive metal","us":["broń jądrowa","zasilanie sond (²³⁸Pu)","paliwo MOX"],"use":["nuclear weapons","spacecraft power (²³⁸Pu)","MOX fuel"],"fc":"Izotop ²³⁸Pu zasilał w prąd sondy Voyager i Cassini.","fce":"The isotope ²³⁸Pu powered the Voyager and Cassini probes.","m":244,"c":"ac","per":7,"grp":3,"blk":"f","x":8,"y":10,"sh":[2,8,18,32,24,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f6","cfs":"[Rn] 5f6 7s2","enp":1.28,"ea":-48.33,"ie":[584.7],"d":19.816,"mp":912.5,"bp":3505,"mh":35.5,"disc":"Glenn T. Seaborg"},{"z":95,"s":"Am","en":"Americium","pl":"Ameryk","yr":"1944","yre":"1944","et":"Od Ameryki – analogia do europu.","ete":"After the Americas, by analogy with europium.","lk":"srebrzystobiały, radioaktywny metal","lke":"silvery-white radioactive metal","us":["czujniki dymu (²⁴¹Am)"],"use":["smoke detectors (²⁴¹Am)"],"fc":"W większości jonizacyjnych czujników dymu jest ułamek miligrama ameryku-241.","fce":"Most ionization smoke detectors contain a fraction of a milligram of americium-241.","m":243,"c":"ac","per":7,"grp":3,"blk":"f","x":9,"y":10,"sh":[2,8,18,32,25,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f7","cfs":"[Rn] 5f7 7s2","enp":1.13,"ea":9.93,"ie":[578],"d":12,"mp":1449,"bp":2880,"mh":62.7,"disc":"Glenn T. Seaborg"},{"z":96,"s":"Cm","en":"Curium","pl":"Kiur","yr":"1944","yre":"1944","et":"Od Marii i Piotra Curie.","ete":"After Marie and Pierre Curie.","lk":"srebrzysty, radioaktywny metal","lke":"silvery radioactive metal","us":["zasilanie sond","spektrometry na łazikach"],"use":["spacecraft power","spectrometers on rovers"],"fc":"Spektrometry z kiurem-244 pracowały na marsjańskich łazikach.","fce":"Spectrometers with curium-244 worked on Mars rovers.","m":247,"c":"ac","per":7,"grp":3,"blk":"f","x":10,"y":10,"sh":[2,8,18,32,25,9,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f7 6d1","cfs":"[Rn] 5f7 6d1 7s2","enp":1.28,"ea":27.17,"ie":[581],"d":13.51,"mp":1613,"bp":3383,"disc":"Glenn T. Seaborg"},{"z":97,"s":"Bk","en":"Berkelium","pl":"Berkel","yr":"1949","yre":"1949","et":"Od Berkeley w Kalifornii.","ete":"After Berkeley, California.","lk":"srebrzysty, radioaktywny metal","lke":"silvery radioactive metal","us":["synteza cięższych pierwiastków"],"use":["synthesis of heavier elements"],"fc":"Berkel-249 posłużył jako tarcza przy tworzeniu tenesu (117).","fce":"Berkelium-249 was the target used to make tennessine (117).","m":247,"c":"ac","per":7,"grp":3,"blk":"f","x":11,"y":10,"sh":[2,8,18,32,27,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f9","cfs":"[Rn] 5f9 7s2","enp":1.3,"ea":-165.24,"ie":[601],"d":14.78,"mp":1259,"bp":2900,"disc":"Lawrence Berkeley National Laboratory (USA)"},{"z":98,"s":"Cf","en":"Californium","pl":"Kaliforn","yr":"1950","yre":"1950","et":"Od Kalifornii i Uniwersytetu Kalifornijskiego.","ete":"After California and the University of California.","lk":"srebrzysty, radioaktywny metal","lke":"silvery radioactive metal","us":["źródła neutronów (²⁵²Cf)","rozruch reaktorów","wykrywanie złota i ropy"],"use":["neutron sources (²⁵²Cf)","reactor start-up","detecting gold and oil"],"fc":"Mikrogram kalifornu-252 emituje miliony neutronów na sekundę.","fce":"A microgram of californium-252 emits millions of neutrons per second.","m":251,"c":"ac","per":7,"grp":3,"blk":"f","x":12,"y":10,"sh":[2,8,18,32,28,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f10","cfs":"[Rn] 5f10 7s2","enp":1.3,"ea":-97.31,"ie":[608],"d":15.1,"mp":1173,"bp":1743,"disc":"Lawrence Berkeley National Laboratory (USA)"},{"z":99,"s":"Es","en":"Einsteinium","pl":"Einstein","yr":"1952","yre":"1952","et":"Od Alberta Einsteina.","ete":"After Albert Einstein.","lk":"srebrzysty, radioaktywny metal","lke":"silvery radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Odkryty w 1952 r. w pyle po pierwszej amerykańskiej próbie termojądrowej (Ivy Mike).","fce":"Discovered in 1952 in the fallout of the first US thermonuclear test (Ivy Mike).","m":252,"c":"ac","per":7,"grp":3,"blk":"f","x":13,"y":10,"sh":[2,8,18,32,29,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f11","cfs":"[Rn] 5f11 7s2","enp":1.3,"ea":-28.6,"ie":[619],"d":8.84,"mp":1133,"bp":1269,"disc":"Lawrence Berkeley National Laboratory (USA)"},{"z":100,"s":"Fm","en":"Fermium","pl":"Ferm","yr":"1952","yre":"1952","et":"Od Enrico Fermiego.","ete":"After Enrico Fermi.","lk":"radioaktywny metal (przypuszczalnie srebrzysty)","lke":"radioactive metal (presumably silvery)","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Najcięższy pierwiastek, który można otrzymać w reaktorze przez wychwyt neutronów. Również z pyłu po próbie Ivy Mike.","fce":"The heaviest element that can be made in a reactor by neutron capture. Also found in the Ivy Mike fallout.","m":257,"c":"ac","per":7,"grp":3,"blk":"f","x":14,"y":10,"sh":[2,8,18,32,30,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f12","cfs":"[Rn] 5f12 7s2","enp":1.3,"ea":33.96,"ie":[627],"mp":1800,"disc":"Lawrence Berkeley National Laboratory (USA)","est":1},{"z":101,"s":"Md","en":"Mendelevium","pl":"Mendelew","yr":"1955","yre":"1955","et":"Od Dmitrija Mendelejewa, twórcy układu okresowego.","ete":"After Dmitri Mendeleev, creator of the periodic table.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Pierwsze eksperymenty dały zaledwie kilkanaście atomów, a mimo to udowodniono istnienie nowego pierwiastka.","fce":"The first experiments produced only a handful of atoms, yet that proved a new element existed.","m":258,"c":"ac","per":7,"grp":3,"blk":"f","x":15,"y":10,"sh":[2,8,18,32,31,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f13","cfs":"[Rn] 5f13 7s2","enp":1.3,"ea":93.91,"ie":[635],"mp":1100,"disc":"Lawrence Berkeley National Laboratory (USA)","est":1},{"z":102,"s":"No","en":"Nobelium","pl":"Nobel","yr":"1958","yre":"1958","et":"Od Alfreda Nobla.","ete":"After Alfred Nobel.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Pierwsze doniesienia o jego odkryciu (Sztokholm, 1957) okazały się błędne. Dowód dał dopiero Berkeley w 1958 r.","fce":"First reports of its discovery (Stockholm, 1957) turned out to be wrong. The proof came from Berkeley in 1958.","m":259,"c":"ac","per":7,"grp":3,"blk":"f","x":16,"y":10,"sh":[2,8,18,32,32,8,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14","cfs":"[Rn] 5f14 7s2","enp":1.3,"ea":-223.22,"ie":[642],"mp":1100,"disc":"Zjednoczony Instytut Badań Jądrowych w Dubnej","disce":"Joint Institute for Nuclear Research, Dubna","est":1},{"z":103,"s":"Lr","en":"Lawrencium","pl":"Lorens","yr":"1961","yre":"1961","et":"Od Ernesta Lawrence’a, wynalazcy cyklotronu.","ete":"After Ernest Lawrence, inventor of the cyclotron.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Ostatni pierwiastek z szeregu aktynowców.","fce":"The last element in the actinide series.","m":266,"c":"ac","per":7,"grp":3,"blk":"d","x":17,"y":10,"sh":[2,8,18,32,32,8,3],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 7p1","cfs":"[Rn] 5f14 7s2 7p1","enp":1.3,"ea":-30.04,"ie":[470],"mp":1900,"disc":"Lawrence Berkeley National Laboratory (USA)","est":1},{"z":104,"s":"Rf","en":"Rutherfordium","pl":"Rutherford","yr":"1964","yre":"1964","et":"Od Ernesta Rutherforda.","ete":"After Ernest Rutherford.","lk":"przypuszczalnie srebrzysty, radioaktywny metal","lke":"presumably silvery, radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Pierwszy pierwiastek transaktynowcowy. Spór o priorytet odkrycia między ZSRR a USA trwał do lat 90.","fce":"The first transactinide element. A priority dispute between the USSR and the USA lasted until the 1990s.","m":267,"c":"tm","per":7,"grp":4,"blk":"d","x":4,"y":7,"sh":[2,8,18,32,32,10,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d2","cfs":"[Rn] 5f14 6d2 7s2","ie":[580],"d":23.2,"mp":2400,"bp":5800,"disc":"Zjednoczony Instytut Badań Jądrowych w Dubnej","disce":"Joint Institute for Nuclear Research, Dubna","est":1},{"z":105,"s":"Db","en":"Dubnium","pl":"Dubn","yr":"1968","yre":"1968","et":"Od Dubnej – ośrodka badawczego pod Moskwą.","ete":"After Dubna, a research center near Moscow.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Nazwa honoruje Zjednoczony Instytut Badań Jądrowych w Dubnej.","fce":"The name honors the Joint Institute for Nuclear Research in Dubna.","m":268,"c":"tm","per":7,"grp":5,"blk":"d","x":5,"y":7,"sh":[2,8,18,32,32,11,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d3","cfs":"*[Rn] 5f14 6d3 7s2","ie":[],"d":29.3,"disc":"Zjednoczony Instytut Badań Jądrowych w Dubnej","disce":"Joint Institute for Nuclear Research, Dubna","est":1},{"z":106,"s":"Sg","en":"Seaborgium","pl":"Seaborg","yr":"1974","yre":"1974","et":"Od Glenna Seaborga.","ete":"After Glenn Seaborg.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Seaborg był pierwszą osobą, po której nazwano pierwiastek jeszcze za jej życia (1997).","fce":"Seaborg was the first person to have an element named after him while still alive (1997).","m":269,"c":"tm","per":7,"grp":6,"blk":"d","x":6,"y":7,"sh":[2,8,18,32,32,12,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d4","cfs":"*[Rn] 5f14 6d4 7s2","ie":[],"d":35,"disc":"Lawrence Berkeley National Laboratory (USA)","est":1},{"z":107,"s":"Bh","en":"Bohrium","pl":"Bohr","yr":"1981","yre":"1981","et":"Od Nielsa Bohra.","ete":"After Niels Bohr.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Otrzymany w 1981 r. w ośrodku GSI w Darmstadt.","fce":"Made in 1981 at GSI in Darmstadt.","m":270,"c":"tm","per":7,"grp":7,"blk":"d","x":7,"y":7,"sh":[2,8,18,32,32,13,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d5","cfs":"*[Rn] 5f14 6d5 7s2","ie":[],"d":37.1,"disc":"GSI w Darmstadt","disce":"GSI, Darmstadt","est":1},{"z":108,"s":"Hs","en":"Hassium","pl":"Has","yr":"1984","yre":"1984","et":"Od Hesji (łac. Hassia).","ete":"After Hesse (Latin Hassia).","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"W 2001 r. wykazano, że tworzy lotny tetratlenek HsO₄, podobnie jak osm.","fce":"In 2001 it was shown to form a volatile tetroxide HsO₄, like osmium.","m":269,"c":"tm","per":7,"grp":8,"blk":"d","x":8,"y":7,"sh":[2,8,18,32,32,14,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d6","cfs":"*[Rn] 5f14 6d6 7s2","ie":[],"d":40.7,"disc":"GSI w Darmstadt","disce":"GSI, Darmstadt","est":1},{"z":109,"s":"Mt","en":"Meitnerium","pl":"Meitner","yr":"1982","yre":"1982","et":"Od Lise Meitner.","ete":"After Lise Meitner.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Lise Meitner współodkryła rozszczepienie jądra atomowego, ale Nagrodę Nobla za nie dostał tylko Otto Hahn.","fce":"Lise Meitner co-discovered nuclear fission, but only Otto Hahn received the Nobel Prize for it.","m":278,"c":"tm","per":7,"grp":9,"blk":"d","x":9,"y":7,"sh":[2,8,18,32,32,15,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d7","cfs":"*[Rn] 5f14 6d7 7s2","ie":[],"d":37.4,"disc":"GSI w Darmstadt","disce":"GSI, Darmstadt","pred":1,"est":1},{"z":110,"s":"Ds","en":"Darmstadtium","pl":"Darmstadt","yr":"1994","yre":"1994","et":"Od miasta Darmstadt, gdzie działa ośrodek GSI.","ete":"After the city of Darmstadt, home of the GSI center.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Najtrwalsze znane izotopy żyją co najwyżej kilkanaście sekund.","fce":"The longest-lived known isotopes last no more than about ten seconds.","m":281,"c":"tm","per":7,"grp":10,"blk":"d","x":10,"y":7,"sh":[2,8,18,32,32,16,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d8","cfs":"*[Rn] 5f14 6d9 7s1","ie":[],"d":34.8,"disc":"GSI w Darmstadt","disce":"GSI, Darmstadt","pred":1,"est":1},{"z":111,"s":"Rg","en":"Roentgenium","pl":"Roentgen","yr":"1994","yre":"1994","et":"Od Wilhelma Röntgena.","ete":"After Wilhelm Röntgen.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Przy odkryciu w 1994 r. otrzymano zaledwie kilka atomów.","fce":"The 1994 discovery produced only a few atoms.","m":282,"c":"tm","per":7,"grp":11,"blk":"d","x":11,"y":7,"sh":[2,8,18,32,32,17,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d9","cfs":"*[Rn] 5f14 6d10 7s1","ea":151,"ie":[],"d":28.7,"disc":"GSI w Darmstadt","disce":"GSI, Darmstadt","pred":1,"est":1},{"z":112,"s":"Cn","en":"Copernicium","pl":"Kopernik","yr":"1996","yre":"1996","et":"Od Mikołaja Kopernika (nazwa nadana w 2010 r.).","ete":"After Nicolaus Copernicus (named in 2010).","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Eksperymenty wskazują, że jest bardzo lotny – być może jest gazem lub cieczą w warunkach normalnych.","fce":"Experiments suggest it is very volatile, perhaps a gas or a liquid under normal conditions.","m":285,"c":"tm","per":7,"grp":12,"blk":"d","x":12,"y":7,"sh":[2,8,18,32,32,18,2],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10","cfs":"*[Rn] 5f14 6d10 7s2","ie":[],"d":14.0,"mp":283,"bp":340,"disc":"GSI w Darmstadt","disce":"GSI, Darmstadt","est":1},{"z":113,"s":"Nh","en":"Nihonium","pl":"Nihon","yr":"2004","yre":"2004","et":"Od jap. Nihon – Japonia.","ete":"After Japanese Nihon, \"Japan\".","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Pierwszy pierwiastek odkryty w Azji (RIKEN).","fce":"The first element discovered in Asia (RIKEN).","m":286,"c":"tm","per":7,"grp":13,"blk":"p","x":13,"y":7,"sh":[2,8,18,32,32,18,3],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p1","cfs":"*[Rn] 5f14 6d10 7s2 7p1","ea":66.6,"ie":[],"d":16,"mp":700,"bp":1430,"disc":"RIKEN (Japonia)","disce":"RIKEN (Japan)","pred":1,"est":1},{"z":114,"s":"Fl","en":"Flerovium","pl":"Flerow","yr":"1998","yre":"1998","et":"Od Gieorgija Fliorowa i Laboratorium Reakcji Jądrowych w Dubnej.","ete":"After Georgy Flerov and the Flerov Laboratory of Nuclear Reactions in Dubna.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Leży blisko przewidywanej „wyspy stabilności”, gdzie cięższe jądra mogłyby żyć dłużej.","fce":"It lies close to the predicted \"island of stability\", where heavier nuclei might live longer.","m":289,"c":"pt","per":7,"grp":14,"blk":"p","x":14,"y":7,"sh":[2,8,18,32,32,18,4],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p2","cfs":"*[Rn] 5f14 6d10 7s2 7p2","ie":[],"d":14,"mp":340,"bp":420,"disc":"Zjednoczony Instytut Badań Jądrowych w Dubnej","disce":"Joint Institute for Nuclear Research, Dubna","est":1},{"z":115,"s":"Mc","en":"Moscovium","pl":"Moskow","yr":"2003","yre":"2003","et":"Od obwodu moskiewskiego, gdzie leży Dubna.","ete":"After the Moscow region, where Dubna lies.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Odkryty w Dubnej, uznany oficjalnie w 2015 r.","fce":"Discovered in Dubna, officially recognized in 2015.","m":289,"c":"pt","per":7,"grp":15,"blk":"p","x":15,"y":7,"sh":[2,8,18,32,32,18,5],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p3","cfs":"*[Rn] 5f14 6d10 7s2 7p3","ea":35.3,"ie":[],"d":13.5,"mp":670,"bp":1400,"disc":"Zjednoczony Instytut Badań Jądrowych w Dubnej","disce":"Joint Institute for Nuclear Research, Dubna","pred":1,"est":1},{"z":116,"s":"Lv","en":"Livermorium","pl":"Liwermor","yr":"2000","yre":"2000","et":"Od Lawrence Livermore National Laboratory w Kalifornii.","ete":"After Lawrence Livermore National Laboratory in California.","lk":"radioaktywny metal","lke":"radioactive metal","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Odkryty w Dubnej przy współpracy z laboratorium w Livermore.","fce":"Discovered in Dubna in cooperation with the Livermore laboratory.","m":293,"c":"pt","per":7,"grp":16,"blk":"p","x":16,"y":7,"sh":[2,8,18,32,32,18,6],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p4","cfs":"*[Rn] 5f14 6d10 7s2 7p4","ea":74.9,"ie":[],"d":12.9,"mp":709,"bp":1085,"disc":"Zjednoczony Instytut Badań Jądrowych w Dubnej","disce":"Joint Institute for Nuclear Research, Dubna","pred":1,"est":1},{"z":117,"s":"Ts","en":"Tennessine","pl":"Tenes","yr":"2010","yre":"2010","et":"Od stanu Tennessee, gdzie działa Oak Ridge National Laboratory.","ete":"After the state of Tennessee, home of Oak Ridge National Laboratory.","lk":"radioaktywny, przypuszczalnie półmetal","lke":"radioactive, presumably a metalloid","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Odkryty w 2010 r. m.in. dzięki berkelowi-249 z Oak Ridge. Zamyka rząd halogenów.","fce":"Discovered in 2010, thanks in part to berkelium-249 from Oak Ridge. It closes the halogen row.","m":294,"c":"mt","per":7,"grp":17,"blk":"p","x":17,"y":7,"sh":[2,8,18,32,32,18,7],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p5","cfs":"*[Rn] 5f14 6d10 7s2 7p5","ea":165.9,"ie":[],"d":7.17,"mp":723,"bp":883,"disc":"Zjednoczony Instytut Badań Jądrowych w Dubnej","disce":"Joint Institute for Nuclear Research, Dubna","pred":1,"est":1},{"z":118,"s":"Og","en":"Oganesson","pl":"Oganeson","yr":"2002","yre":"2002","et":"Od Jurija Oganesjana.","ete":"After Yuri Oganessian.","lk":"przypuszczalnie gaz; radioaktywny","lke":"presumably a gas; radioactive","us":["wyłącznie badania naukowe"],"use":["scientific research only"],"fc":"Najcięższy znany pierwiastek; zaobserwowano zaledwie kilka jego atomów. Oganesjan jest drugą osobą nazwaną w pierwiastku jeszcze za życia.","fce":"The heaviest known element; only a few of its atoms have ever been observed. Oganessian is the second person to have an element named after him while alive.","m":294,"c":"ng","per":7,"grp":18,"blk":"p","x":18,"y":7,"sh":[2,8,18,32,32,18,8],"cfg":"1s2 2s2 2p6 3s2 3p6 4s2 3d10 4p6 5s2 4d10 5p6 6s2 4f14 5d10 6p6 7s2 5f14 6d10 7p6","cfs":"*[Rn] 5f14 6d10 7s2 7p6","ea":5.40318,"ie":[],"d":4.95,"bp":350,"disc":"Zjednoczony Instytut Badań Jądrowych w Dubnej","disce":"Joint Institute for Nuclear Research, Dubna","pred":1,"est":1}];
+
+  var LANG = window.Yllipsis ? window.Yllipsis.lang : 'pl';
+  var $t = function (pl, en) { return LANG === 'en' ? en : pl; };
+  var ix = function () { return LANG === 'en' ? 1 : 0; };
+
+  var nf = function (v, max) {
+    if (v == null || isNaN(v)) return '—';
+    return v.toLocaleString(LANG === 'en' ? 'en-US' : 'pl-PL', { maximumFractionDigits: max == null ? 2 : max });
+  };
+  var norm = function (s) {
+    return String(s).toLowerCase().replace(/ł/g, 'l').normalize('NFD').replace(/[̀-ͯ]/g, '');
+  };
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var SUPD = '⁰¹²³⁴⁵⁶⁷⁸⁹';
+  var sup = function (n) { return String(n).replace(/\d/g, function (d) { return SUPD[+d]; }); };
+  var kc = function (K) { var dg = K < 10 ? 1 : 0; return nf(K, dg) + ' K (' + nf(K - 273.15, dg) + ' °C)'; };
+  var dens = function (v) { return v < 0.01 ? nf(v * 1000, 3) + ' g/L' : nf(v, 3) + ' g/cm³'; };
+
+  var nm = function (e) { return LANG === 'en' ? e.en : e.pl; };
+  var alt = function (e) { return LANG === 'en' ? 'pol. ' + e.pl : 'ang. ' + e.en; };
+  var altName = function (e) { return LANG === 'en' ? e.pl : e.en; };
+
+  var CAT = {
+    alk: { pl: 'Metale alkaliczne', en: 'Alkali metals', h: 'var(--h-alk)' },
+    ae: { pl: 'Metale ziem alkalicznych', en: 'Alkaline earth metals', h: 'var(--h-ae)' },
+    tm: { pl: 'Metale przejściowe', en: 'Transition metals', h: 'var(--h-tm)' },
+    pt: { pl: 'Metale bloku p', en: 'Post-transition metals', h: 'var(--h-pt)' },
+    mt: { pl: 'Półmetale', en: 'Metalloids', h: 'var(--h-mt)' },
+    nm: { pl: 'Niemetale', en: 'Nonmetals', h: 'var(--h-nm)' },
+    ng: { pl: 'Gazy szlachetne', en: 'Noble gases', h: 'var(--h-ng)' },
+    ln: { pl: 'Lantanowce', en: 'Lanthanides', h: 'var(--h-ln)' },
+    ac: { pl: 'Aktynowce', en: 'Actinides', h: 'var(--h-ac)' }
+  };
+  var CAT_ORDER = ['alk', 'ae', 'tm', 'pt', 'mt', 'nm', 'ng', 'ln', 'ac'];
+  var cn = function (k) { return CAT[k][LANG]; };
+  var SHELL = ['K', 'L', 'M', 'N', 'O', 'P', 'Q'];
+  var stN = function (st) {
+    return { solid: $t('ciało stałe', 'solid'), liquid: $t('ciecz', 'liquid'), gas: $t('gaz', 'gas'), na: $t('brak danych', 'no data') }[st];
+  };
+
+  var PROPS = {
+    en: { l: ['Elektroujemność', 'Electronegativity'], unit: '', get: function (e) { return e.enp; }, scale: 'lin', full: function (v) { return nf(v, 2); }, cell: function (v) { return nf(v, 2); }, axis: function (v) { return nf(v, 1); },
+      d: ['Skala Paulinga: jak silnie atom przyciąga elektrony w wiązaniu. Rośnie w prawo i w górę, rekord ma fluor (3,98).', 'Pauling scale: how strongly an atom attracts electrons in a bond. It rises to the right and upwards; fluorine holds the record (3.98).'] },
+    m: { l: ['Masa atomowa', 'Atomic mass'], unit: 'u', get: function (e) { return e.m; }, scale: 'lin', full: function (v) { return nf(v, 3) + ' u'; }, cell: function (v) { return nf(v, v >= 100 ? 0 : 1); }, axis: function (v) { return nf(v, 0); },
+      d: ['W jednostkach masy atomowej. Mendelejew porządkował pierwiastki właśnie według masy, dziś porządkuje je liczba protonów.', 'In atomic mass units. Mendeleev ordered the elements by mass; today they are ordered by the number of protons.'] },
+    d: { l: ['Gęstość', 'Density'], unit: 'g/cm³', get: function (e) { return e.d; }, scale: 'log', full: dens, cell: function (v) { return v < 0.01 ? nf(v * 1000, 2) + '*' : nf(v, v < 10 ? 2 : 1); }, axis: function (v) { return v < 0.01 ? nf(v * 1000, 2) + ' g/L' : nf(v, 1); },
+      d: ['Skala logarytmiczna, bo gęstości różnią się o ponad cztery rzędy wielkości. * oznacza gaz, wartość w g/L.', 'Logarithmic scale, because densities differ by more than four orders of magnitude. * marks a gas, with the value in g/L.'] },
+    mp: { l: ['Temperatura topnienia', 'Melting point'], unit: 'K', get: function (e) { return e.mp; }, scale: 'log', full: kc, cell: function (v) { return nf(v, 0); }, axis: function (v) { return nf(v, 0) + ' K'; },
+      d: ['W kelwinach, skala logarytmiczna. Węgiel i arsen pod ciśnieniem 1 atm nie topnieją, tylko sublimują (pokazano wartość pod podwyższonym ciśnieniem).', 'In kelvins, logarithmic scale. Carbon and arsenic do not melt at 1 atm but sublime (the value shown is for elevated pressure).'] },
+    bp: { l: ['Temperatura wrzenia', 'Boiling point'], unit: 'K', get: function (e) { return e.bp; }, scale: 'log', full: kc, cell: function (v) { return nf(v, 0); }, axis: function (v) { return nf(v, 0) + ' K'; },
+      d: ['W kelwinach, skala logarytmiczna. Rekord ma wolfram (ok. 6200 K), tuż za nim ren (ok. 5870 K).', 'In kelvins, logarithmic scale. Tungsten holds the record (about 6,200 K), with rhenium just behind (about 5,870 K).'] },
+    ie: { l: ['1. energia jonizacji', '1st ionization energy'], unit: 'kJ/mol', get: function (e) { return e.ie && e.ie.length ? e.ie[0] : null; }, scale: 'lin', full: function (v) { return nf(v, 0) + ' kJ/mol'; }, cell: function (v) { return nf(v, 0); }, axis: function (v) { return nf(v, 0); },
+      d: ['Energia potrzebna do oderwania pierwszego elektronu od atomu. Najłatwiej oddają go metale alkaliczne, najtrudniej hel.', 'Energy needed to remove the first electron from an atom. Alkali metals give it up most easily, helium least easily.'] },
+    r: { l: ['Promień atomowy', 'Atomic radius'], unit: 'pm', get: function (e) { return e.r; }, scale: 'lin', full: function (v) { return nf(v, 0) + ' pm'; }, cell: function (v) { return nf(v, 0); }, axis: function (v) { return nf(v, 0); },
+      d: ['Obliczony promień atomu w pikometrach (1 pm = 10⁻¹² m). Rośnie w dół grupy i maleje w prawo okresu.', 'Calculated atomic radius in picometres (1 pm = 10⁻¹² m). It grows down a group and shrinks across a period.'] }
+  };
+  var PROP_ORDER = ['en', 'd', 'mp', 'bp', 'ie', 'r', 'm'];
+  var CARD_PROPS = ['m', 'd', 'mp', 'bp', 'en', 'ie', 'r', 'ea', 'mh'];
+  var EXTRA = {
+    ea: { l: ['Powinowactwo elektronowe', 'Electron affinity'], get: function (e) { return e.ea != null && e.ea > 0 ? e.ea : null; }, scale: 'lin', full: function (v) { return nf(v, 1) + ' kJ/mol'; }, axis: function (v) { return nf(v, 0); } },
+    mh: { l: ['Ciepło molowe', 'Molar heat capacity'], get: function (e) { return e.mh; }, scale: 'lin', full: function (v) { return nf(v, 1) + ' J/(mol·K)'; }, axis: function (v) { return nf(v, 0); } }
+  };
+  function propDef(k) { return PROPS[k] || EXTRA[k]; }
+  var pLabel = function (k) { return propDef(k).l[ix()]; };
+
+  var byZ = {};
+  EL.forEach(function (e) { byZ[e.z] = e; });
+
+  var RANGE = {};
+  Object.keys(PROPS).concat(Object.keys(EXTRA)).forEach(function (k) {
+    var def = propDef(k), vals = [];
+    EL.forEach(function (e) { var v = def.get(e); if (v != null && !(def.scale === 'log' && v <= 0)) vals.push(v); });
+    vals.sort(function (a, b) { return a - b; });
+    RANGE[k] = { vals: vals, min: vals[0], max: vals[vals.length - 1] };
+  });
+  function scaleT(k, v) {
+    var def = propDef(k), r = RANGE[k], f = def.scale === 'log' ? Math.log10 : function (x) { return x; };
+    var lo = f(r.min), hi = f(r.max);
+    return hi === lo ? 0 : (f(v) - lo) / (hi - lo);
+  }
+
+  function stateAt(e, T) {
+    if (e.sub != null) return T < e.sub ? 'solid' : 'gas';
+    if (e.nosolid) return T < e.bp ? 'liquid' : 'gas';
+    if (e.mp == null && e.bp == null) return 'na';
+    if (e.bp != null && T >= e.bp) return 'gas';
+    if (e.mp == null) return 'na';
+    if (T >= e.mp) return e.bp != null ? 'liquid' : 'na';
+    return 'solid';
+  }
+
+  var CATEN = {
+    alk: 'alkali metals alkali alkalia',
+    ae: 'alkaline earth metals',
+    tm: 'transition metals',
+    pt: 'post-transition metals poor metals other metals',
+    mt: 'metalloids semimetals',
+    nm: 'nonmetals non-metals reactive nonmetals',
+    ng: 'noble gas noble gases inert gas inert gases gaz szlachetny',
+    ln: 'lanthanides lanthanoids metale metals',
+    ac: 'actinides actinoids metale metals'
+  };
+  var ALIAS = {
+    11: 'natrium sodium', 19: 'kalium', 26: 'ferrum', 29: 'cuprum', 47: 'argentum', 50: 'stannum', 51: 'stibium',
+    74: 'wolfram wolframium', 79: 'aurum', 80: 'hydrargyrum quicksilver', 82: 'plumbum',
+    13: 'aluminum', 55: 'cesium', 16: 'sulphur'
+  };
+  var STATE_TAG = {
+    gas: 'gaz gazowy gaseous gas',
+    liquid: 'ciecz ciekly liquid',
+    solid: 'cialo stale stala stale solid',
+    na: ''
+  };
+  var METALS = { alk: 1, ae: 1, tm: 1, pt: 1 };
+  function words(str) { return norm(str).split(/[^a-z0-9]+/).filter(Boolean); }
+  function buildIndex() {
+    EL.forEach(function (e) {
+      var fam = '';
+      if (e.y <= 7) {
+        if (e.x === 17) fam += ' halogeny fluorowce halogens';
+        if (e.x === 16) fam += ' tlenowce chalkogeny chalcogens';
+        if (e.x === 15) fam += ' azotowce pniktogeny pnictogens';
+        if (e.x === 14) fam += ' weglowce carbon group';
+        if (e.x === 13) fam += ' borowce boron group';
+      }
+      if ([44, 45, 46, 76, 77, 78].indexOf(e.z) >= 0) fam += ' platynowce platinum group';
+      if ([29, 47, 79].indexOf(e.z) >= 0) fam += ' coinage metals';
+      if (e.z === 21 || e.z === 39 || (e.z >= 57 && e.z <= 71)) fam += ' metale ziem rzadkich rare earth elements';
+      if (e.z === 43 || e.z === 61 || e.z >= 84) fam += ' radioaktywny radioaktywne radioactive';
+      if (METALS[e.c]) fam += ' metale metal metals';
+      e._sn = norm(e.s);
+      e._nw = words(e.pl + ' ' + e.en + ' ' + (ALIAS[e.z] || ''));
+      e._cw = words(CAT[e.c].pl + ' ' + CAT[e.c].en + ' ' + CATEN[e.c] + ' ' + fam + ' ' + (e.est ? '' : STATE_TAG[stateAt(e, 293)]));
+    });
+  }
+
+  function startsIn(ws, tok, pass) {
+    var t = tok;
+    if (pass === 2) { if (tok.length < 5) return false; t = tok.slice(0, Math.max(3, tok.length - 2)); }
+    for (var i = 0; i < ws.length; i++) {
+      if (pass === 0 ? ws[i] === t : ws[i].indexOf(t) === 0) return true;
+    }
+    return false;
+  }
+
+  function tokenMatch(tok) {
+    var isNum = /^\d+$/.test(tok);
+    if (tok.length <= 2) {
+      var sym = {}, c = 0;
+      EL.forEach(function (e) { if (e._sn === tok || String(e.z) === tok) { sym[e.z] = 0; c++; } });
+      if (c) return sym;
+    }
+    for (var pass = 0; pass < 3; pass++) {
+      var names = {}, nn = 0, cats = {}, cc = 0;
+      EL.forEach(function (e) {
+        if (e._sn === tok || String(e.z) === tok) { names[e.z] = 0; nn++; }
+        else if (!isNum) {
+          if (startsIn(e._nw, tok, pass)) { names[e.z] = 1 + pass; nn++; }
+          else if (startsIn(e._cw, tok, pass)) { cats[e.z] = 2 + pass; cc++; }
+        }
+      });
+      if (nn) return names;
+      if (cc) return cats;
+    }
+    return {};
+  }
+  function parseQuery(raw) {
+    var q = norm(raw).trim();
+    if (!q) return null;
+    var f = { group: null, period: null, block: null, range: null, tokens: [] };
+    q = q.replace(/\b(?:grupa|group|gr)\.?\s*(\d{1,2})\b/g, function (_, n) { f.group = +n; return ' '; })
+      .replace(/\b(?:okres|period)\s*(\d)\b/g, function (_, n) { f.period = +n; return ' '; })
+      .replace(/\b(?:blok|block)\s*-?\s*([spdf])\b/g, function (_, b) { f.block = b; return ' '; })
+      .replace(/\b([spdf])\s*-\s*(?:blok|block)\b/g, function (_, b) { f.block = b; return ' '; })
+      .replace(/(\d+)\s*[-–]\s*(\d+)/g, function (_, a, b) { f.range = [Math.min(+a, +b), Math.max(+a, +b)]; return ' '; });
+    f.tokens = q.split(/[^a-z0-9]+/).filter(Boolean);
+    return f;
+  }
+  function runSearch(raw) {
+    var f = parseQuery(raw);
+    if (!f) return null;
+    var sets = f.tokens.map(tokenMatch), list = [];
+    EL.forEach(function (e) {
+      var score = 0;
+      for (var i = 0; i < sets.length; i++) { var v = sets[i][e.z]; if (v == null) return; score += v; }
+      if (f.group != null && !(e.y <= 7 && e.x === f.group)) return;
+      if (f.period != null && e.per !== f.period) return;
+      if (f.block && e.blk !== f.block) return;
+      if (f.range && (e.z < f.range[0] || e.z > f.range[1])) return;
+      list.push({ e: e, score: score });
+    });
+    list.sort(function (a, b) { return a.score - b.score || a.e.z - b.e.z; });
+    return list;
+  }
+  buildIndex();
+
+  var S = { mode: 'cat', prop: 'en', T: 293, cat: null, q: '', open: null, lastCell: null, res: null, active: 0 };
+  var ptEl = $('#pt'), legendEl = $('#legend'), cntEl = $('#cnt');
+  var cells = {};
+
+  function build() {
+    var frag = document.createDocumentFragment();
+    var mk = function (tag, cls, pl, en, style) {
+      var n = document.createElement(tag);
+      if (cls) n.className = cls;
+      if (pl != null) { n.textContent = pl; if (en != null) { n.setAttribute('data-pl', pl); n.setAttribute('data-en', en); } }
+      if (style) n.style.cssText = style;
+      return n;
+    };
+    frag.appendChild(mk('div', 'blk', 'blok s', 'block s', 'grid-column:2 / 4'));
+    frag.appendChild(mk('div', 'blk', 'blok d', 'block d', 'grid-column:4 / 14'));
+    frag.appendChild(mk('div', 'blk', 'blok p', 'block p', 'grid-column:14 / 20'));
+    for (var g = 1; g <= 18; g++) frag.appendChild(mk('div', 'gn', String(g), null, 'grid-column:' + (g + 1) + ';grid-row:2'));
+    for (var p = 1; p <= 7; p++) frag.appendChild(mk('div', 'pn', String(p), null, 'grid-column:1;grid-row:' + (p + 2)));
+    frag.appendChild(mk('div', 'frow', 'Lantanowce', 'Lanthanides', 'grid-row:11'));
+    frag.appendChild(mk('div', 'frow', 'Aktynowce', 'Actinides', 'grid-row:12'));
+    frag.appendChild(mk('div', 'ph', '57–71', null, 'grid-column:4;grid-row:8'));
+    frag.appendChild(mk('div', 'ph', '89–103', null, 'grid-column:4;grid-row:9'));
+    var hov = mk('div', 'hov idle');
+    hov.id = 'hov';
+    frag.appendChild(hov);
+
+    EL.forEach(function (e) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'el' + (e.pred ? ' pred' : '') + (e.pm ? ' pm' : '');
+      b.dataset.z = e.z;
+      b.style.cssText = 'grid-column:' + (e.x + 1) + ';grid-row:' + (e.y + 2) + ';--h:' + CAT[e.c].h;
+      b.tabIndex = e.z === 1 ? 0 : -1;
+      b.innerHTML = '<span class="num">' + e.z + '</span><span class="sym">' + e.s + '</span><span class="nm"></span><span class="val"></span>';
+      cells[e.z] = b;
+      frag.appendChild(b);
+    });
+    ptEl.appendChild(frag);
+  }
+  function labelCells() {
+    EL.forEach(function (e) {
+      var b = cells[e.z];
+      b.querySelector('.nm').textContent = nm(e);
+      b.setAttribute('aria-label', e.s + ', ' + nm(e) + ', ' + $t('liczba atomowa ', 'atomic number ') + e.z + ', ' + cn(e.c).toLowerCase() + (e.pred ? $t(' (własności przewidywane)', ' (predicted properties)') : ''));
+    });
+  }
+
+  function applyView() {
+    ptEl.classList.toggle('heat', S.mode === 'prop');
+    ptEl.classList.toggle('st', S.mode === 'state');
+    var res = S.q.trim() ? runSearch(S.q) : null, hitMap = {}, counts = { solid: 0, liquid: 0, gas: 0, na: 0 }, liquids = [];
+    S.res = res;
+    if (res) res.forEach(function (r) { hitMap[r.e.z] = 1; });
+    var few = !!res && res.length <= 40;
+    EL.forEach(function (e) {
+      var c = cells[e.z], dim = false;
+      if (S.mode === 'cat' && S.cat && e.c !== S.cat) dim = true;
+      if (res && !hitMap[e.z]) dim = true;
+      c.classList.toggle('dim', dim);
+      c.classList.toggle('hit', few && !!hitMap[e.z]);
+      c.classList.remove('na', 'est');
+      c.removeAttribute('data-hi'); c.removeAttribute('data-st');
+      c.style.removeProperty('--t');
+      var val = c.querySelector('.val');
+      if (S.mode === 'prop') {
+        var def = PROPS[S.prop], v = def.get(e);
+        if (v == null || (def.scale === 'log' && v <= 0)) { c.classList.add('na'); val.textContent = '—'; }
+        else {
+          var t = scaleT(S.prop, v);
+          c.style.setProperty('--t', t.toFixed(3));
+          if (t > 0.62) c.setAttribute('data-hi', '');
+          val.textContent = def.cell(v);
+        }
+      } else if (S.mode === 'state') {
+        var st = stateAt(e, S.T);
+        c.setAttribute('data-st', st);
+        if (e.est) c.classList.add('est');
+        counts[st]++;
+        if (st === 'liquid') liquids.push(nm(e) + (e.est ? $t(' (szac.)', ' (est.)') : ''));
+      }
+    });
+    if (S.mode === 'state') updateStateSummary(counts, liquids);
+    cntEl.textContent = res ? (res.length ? $t('Znaleziono: ', 'Found: ') + res.length : $t('Brak wyników', 'No results')) : '';
+  }
+
+  function renderLegend() {
+    var h = '';
+    if (S.mode === 'cat') {
+      var counts = {};
+      EL.forEach(function (e) { counts[e.c] = (counts[e.c] || 0) + 1; });
+      h = '<div class="chips">' + CAT_ORDER.map(function (k) {
+        return '<button type="button" class="chip" data-cat="' + k + '" aria-pressed="' + (S.cat === k) + '" style="--h:' + CAT[k].h + '"><i></i>' + cn(k) + ' <b>' + counts[k] + '</b></button>';
+      }).join('') + '</div><p class="hint">' + $t('Kliknij kategorię, żeby ją wyróżnić. Przerywana ramka oznacza pierwiastki, których własności tylko przewidziano.', 'Click a category to highlight it. A dashed border marks elements whose properties are only predicted.') + '</p>';
+    } else if (S.mode === 'state') {
+      var presets = [[$t('Ciekły azot', 'Liquid nitrogen'), 77], [$t('Pokój', 'Room temperature'), 293], [$t('Wrzenie wody', 'Boiling water'), 373], [$t('Topnienie ołowiu', 'Lead melts'), 601], [$t('Piec hutniczy', 'Blast furnace'), 1800], [$t('Powierzchnia Słońca', "Sun's surface"), 5772]];
+      h = '<div class="tctl"><div class="tread" id="tread"></div>' +
+        '<input class="tslide" id="tslide" type="range" min="0" max="6000" step="1" value="' + S.T + '" aria-label="' + $t('Temperatura w kelwinach', 'Temperature in kelvins') + '">' +
+        '<div class="presets" id="presets">' + presets.map(function (p) {
+          return '<button type="button" data-t="' + p[1] + '">' + p[0] + ' · ' + p[1] + ' K</button>';
+        }).join('') + '</div></div><div class="tsum" id="tsum"></div>';
+    } else {
+      var def = PROPS[S.prop], r = RANGE[S.prop];
+      h = '<div class="ramp"><span>' + def.axis(r.min) + '</span><i class="rampbar"></i><span>' + def.axis(r.max) + '</span></div><p class="pdesc"><b>' + def.l[ix()] + (def.unit ? ' (' + def.unit + ')' : '') + '.</b> ' + def.d[ix()] + ' ' + $t('Kreska oznacza brak danych.', 'A dash means no data.') + '</p>';
+    }
+    legendEl.innerHTML = h;
+  }
+
+  function updateStateSummary(counts, liquids) {
+    var tr = $('#tread'), ts = $('#tsum');
+    if (!tr || !ts) return;
+    tr.innerHTML = nf(S.T, 0) + ' K<small>' + nf(S.T - 273.15, 0) + ' °C · ' + nf(S.T * 9 / 5 - 459.67, 0) + ' °F</small>';
+    var liq = liquids.length && liquids.length <= 6 ? ' (' + liquids.join(', ').toLowerCase() + ')' : '';
+    ts.innerHTML = '<span><i class="i-solid"></i><b>' + counts.solid + '</b> ' + $t('ciał stałych', 'solids') + '</span>' +
+      '<span><i class="i-liquid"></i><b>' + counts.liquid + '</b> ' + $t('cieczy', 'liquids') + liq + '</span>' +
+      '<span><i class="i-gas"></i><b>' + counts.gas + '</b> ' + $t('gazów', 'gases') + '</span>' +
+      '<span><i class="i-na"></i><b>' + counts.na + '</b> ' + $t('brak danych', 'no data') + '</span>';
+  }
+
+  function renderPropSel() {
+    var sel = $('#propSel');
+    sel.innerHTML = PROP_ORDER.map(function (k) { return '<option value="' + k + '">' + pLabel(k) + (PROPS[k].unit ? ' (' + PROPS[k].unit + ')' : '') + '</option>'; }).join('');
+    sel.value = S.prop;
+  }
+
+  var hovEl;
+  function tileHTML(e) {
+    return '<div class="tile" style="--h:' + CAT[e.c].h + '"><span class="num">' + e.z + '</span><span class="sym">' + e.s + '</span><span class="mass">' + nf(e.m, 2) + '</span></div>';
+  }
+  function hovIdle() {
+    hovEl.className = 'hov idle';
+    hovEl.innerHTML = '<h2>' + $t('1869: pustych miejsc nie wypełniono na siłę', '1869: gaps left open, not forced shut') + '</h2>' +
+      '<p>' + $t('Dmitrij Mendelejew ułożył 63 znane wtedy pierwiastki według masy i własności. W lukach przewidział skand, gal, german i technet. ', 'Dmitri Mendeleev arranged the 63 elements known at the time by mass and properties. In the gaps he predicted scandium, gallium, germanium and technetium. ') +
+      '<span class="dia"></span>' + $t('Romby w tablicy oznaczają te pierwiastki. Najedź na kafelek albo naciśnij go, żeby zobaczyć więcej.', 'Diamonds in the table mark these elements. Hover over a tile or tap it to see more.') + '</p>';
+  }
+  function hovShow(e) {
+    var extra = '';
+    if (S.mode === 'prop') { var v = PROPS[S.prop].get(e); extra = '<p class="mono">' + pLabel(S.prop) + ': ' + (v == null ? $t('brak danych', 'no data') : PROPS[S.prop].full(v)) + '</p>'; }
+    else if (S.mode === 'state') { extra = '<p class="mono">' + $t('W ', 'At ') + nf(S.T, 0) + ' K: ' + stN(stateAt(e, S.T)) + '</p>'; }
+    hovEl.className = 'hov';
+    hovEl.innerHTML = tileHTML(e) +
+      '<div class="hov-t"><h2>' + nm(e) + '<small>' + altName(e) + '</small></h2><p>' + cn(e.c) + $t(' · okres ', ' · period ') + e.per + $t(' · blok ', ' · block ') + e.blk + '</p>' + extra + '<p class="hf">' + (LANG === 'en' ? e.fce : e.fc) + '</p></div>';
+  }
+
+  function strip(k, e) {
+    var def = propDef(k), v = def.get(e), r = RANGE[k];
+    if (v == null) return '';
+    var W = 300, pad = 5, svg = '<svg viewBox="0 0 ' + W + ' 22" aria-hidden="true"><line class="axis" x1="' + pad + '" x2="' + (W - pad) + '" y1="11" y2="11"/>';
+    r.vals.forEach(function (x) {
+      svg += '<circle class="dot" cx="' + (pad + scaleT(k, x) * (W - 2 * pad)).toFixed(1) + '" cy="11" r="2.2"/>';
+    });
+    svg += '<circle class="dot me" cx="' + (pad + scaleT(k, v) * (W - 2 * pad)).toFixed(1) + '" cy="11" r="6"/></svg>';
+    return '<div class="ps">' + svg + '<div class="pax"><span>' + def.axis(r.min) + '</span><span>' + def.axis(r.max) + '</span></div></div>';
+  }
+  function rankText(k, e) {
+    var def = propDef(k), v = def.get(e), r = RANGE[k];
+    if (v == null) return '';
+    var greater = 0;
+    r.vals.forEach(function (x) { if (x > v) greater++; });
+    var rank = greater + 1, n = r.vals.length;
+    if (rank === 1) return $t('najwyższa wartość w tablicy', 'highest in the table');
+    if (rank === n) return $t('najniższa wartość w tablicy', 'lowest in the table');
+    return $t(rank + '. miejsce od góry z ' + n, '#' + rank + ' of ' + n + ' from the top');
+  }
+  function propRow(k, e) {
+    var def = propDef(k), v = def.get(e), note = '';
+    if (k === 'mp' && e.sub != null) note = $t('Pod ciśnieniem 1 atm sublimuje (ok. ' + nf(e.sub, 0) + ' K); topnienie tylko pod wysokim ciśnieniem.', 'At 1 atm it sublimes (about ' + nf(e.sub, 0) + ' K); it melts only under high pressure.');
+    if (k === 'mp' && e.nosolid) note = $t('Pod ciśnieniem 1 atm nie krzepnie; podana wartość dotyczy ok. 25 atm.', 'It does not solidify at 1 atm; the value given is for about 25 atm.');
+    if (k === 'bp' && v == null && e.sub != null) { v = e.sub; note = $t('Wartość to temperatura sublimacji.', 'This value is the sublimation temperature.'); }
+    if (k === 'ea' && e.ea != null && e.ea <= 0) note = $t('Nie tworzy trwałego anionu.', 'Does not form a stable anion.');
+    if (k === 'd' && e.d != null && e.d < 0.01) note = $t('Gęstość gazu w warunkach normalnych.', 'Gas density under standard conditions.');
+    var left;
+    if (v == null) {
+      left = '<span class="pk">' + pLabel(k) + '</span><span class="pv na">' + $t('brak danych', 'no data') + '</span>' + (note ? '<span class="pn2">' + note + '</span>' : '');
+      return '<div class="prop"><div>' + left + '</div></div>';
+    }
+    var rt = rankText(k, e);
+    left = '<span class="pk">' + pLabel(k) + '</span><span class="pv">' + def.full(v) + '</span>' + (rt ? '<span class="pr">' + rt + '</span>' : '') + (note ? '<span class="pn2">' + note + '</span>' : '');
+    return '<div class="prop"><div>' + left + '</div>' + strip(k, e) + '</div>';
+  }
+
+  function bohr(e) {
+    var sh = e.sh, n = sh.length, rMin = n === 1 ? 46 : 28, step = n > 1 ? Math.min(24, (108 - rMin) / (n - 1)) : 0, labels = '';
+    var svg = '<svg viewBox="0 0 240 240" role="img" aria-label="' + $t('Model Bohra atomu: ', 'Bohr model of the atom: ') + sh.join(', ') + $t(' elektronów na kolejnych powłokach', ' electrons in successive shells') + '">';
+    sh.forEach(function (cnt, i) {
+      var r = rMin + i * step, last = i === n - 1;
+      svg += '<circle class="ring" data-i="' + i + '" cx="120" cy="120" r="' + r + '" fill="none" stroke="' + (last ? 'hsl(var(--h) 60% 45%)' : 'var(--ring)') + '" stroke-width="' + (last ? 1.2 : 1) + '"/>';
+      var dur = (5 + i * 3.4).toFixed(1), off = i * 0.9, g = '<g class="orb' + (i % 2 ? ' rev' : '') + '" style="animation-duration:' + dur + 's">';
+      for (var j = 0; j < cnt; j++) {
+        var a = off + (2 * Math.PI * j) / cnt;
+        g += '<circle cx="' + (120 + r * Math.cos(a)).toFixed(2) + '" cy="' + (120 + r * Math.sin(a)).toFixed(2) + '" r="' + (last ? 3.5 : 3) + '" fill="hsl(var(--h) var(--e-s) ' + (last ? '72%' : 'var(--e-l)') + ')"/>';
+      }
+      svg += g + '</g>';
+      labels += '<text class="rt" data-i="' + i + '" x="120" y="' + (120 - r + 2.7).toFixed(1) + '" text-anchor="middle">' + SHELL[i] + ' ' + cnt + '</text>';
+    });
+    svg += '<circle cx="120" cy="120" r="15" fill="hsl(var(--h) 70% 55%)" opacity="0.25"/><circle cx="120" cy="120" r="10" fill="hsl(var(--h) 75% 62%)"/>' +
+      '<text x="120" y="123.5" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="9" font-weight="600" fill="#0d1424">' + e.z + '</text>' + labels + '</svg>';
+    return svg;
+  }
+  function shellsHTML(e) {
+    var n = e.sh.length;
+    var chips = e.sh.map(function (c, i) {
+      return '<button type="button" class="sc' + (i === n - 1 ? ' outer' : '') + '" data-i="' + i + '" aria-label="' + $t('Powłoka ', 'Shell ') + SHELL[i] + ': ' + c + ' ' + $t('elektronów', 'electrons') + '"><b>' + SHELL[i] + '</b><span>' + c + '</span></button>';
+    }).join('');
+    return '<div class="shells">' + chips + '</div><p class="tnote">' +
+      $t('Powłoki K, L, M… (n = 1, 2, 3…). Na powłoce zewnętrznej: ' + e.sh[n - 1] + ' e⁻.', 'Shells K, L, M… (n = 1, 2, 3…). Outermost shell: ' + e.sh[n - 1] + ' e⁻.') + '</p>';
+  }
+
+  function stateBar(e) {
+    var MAX = 6000, mp = e.mp, bp = e.bp, segs = '', note = '';
+    var pct = function (K) { return Math.max(0, Math.min(100, K / MAX * 100)); };
+    if (e.sub != null) {
+      segs = '<i style="width:' + pct(e.sub) + '%;background:var(--st-solid)"></i><i style="width:' + (100 - pct(e.sub)) + '%;background:var(--st-gas)"></i>';
+      note = $t('Pod ciśnieniem 1 atm nie ma fazy ciekłej: sublimuje w ' + kc(e.sub) + '.', 'At 1 atm it has no liquid phase: it sublimes at ' + kc(e.sub) + '.');
+    } else if (e.nosolid) {
+      segs = '<i style="width:' + pct(bp) + '%;background:var(--st-liq)"></i><i style="width:' + (100 - pct(bp)) + '%;background:var(--st-gas)"></i>';
+      note = $t('Jedyny pierwiastek, który pod ciśnieniem 1 atm pozostaje cieczą aż do zera bezwzględnego. Wrze w ' + kc(bp) + '.', 'The only element that stays liquid at 1 atm all the way down to absolute zero. It boils at ' + kc(bp) + '.');
+    } else if (mp != null && bp != null) {
+      segs = '<i style="width:' + pct(mp) + '%;background:var(--st-solid)"></i><i style="width:' + (pct(bp) - pct(mp)) + '%;background:var(--st-liq)"></i><i style="width:' + (100 - pct(bp)) + '%;background:var(--st-gas)"></i>';
+      note = $t('Topnieje w ' + kc(mp) + ', wrze w ' + kc(bp) + '. Zakres cieczy: ' + nf(bp - mp, 0) + ' K.', 'Melts at ' + kc(mp) + ', boils at ' + kc(bp) + '. Liquid range: ' + nf(bp - mp, 0) + ' K.');
+    } else if (mp != null) {
+      segs = '<i style="width:' + pct(mp) + '%;background:var(--st-solid)"></i><i style="width:' + (100 - pct(mp)) + '%;background:var(--st-liq)"></i>';
+      note = $t('Topnieje w ' + kc(mp) + '. Temperatury wrzenia nie znamy.', 'Melts at ' + kc(mp) + '. The boiling point is unknown.');
+    } else if (bp != null) {
+      return '<p class="tnote">' + $t('Znana jest tylko przewidywana temperatura wrzenia: ' + kc(bp) + '.', 'Only a predicted boiling point is known: ' + kc(bp) + '.') + '</p>';
+    } else {
+      return '<p class="tnote">' + $t('Brak danych o temperaturach przemian fazowych.', 'No data on phase-change temperatures.') + '</p>';
+    }
+    var ticks = [1500, 3000, 4500, 6000].map(function (K) { return '<span style="left:' + pct(K) + '%' + (K === MAX ? ';transform:translateX(-100%)' : '') + '">' + nf(K, 0) + ' K</span>'; }).join('') +
+      '<span class="room" style="left:' + pct(293) + '%">20 °C</span>';
+    return '<div class="tbar" role="img" aria-label="' + $t('Zakresy temperatur: ciało stałe, ciecz, gaz', 'Temperature ranges: solid, liquid, gas') + '">' + segs + '</div><div class="tmark">' + ticks + '</div>' +
+      '<div class="tkey"><span><i class="i-solid"></i>' + $t('ciało stałe', 'solid') + '</span><span><i class="i-liquid"></i>' + $t('ciecz', 'liquid') + '</span><span><i class="i-gas"></i>' + $t('gaz', 'gas') + '</span></div><p class="tnote">' + note + (e.est ? $t(' Wartości szacunkowe.', ' Values are estimates.') : '') + '</p>';
+  }
+
+  function cfgHTML(e) {
+    var CAP = { s: 2, p: 6, d: 10, f: 14 }, parts = [], re = /(\d)([spdf])(\d+)/g, m, maxN = 0;
+    while ((m = re.exec(e.cfg))) { parts.push({ n: +m[1], l: m[2], c: +m[3] }); if (+m[1] > maxN) maxN = +m[1]; }
+    var semi = e.cfs.replace(/([spdf])(\d+)/g, function (_, l, c) { return l + sup(c); });
+    var chips = parts.map(function (p) {
+      return '<span class="cc' + (p.n === maxN ? ' outer' : '') + '"><b>' + p.n + p.l + sup(p.c) + '</b><span class="fb"><i style="width:' + Math.round(p.c / CAP[p.l] * 100) + '%"></i></span></span>';
+    }).join('');
+    return '<p class="sh">' + semi + ' <em>' + $t('zapis skrócony', 'shorthand') + '</em></p><div class="cfgl">' + chips + '</div>' +
+      '<p class="tnote">' + $t('Pasek pod podpowłoką pokazuje, jak bardzo jest zapełniona; obrys oznacza powłokę zewnętrzną.', 'The bar under each subshell shows how full it is; the outline marks the outermost shell.') + '</p>';
+  }
+
+  function ionHTML(e) {
+    var ie = e.ie || [];
+    if (ie.length < 2) return '<p class="tnote">' + (ie.length === 1 ? $t('Znamy tylko pierwszą energię jonizacji: ' + nf(ie[0], 0) + ' kJ/mol.', 'Only the first ionization energy is known: ' + nf(ie[0], 0) + ' kJ/mol.') : $t('Brak danych o energiach jonizacji.', 'No ionization energy data.')) + '</p>';
+    var W = 300, H = 90, base = 76, n = ie.length, gap = 3, bw = Math.min(26, (W - gap * (n - 1)) / n), total = n * bw + (n - 1) * gap, x0 = (W - total) / 2;
+    var lo = Math.log10(Math.min.apply(null, ie)), hi = Math.log10(Math.max.apply(null, ie)), span = hi - lo || 1;
+    var best = 1, bestR = 0;
+    for (var i = 1; i < n; i++) { var r = ie[i] / ie[i - 1]; if (r > bestR) { bestR = r; best = i; } }
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + $t('Kolejne energie jonizacji w skali logarytmicznej', 'Successive ionization energies on a logarithmic scale') + '">';
+    ie.forEach(function (v, i) {
+      var h = 8 + (Math.log10(v) - lo) / span * 58, x = x0 + i * (bw + gap);
+      svg += '<rect class="bar' + (i === best ? ' jump' : '') + '" x="' + x.toFixed(1) + '" y="' + (base - h).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + h.toFixed(1) + '" rx="2"><title>' + $t((i + 1) + '. elektron: ', 'electron #' + (i + 1) + ': ') + nf(v, 0) + ' kJ/mol</title></rect>';
+      if (n <= 12 || i === 0 || (i + 1) % 5 === 0 || (i === n - 1 && n % 5 >= 3)) svg += '<text class="tx" x="' + (x + bw / 2).toFixed(1) + '" y="88" text-anchor="middle">' + (i + 1) + '</text>';
+    });
+    svg += '</svg>';
+    var cap = $t('Każdy kolejny elektron oderwać trudniej (skala logarytmiczna). Największy skok jest między ' + best + '. a ' + (best + 1) + '. elektronem (×' + nf(bestR, 1) + ').',
+      'Each further electron is harder to remove (logarithmic scale). The biggest jump is between electron ' + best + ' and electron ' + (best + 1) + ' (×' + nf(bestR, 1) + ').');
+    var expected = e.grp <= 2 ? e.grp : e.grp - 10;
+    if (((e.blk === 's' && e.z > 2) || (e.blk === 'p' && e.per <= 3 && e.c !== 'ng')) && best === expected) {
+      cap += $t(' Tyle elektronów (' + best + ') to elektrony walencyjne, a pod nimi leży zamknięta powłoka.', ' That many electrons (' + best + ') are the valence electrons, with a closed shell below them.');
+    }
+    return svg + '<p class="cap">' + cap + '</p>';
+  }
+
+  var AM = ['Masa atomowa', 'Atomic mass'], DN = ['Gęstość (g/cm³)', 'Density (g/cm³)'];
+  var fMass = function (e) { return nf(e.m, 2); }, fDens = function (e) { return nf(e.d, 2); };
+  var MEND = {
+    21: { n: ['ekabor', 'eka-boron'], rows: [[AM, ['44', '44'], fMass]] },
+    31: { n: ['ekaglin', 'eka-aluminium'], rows: [[AM, ['68', '68'], fMass], [DN, ['5,9', '5.9'], fDens]] },
+    32: { n: ['ekakrzem', 'eka-silicon'], rows: [[AM, ['72', '72'], fMass], [DN, ['5,5', '5.5'], fDens]] }
+  };
+  function mendHTML(e) {
+    var d = MEND[e.z];
+    if (!d) return '';
+    return '<section class="sec full"><h3>' + $t('Przewidział Mendelejew', 'Predicted by Mendeleev') + '</h3><div class="mend"><p>' +
+      $t('W 1871 r. Mendelejew opisał nieznany jeszcze pierwiastek pod roboczą nazwą <b>' + d.n[0] + '</b>, bo w jego układzie była dla niego pusta kratka. Po odkryciu okazało się, że przewidywania były bliskie rzeczywistości.',
+        'In 1871 Mendeleev described a not-yet-known element under the working name <b>' + d.n[1] + '</b>, because his table had an empty box for it. After its discovery the predictions turned out to be close to reality.') + '</p>' +
+      '<table><thead><tr><th>' + $t('Właściwość', 'Property') + '</th><th>' + $t('Przewidział', 'Predicted') + '</th><th>' + $t('Zmierzono (', 'Measured (') + e.s + ')</th></tr></thead><tbody>' +
+      d.rows.map(function (r) { return '<tr><td>' + r[0][ix()] + '</td><td>' + r[1][ix()] + '</td><td>' + r[2](e) + '</td></tr>'; }).join('') + '</tbody></table></div></section>';
+  }
+
+  function neighborsHTML(e) {
+    var list, title;
+    if (e.y >= 9) { list = EL.filter(function (o) { return o.y === e.y; }); title = e.c === 'ln' ? $t('Szereg lantanowców', 'Lanthanide series') : $t('Szereg aktynowców', 'Actinide series'); }
+    else { list = EL.filter(function (o) { return o.x === e.x && o.y <= 7; }); title = $t('Grupa ' + e.x + ' · od góry do dołu', 'Group ' + e.x + ' · top to bottom'); }
+    return '<section class="sec full"><h3>' + title + '</h3><div class="mini">' + list.map(function (o) {
+      return '<button type="button" data-go="' + o.z + '" style="--h:' + CAT[o.c].h + '" aria-label="' + nm(o) + '"' + (o.z === e.z ? ' aria-current="true"' : '') + '><small>' + o.z + '</small>' + o.s + '</button>';
+    }).join('') + '</div></section>';
+  }
+
+  function cardHTML(e) {
+    var cat = CAT[e.c], st = stateAt(e, 293), en = LANG === 'en';
+    var yr = e.yr === 'starożytność' ? $t('znany od starożytności', 'known since antiquity') : (en ? e.yre : e.yr);
+    var disc = (en ? (e.disce || e.disc) : e.disc) || '—';
+    var uses = (en ? e.use : e.us).map(function (u) { return '<li>' + u + '</li>'; }).join('');
+    var predicted = e.pred ? '<span class="pill"><i style="background:transparent;border-style:dashed"></i>' + $t('własności przewidywane', 'predicted properties') + '</span>' : '';
+    var wiki = en ? 'https://en.wikipedia.org/wiki/Special:Search?search=' + encodeURIComponent(e.en + ' chemical element') : 'https://pl.wikipedia.org/wiki/Special:Search?search=' + encodeURIComponent(e.pl + ' pierwiastek chemiczny');
+    return '<div class="hero" style="--h:' + cat.h + '">' +
+      '<div class="lc"><figure class="stage">' + bohr(e) + '<figcaption><span>' + $t('model Bohra', 'Bohr model') + '</span><span>' + e.z + ' p⁺ · ' + e.z + ' e⁻</span></figcaption></figure>' + shellsHTML(e) + '</div>' +
+      '<div><div class="id">' + tileHTML(e) + '<div class="id-t"><p class="eyebrow">' + $t('Liczba atomowa ', 'Atomic number ') + e.z + '</p><h2 id="ctitle">' + nm(e) + '</h2><p class="en">' + alt(e) + '</p></div></div>' +
+      '<div class="pills"><span class="pill"><i></i>' + cn(e.c) + '</span><span class="pill"><i class="s-' + st + '"></i>' + $t('w 20 °C: ', 'at 20 °C: ') + stN(st) + '</span><span class="pill">' + $t('okres ', 'period ') + e.per + (e.y >= 9 ? '' : $t(' · grupa ', ' · group ') + e.x) + $t(' · blok ', ' · block ') + e.blk + '</span>' + predicted + '</div>' +
+      '<p class="look"><b>' + $t('Wygląd:', 'Appearance:') + '</b> ' + (en ? e.lke : e.lk) + '</p><p class="fact">' + (en ? e.fce : e.fc) + '</p></div></div>' +
+      '<div class="cols" style="--h:' + cat.h + '">' +
+      '<section class="sec"><h3>' + $t('Własności na tle całej tablicy', 'Properties compared with the whole table') + '</h3>' + CARD_PROPS.map(function (k) { return propRow(k, e); }).join('') + '</section>' +
+      '<div style="display:grid;gap:22px;align-content:start;min-width:0">' +
+      '<section class="sec"><h3>' + $t('Stan skupienia a temperatura', 'State of matter and temperature') + '</h3>' + stateBar(e) + '</section>' +
+      '<section class="sec"><h3>' + $t('Konfiguracja elektronowa', 'Electron configuration') + '</h3>' + cfgHTML(e) + '</section>' +
+      '<section class="sec ion"><h3>' + $t('Energie jonizacji (kJ/mol)', 'Ionization energies (kJ/mol)') + '</h3>' + ionHTML(e) + '</section>' +
+      '</div>' +
+      '<section class="sec full"><h3>' + $t('Historia i nazwa', 'History and name') + '</h3><dl class="hist"><div><dt>' + $t('Odkrycie', 'Discovered') + '</dt><dd>' + yr + '</dd></div><div><dt>' + $t('Odkrywca', 'Discoverer') + '</dt><dd>' + disc + '</dd></div><div><dt>' + $t('Pochodzenie nazwy', 'Name origin') + '</dt><dd>' + (en ? e.ete : e.et) + '</dd></div></dl></section>' +
+      mendHTML(e) +
+      '<section class="sec full"><h3>' + $t('Do czego służy', 'Uses') + '</h3><ul class="uses">' + uses + '</ul></section>' +
+      neighborsHTML(e) +
+      '<div class="sec full cfoot"><span>' + $t('Kolejność: ← → przełączają pierwiastki, Esc zamyka kartę.', 'Use ← → to switch elements and Esc to close the card.') + '</span><a href="' + wiki + '" target="_blank" rel="noopener">' + $t('Szukaj w Wikipedii →', 'Search Wikipedia →') + '</a></div>' +
+      '</div>';
+  }
+
+  var scrim = $('#scrim'), card = $('#card'), cbody = $('#cbody');
+  function showCard(z, originEl) {
+    var e = byZ[z];
+    if (!e) return;
+    var first = scrim.hidden;
+    S.open = z;
+    cbody.innerHTML = cardHTML(e);
+    cbody.style.animation = 'none'; void cbody.offsetWidth; cbody.style.animation = '';
+    $('#cpos').textContent = e.s + ' · ' + e.z + $t(' z ', ' of ') + EL.length;
+    var p = byZ[z - 1], n = byZ[z + 1];
+    $('#cprev').hidden = !p; $('#cnext').hidden = !n;
+    if (p) $('#cprevl').textContent = p.s + ' ' + p.z;
+    if (n) $('#cnextl').textContent = n.s + ' ' + n.z;
+    card.scrollTop = 0;
+    if (first) {
+      scrim.hidden = false;
+      if (originEl && originEl.getBoundingClientRect) {
+        var r = originEl.getBoundingClientRect(), c = card.getBoundingClientRect();
+        card.style.transformOrigin = (r.left + r.width / 2 - c.left) + 'px ' + (r.top + r.height / 2 - c.top) + 'px';
+      }
+      try { document.documentElement.style.overflow = 'hidden'; } catch (x) {  }
+    }
+    if (cells[z]) { if (S.lastCell) S.lastCell.removeAttribute('aria-current'); cells[z].setAttribute('aria-current', 'true'); S.lastCell = cells[z]; }
+    if (first) $('#cclose').focus();
+    try { history.replaceState(null, '', '#' + e.s); } catch (x) {  }
+  }
+  function closeCard() {
+    if (scrim.hidden) return;
+    scrim.hidden = true;
+    try { document.documentElement.style.overflow = ''; } catch (x) {  }
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (x) {  }
+    var c = cells[S.open];
+    S.open = null;
+    if (c) { setRoving(c); c.focus(); }
+  }
+  function step(d) {
+    if (S.open == null) return;
+    var z = S.open + d;
+    if (byZ[z]) showCard(z);
+  }
+  function hlShell(i, on) {
+    cbody.querySelectorAll('.ring[data-i], .rt[data-i]').forEach(function (n) { if (+n.dataset.i === i) n.classList.toggle('hl', on); });
+  }
+
+  function setRoving(btn) {
+    Object.keys(cells).forEach(function (z) { cells[z].tabIndex = -1; });
+    btn.tabIndex = 0;
+  }
+  function moveFocus(from, dir) {
+    var e = byZ[from.dataset.z], best = null, bestScore = 1e9;
+    EL.forEach(function (o) {
+      var dx = o.x - e.x, dy = o.y - e.y, prim, sec;
+      if (dir === 'ArrowRight') { if (dx <= 0) return; prim = dx; sec = Math.abs(dy); }
+      else if (dir === 'ArrowLeft') { if (dx >= 0) return; prim = -dx; sec = Math.abs(dy); }
+      else if (dir === 'ArrowDown') { if (dy <= 0) return; prim = dy; sec = Math.abs(dx); }
+      else { if (dy >= 0) return; prim = -dy; sec = Math.abs(dx); }
+      var score = (dir === 'ArrowLeft' || dir === 'ArrowRight') ? sec * 50 + prim : sec * 4 + prim;
+      if (score < bestScore) { bestScore = score; best = o; }
+    });
+    if (best) { setRoving(cells[best.z]); cells[best.z].focus(); }
+  }
+
+  function suggOpen(on) {
+    var sugg = $('#sugg'), q = $('#q');
+    sugg.hidden = !on;
+    q.setAttribute('aria-expanded', String(on));
+    if (!on) q.removeAttribute('aria-activedescendant');
+  }
+  function renderSugg() {
+    var sugg = $('#sugg'), q = $('#q'), res = S.res, h = '';
+    var EXAMPLES = LANG === 'en'
+      ? ['K', 'He', 'Helium', 'noble gas', 'gazy szlachetne', 'alkali metal', 'halogens', 'group 17', 'period 3', 'd-block', '1-10', 'liquid', 'radioactive']
+      : ['K', 'Hel', 'Helium', 'gazy szlachetne', 'noble gas', 'alkaliczne', 'halogeny', 'grupa 17', 'okres 3', 'blok d', '1-10', 'ciecz', 'radioaktywne'];
+    if (!S.q.trim()) {
+      h = '<p class="sg-note">' + $t('Szukaj po polsku i po angielsku: symbol (K), nazwa (Hel, Helium), kategoria (gazy szlachetne, noble gas), numer (26, 1-10), grupa, okres, blok albo stan skupienia (ciecz, gas). Kilka słów zawęża wynik.',
+        'Search in Polish or English: symbol (K), name (Helium, Hel), category (noble gas, gazy szlachetne), number (26, 1-10), group, period, block or state (liquid, gas). Several words narrow the result.') + '</p><div class="sg-ex">' +
+        EXAMPLES.map(function (x) { return '<button type="button" data-ex="' + x + '">' + x + '</button>'; }).join('') + '</div>';
+    } else if (!res || !res.length) {
+      h = '<p class="sg-note">' + $t('Brak wyników. Spróbuj symbolu (Fe), nazwy (żelazo, iron), kategorii (halogeny) albo numeru.', 'No results. Try a symbol (Fe), a name (iron, żelazo), a category (halogens) or a number.') + '</p>';
+    } else {
+      if (S.active >= Math.min(res.length, 8)) S.active = 0;
+      h = res.slice(0, 8).map(function (r, i) {
+        var e = r.e;
+        return '<button type="button" class="sg" role="option" id="sg-' + e.z + '" data-z="' + e.z + '" aria-selected="' + (i === S.active) + '" style="--h:' + CAT[e.c].h + '"><i>' + e.s + '</i><span><b>' + nm(e) + ' <em>· ' + altName(e) + '</em></b><small>' + e.z + ' · ' + cn(e.c) + '</small></span></button>';
+      }).join('') + (res.length > 8 ? '<p class="sg-note">' + $t('+ ' + (res.length - 8) + ' więcej, wszystkie są podświetlone w tablicy.', '+ ' + (res.length - 8) + ' more, all highlighted in the table.') + '</p>' : '');
+      q.setAttribute('aria-activedescendant', 'sg-' + res[S.active].e.z);
+    }
+    sugg.innerHTML = h;
+    suggOpen(true);
+  }
+
+  function renderFoot() {
+    $('#foot').innerHTML = LANG === 'en'
+      ? '<p>Numerical data: <a href="https://github.com/Bowserinator/Periodic-Table-JSON" target="_blank" rel="noopener">Periodic-Table-JSON</a> (CC BY-SA 3.0, based on Wikipedia). Descriptions, etymologies and trivia: original text.</p><p>Temperatures refer to a pressure of 1 atm. For elements from fermium (Z ≥ 100), and for francium and astatine, values are estimated or missing. A diamond in the corner of a tile marks an element that Mendeleev predicted before it was discovered.</p>'
+      : '<p>Dane liczbowe: <a href="https://github.com/Bowserinator/Periodic-Table-JSON" target="_blank" rel="noopener">Periodic-Table-JSON</a> (CC BY-SA 3.0, oparte na Wikipedii). Opisy, etymologie i ciekawostki: opracowanie własne.</p><p>Temperatury odnoszą się do ciśnienia 1 atm. Dla pierwiastków od fermu (Z ≥ 100) oraz franu i astatu wartości są szacunkowe lub brakuje danych. Romb w rogu kafelka oznacza pierwiastek, który Mendelejew przewidział przed jego odkryciem.</p>';
+  }
+  function applyStatic() {
+    document.title = $t('Tablica Mendelejewa · Yllipsis-skiid777', "Mendeleev's Table · Yllipsis-skiid777");
+    document.querySelectorAll('[data-pl]').forEach(function (n) {
+      var v = n.getAttribute('data-' + LANG), a = n.getAttribute('data-attr');
+      if (a) n.setAttribute(a, v); else n.textContent = v;
+    });
+    $('#app').classList.toggle('l-en', LANG === 'en');
+    renderFoot();
+  }
+  function refreshLang() {
+    applyStatic();
+    renderPropSel();
+    labelCells();
+    renderLegend();
+    applyView();
+    hovIdle();
+    if (!$('#sugg').hidden) renderSugg();
+    if (S.open != null) showCard(S.open);
+  }
+  document.addEventListener('yllipsis:lang', function (ev) { LANG = ev.detail.lang; refreshLang(); });
+
+  function setMode(m) {
+    S.mode = m;
+    document.querySelectorAll('.seg button[data-mode]').forEach(function (b) { b.setAttribute('aria-checked', String(b.dataset.mode === m)); });
+    $('#propWrap').hidden = m !== 'prop';
+    renderLegend();
+    applyView();
+    hovIdle();
+  }
+
+  function init() {
+    build();
+    hovEl = $('#hov');
+    var sel = $('#propSel');
+    sel.addEventListener('change', function () { S.prop = sel.value; renderLegend(); applyView(); });
+    applyStatic();
+    renderPropSel();
+    labelCells();
+
+    document.querySelectorAll('.seg button[data-mode]').forEach(function (b) { b.addEventListener('click', function () { setMode(b.dataset.mode); }); });
+
+    legendEl.addEventListener('click', function (ev) {
+      var chip = ev.target.closest('.chip');
+      if (chip) { S.cat = S.cat === chip.dataset.cat ? null : chip.dataset.cat; renderLegend(); applyView(); return; }
+      var pre = ev.target.closest('.presets button');
+      if (pre) { S.T = +pre.dataset.t; $('#tslide').value = S.T; applyView(); }
+    });
+    legendEl.addEventListener('input', function (ev) {
+      if (ev.target.id === 'tslide') { S.T = +ev.target.value; applyView(); }
+    });
+
+    var q = $('#q'), sugg = $('#sugg');
+    q.addEventListener('input', function () { S.q = q.value; S.active = 0; applyView(); renderSugg(); });
+    q.addEventListener('focus', function () { renderSugg(); });
+    q.addEventListener('keydown', function (ev) {
+      var n = S.res ? Math.min(S.res.length, 8) : 0;
+      if (ev.key === 'ArrowDown' && n) { ev.preventDefault(); S.active = (S.active + 1) % n; renderSugg(); }
+      else if (ev.key === 'ArrowUp' && n) { ev.preventDefault(); S.active = (S.active + n - 1) % n; renderSugg(); }
+      else if (ev.key === 'Enter') {
+        if (S.res && S.res[S.active]) { var z = S.res[S.active].e.z; suggOpen(false); showCard(z, cells[z]); }
+      }
+      else if (ev.key === 'Escape') {
+        if (!sugg.hidden) suggOpen(false);
+        else { q.value = ''; S.q = ''; applyView(); }
+      }
+    });
+    sugg.addEventListener('mousedown', function (ev) { ev.preventDefault(); });
+    sugg.addEventListener('click', function (ev) {
+      var it = ev.target.closest('.sg'), ex = ev.target.closest('[data-ex]');
+      if (it) { var z = +it.dataset.z; suggOpen(false); showCard(z, cells[z]); }
+      else if (ex) { q.value = ex.dataset.ex; S.q = q.value; S.active = 0; applyView(); renderSugg(); q.focus(); }
+    });
+    q.addEventListener('blur', function () { setTimeout(function () { if (document.activeElement !== q) suggOpen(false); }, 120); });
+    document.addEventListener('click', function (ev) { if (!ev.target.closest('.search')) suggOpen(false); });
+
+    $('#rnd').addEventListener('click', function () {
+      var e = EL[Math.floor(Math.random() * EL.length)];
+      showCard(e.z, cells[e.z]);
+    });
+
+    ptEl.addEventListener('click', function (ev) {
+      var b = ev.target.closest('.el');
+      if (b) { setRoving(b); showCard(+b.dataset.z, b); }
+    });
+    ptEl.addEventListener('keydown', function (ev) {
+      var b = ev.target.closest('.el');
+      if (b && /^Arrow/.test(ev.key)) { ev.preventDefault(); moveFocus(b, ev.key); }
+    });
+    ptEl.addEventListener('mouseover', function (ev) {
+      var b = ev.target.closest('.el');
+      if (b) hovShow(byZ[b.dataset.z]);
+    });
+    ptEl.addEventListener('mouseleave', hovIdle);
+    ptEl.addEventListener('focusin', function (ev) {
+      var b = ev.target.closest('.el');
+      if (b) hovShow(byZ[b.dataset.z]);
+    });
+
+    scrim.addEventListener('click', function (ev) { if (ev.target === scrim) closeCard(); });
+    $('#cclose').addEventListener('click', closeCard);
+    $('#cprev').addEventListener('click', function () { step(-1); });
+    $('#cnext').addEventListener('click', function () { step(1); });
+    cbody.addEventListener('click', function (ev) {
+      var g = ev.target.closest('[data-go]');
+      if (g) showCard(+g.dataset.go);
+    });
+    cbody.addEventListener('mouseover', function (ev) { var c = ev.target.closest('.sc'); if (c) hlShell(+c.dataset.i, true); });
+    cbody.addEventListener('mouseout', function (ev) { var c = ev.target.closest('.sc'); if (c) hlShell(+c.dataset.i, false); });
+    cbody.addEventListener('focusin', function (ev) { var c = ev.target.closest('.sc'); if (c) hlShell(+c.dataset.i, true); });
+    cbody.addEventListener('focusout', function (ev) { var c = ev.target.closest('.sc'); if (c) hlShell(+c.dataset.i, false); });
+    document.addEventListener('keydown', function (ev) {
+      if (scrim.hidden) return;
+      if (ev.key === 'Escape') { ev.preventDefault(); closeCard(); }
+      else if (ev.key === 'ArrowLeft') { ev.preventDefault(); step(-1); }
+      else if (ev.key === 'ArrowRight') { ev.preventDefault(); step(1); }
+      else if (ev.key === 'Tab') {
+        var f = card.querySelectorAll('button:not([hidden]), a[href]'), a = f[0], z = f[f.length - 1];
+        if (ev.shiftKey && document.activeElement === a) { ev.preventDefault(); z.focus(); }
+        else if (!ev.shiftKey && document.activeElement === z) { ev.preventDefault(); a.focus(); }
+      }
+    });
+
+    renderLegend();
+    applyView();
+    hovIdle();
+
+    try {
+      var h = decodeURIComponent((location.hash || '').slice(1)).toLowerCase();
+      if (h) {
+        var f2 = EL.filter(function (e) { return e.s.toLowerCase() === h; })[0];
+        if (f2) showCard(f2.z, cells[f2.z]);
+      }
+    } catch (x) {  }
+  }
+  init();
+})();
+</script>
+</body>
+</html>

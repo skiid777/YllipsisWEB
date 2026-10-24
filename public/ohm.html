@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="pl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Prawo Ohma i moc · Yllipsis-skiid777</title>
+<meta name="description" content="Prawo Ohma i moc: wpisz dowolne dwie z U, I, R, P, a pozostałe policzą się same. Ze wzorami, rezystorem z szeregu E24 i mocą rezystora.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<script src="/assets/site.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--y-bg); }
+body { margin: 0; min-height: 100vh; display: flex; flex-direction: column; background: var(--y-bg); color: var(--y-fg); font-family: var(--y-font-display); }
+.wrap { width: 100%; max-width: 1320px; margin-inline: auto; padding-inline: clamp(16px, 3vw, 32px); }
+main { flex: 1; padding-block: clamp(28px, 5vw, 56px) 56px; }
+h1 { margin: 0; font-weight: 800; font-stretch: 112%; font-size: clamp(2.2rem, 6vw, 4.4rem); line-height: 0.98; letter-spacing: -0.04em; text-wrap: balance; animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+.lead { margin: 14px 0 0; max-width: 56ch; color: var(--y-fg2); font-size: clamp(1rem, 1.6vw, 1.15rem); text-wrap: pretty; animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s backwards; }
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+
+.stage { margin-top: 28px; padding: clamp(12px, 3vw, 28px); background: var(--y-surface); border: 1px solid var(--y-line); border-radius: 22px; display: grid; justify-items: center; animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards; }
+#circ { width: 100%; max-width: 720px; height: auto; display: block; overflow: visible; --heat: 0; --spd: 2s; }
+#circ .wire { fill: none; stroke: var(--y-fg2); stroke-width: 3; stroke-linejoin: round; opacity: 0.55; }
+#circ .flow { fill: none; stroke: var(--y-accent); stroke-width: 6; stroke-linecap: round; stroke-dasharray: 0.1 26; animation: flow var(--spd) linear infinite; }
+@keyframes flow { to { stroke-dashoffset: -26.1; } }
+#circ .bat { stroke: var(--y-fg); stroke-linecap: round; }
+#circ .res { fill: color-mix(in srgb, #ff5a1f calc(var(--heat) * 100%), var(--y-bg)); stroke: var(--y-fg); stroke-width: 2.5; filter: drop-shadow(0 0 calc(var(--heat) * 16px) rgba(255, 90, 31, calc(var(--heat) * 0.85))); transition: fill 0.5s ease, filter 0.5s ease; }
+#circ text { font-family: var(--y-font-mono); font-weight: 600; fill: var(--y-fg); }
+#circ .sym { font-family: var(--y-font-display); font-weight: 800; font-size: 26px; fill: var(--y-accent); }
+#circ .val { font-size: 19px; }
+#circ .pm { font-size: 14px; fill: var(--y-fg2); font-weight: 500; }
+
+.calc { margin-top: 20px; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 20px; align-items: start; }
+.panel { min-width: 0; padding: clamp(16px, 2.5vw, 26px); border: 1px solid var(--y-line); border-radius: 22px; display: grid; gap: 18px; animation: rise 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 0.3s backwards; }
+.calc .panel:nth-child(2) { animation-delay: 0.4s; }
+.lbl { display: block; margin-bottom: 8px; font: 600 0.72rem var(--y-font-mono); letter-spacing: 0.12em; text-transform: uppercase; color: var(--y-fg2); }
+
+.qs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.q { min-width: 0; }
+.q label { display: flex; align-items: baseline; gap: 8px; margin-bottom: 7px; }
+.q .s { font-weight: 800; font-stretch: 110%; font-size: 1.35rem; line-height: 1; color: var(--y-accent); width: 1ch; }
+.q .n { font-size: 0.92rem; color: var(--y-fg2); }
+.q .bdg { margin-left: auto; font: 600 0.64rem var(--y-font-mono); letter-spacing: 0.1em; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--y-line); color: var(--y-fg2); transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease; }
+.q input { width: 100%; padding: 13px 14px; border: 1px solid var(--y-line); border-radius: 14px; background: var(--y-bg); color: var(--y-fg); font: 600 1.3rem var(--y-font-mono); font-variant-numeric: tabular-nums; transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.3s ease; }
+.q input:focus { outline: none; border-color: var(--y-accent); box-shadow: 0 0 0 4px var(--y-accent-soft); }
+.q[data-role="in"] .bdg { background: var(--y-fg); border-color: var(--y-fg); color: var(--y-bg); }
+.q[data-role="out"] input { background: var(--y-surface); border-style: dashed; }
+.q .msg { margin: 6px 0 0; min-height: 1.2em; font-size: 0.82rem; color: #d03030; }
+:root[data-theme="dark"] .q .msg { color: #ff7a7a; }
+.q.err input { border-color: #d03030; }
+.hint { margin: 0; font-size: 0.86rem; color: var(--y-fg2); max-width: 60ch; }
+
+.steps { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.steps li { padding: 12px 14px; border-radius: 14px; background: var(--y-surface); border: 1px solid var(--y-line); font: 500 0.95rem var(--y-font-mono); overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.steps b { color: var(--y-accent); font-weight: 600; }
+.steps .r { font-weight: 600; color: var(--y-fg); }
+.steps .f { color: var(--y-fg2); }
+
+.facts { margin: 0; display: grid; }
+.facts > div { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 12px 0; border-top: 1px solid var(--y-line); }
+.facts dt { color: var(--y-fg2); font-size: 0.92rem; }
+.facts dd { margin: 0; font: 600 0.98rem var(--y-font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+.facts a { color: var(--y-accent); text-decoration: none; border-bottom: 1px solid currentColor; }
+.facts a:hover { border-bottom-width: 2px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { display: grid; gap: 2px; padding: 8px 14px; border: 1px solid var(--y-line); border-radius: 12px; background: none; color: var(--y-fg2); font: 500 0.76rem var(--y-font-mono); text-align: left; cursor: pointer; transition: border-color 0.2s ease, transform 0.25s ease; }
+.chip b { font-weight: 600; font-size: 0.9rem; color: var(--y-fg); }
+.chip:hover { border-color: var(--y-fg2); transform: translateY(-2px); }
+.chip:focus-visible { outline: 2px solid var(--y-accent); outline-offset: 2px; }
+
+@media (max-width: 900px) { .calc { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 460px) { .qs { grid-template-columns: minmax(0, 1fr); } }
+@media (prefers-reduced-motion: reduce) {
+  h1, .lead, .stage, .panel, #circ .flow { animation: none; }
+  #circ .res, .chip { transition: none; }
+}
+</style>
+</head>
+<body>
+<div id="yl-bar" data-crumb-pl="Prawo Ohma i moc" data-crumb-en="Ohm's law and power"></div>
+<main class="wrap">
+  <h1 data-pl="Prawo Ohma i moc" data-en="Ohm's law and power">Prawo Ohma i moc</h1>
+  <p class="lead" data-pl="Wpisz dowolne dwie wielkości, a pozostałe dwie policzą się same. Rozumiem przedrostki: 20m to 20 mA, 4k7 to 4,7 kΩ." data-en="Type any two quantities and the other two work themselves out. Prefixes work: 20m is 20 mA, 4k7 is 4.7 kΩ.">Wpisz dowolne dwie wielkości, a pozostałe dwie policzą się same.</p>
+
+  <section class="stage">
+    <svg id="circ" viewBox="0 0 600 240" role="img">
+      <path class="wire" d="M90 120 V40 H510 V200 H90 V140"/>
+      <path class="flow" d="M90 120 V40 H510 V200 H90 V140"/>
+      <line class="bat" x1="62" y1="120" x2="118" y2="120" stroke-width="4"/>
+      <line class="bat" x1="76" y1="140" x2="104" y2="140" stroke-width="8"/>
+      <text class="pm" x="124" y="117">+</text>
+      <rect class="res" x="230" y="24" width="140" height="32" rx="4"/>
+      <text class="sym" x="30" y="122" text-anchor="middle">U</text>
+      <text class="val" id="tU" x="30" y="148" text-anchor="middle"></text>
+      <text class="sym" x="300" y="98" text-anchor="middle">R</text>
+      <text class="val" id="tR" x="300" y="124" text-anchor="middle"></text>
+      <text class="pm" id="tP" x="300" y="16" text-anchor="middle"></text>
+      <path d="M282 200 l14 -8 v16 z" fill="var(--y-accent)"/>
+      <text class="sym" x="300" y="182" text-anchor="end">I</text>
+      <text class="val" id="tI" x="300" y="230" text-anchor="middle"></text>
+    </svg>
+  </section>
+
+  <div class="calc">
+    <section class="panel">
+      <div class="qs" id="qs"></div>
+      <p class="hint" data-pl="Pola z napisem „podane” to twoje dane. Wpisz coś w trzecie pole, a najstarsze z podanych zacznie się liczyć." data-en="Fields marked “given” are your inputs. Type into a third field and the oldest given one becomes calculated.">Pola z napisem „podane” to twoje dane.</p>
+      <div>
+        <span class="lbl" data-pl="Jak to policzyłem" data-en="How it was calculated">Jak to policzyłem</span>
+        <ol class="steps" id="steps"></ol>
+      </div>
+    </section>
+
+    <section class="panel">
+      <div>
+        <span class="lbl" data-pl="Gdy R to rezystor" data-en="If R is a resistor">Gdy R to rezystor</span>
+        <dl class="facts">
+          <div><dt data-pl="Najbliższy z szeregu E24" data-en="Nearest E24 value">Najbliższy z szeregu E24</dt><dd><a id="fE24" href="/resistance"></a></dd></div>
+          <div><dt data-pl="Prąd przy tym rezystorze" data-en="Current with that resistor">Prąd przy tym rezystorze</dt><dd id="fI24"></dd></div>
+          <div><dt data-pl="Moc rezystora (zapas 2×)" data-en="Resistor rating (2× margin)">Moc rezystora (zapas 2×)</dt><dd id="fW"></dd></div>
+        </dl>
+      </div>
+      <div>
+        <span class="lbl" data-pl="Przykłady" data-en="Examples">Przykłady</span>
+        <div class="chips" id="ex"></div>
+      </div>
+    </section>
+  </div>
+</main>
+<div id="yl-foot"></div>
+
+<script>
+(function () {
+  'use strict';
+  var Y = window.Yllipsis;
+  var t = function (pl, en) { return Y.t(pl, en); };
+
+  var Q = {
+    U: { unit: 'V', pl: 'Napięcie', en: 'Voltage', re: /(v|volts?)$/i },
+    I: { unit: 'A', pl: 'Prąd', en: 'Current', re: /(a|amps?)$/i },
+    R: { unit: 'Ω', pl: 'Rezystancja', en: 'Resistance', re: /(Ω|ohms?)$/i },
+    P: { unit: 'W', pl: 'Moc', en: 'Power', re: /(w|watts?)$/i }
+  };
+  var KEYS = ['U', 'I', 'R', 'P'];
+  var PRE = { p: 1e-12, n: 1e-9, u: 1e-6, 'µ': 1e-6, 'μ': 1e-6, m: 1e-3, '': 1, r: 1, R: 1, k: 1e3, K: 1e3, M: 1e6, G: 1e9 };
+  var SHOW = [[1e9, 'G'], [1e6, 'M'], [1e3, 'k'], [1, ''], [1e-3, 'm'], [1e-6, 'µ'], [1e-9, 'n'], [1e-12, 'p']];
+
+  var SOLVE = {
+    U: { IR: ['I · R', '{I} · {R}', function (v) { return v.I * v.R; }], IP: ['P / I', '{P} / {I}', function (v) { return v.P / v.I; }], RP: ['√(P · R)', '√({P} · {R})', function (v) { return Math.sqrt(v.P * v.R); }] },
+    I: { UR: ['U / R', '{U} / {R}', function (v) { return v.U / v.R; }], UP: ['P / U', '{P} / {U}', function (v) { return v.P / v.U; }], RP: ['√(P / R)', '√({P} / {R})', function (v) { return Math.sqrt(v.P / v.R); }] },
+    R: { UI: ['U / I', '{U} / {I}', function (v) { return v.U / v.I; }], UP: ['U² / P', '({U})² / {P}', function (v) { return v.U * v.U / v.P; }], IP: ['P / I²', '{P} / ({I})²', function (v) { return v.P / (v.I * v.I); }] },
+    P: { UI: ['U · I', '{U} · {I}', function (v) { return v.U * v.I; }], UR: ['U² / R', '({U})² / {R}', function (v) { return v.U * v.U / v.R; }], IR: ['I² · R', '({I})² · {R}', function (v) { return v.I * v.I * v.R; }] }
+  };
+  var E24 = [1.0, 1.1, 1.2, 1.3, 1.5, 1.6, 1.8, 2.0, 2.2, 2.4, 2.7, 3.0, 3.3, 3.6, 3.9, 4.3, 4.7, 5.1, 5.6, 6.2, 6.8, 7.5, 8.2, 9.1];
+  var RATINGS = [[0.125, '1/8 W'], [0.25, '1/4 W'], [0.5, '1/2 W'], [1, '1 W'], [2, '2 W'], [3, '3 W'], [5, '5 W'], [10, '10 W']];
+  var EXAMPLES = [
+    { pl: 'Pin Arduino', en: 'Arduino pin', v: { U: 5, I: 0.02 } },
+    { pl: 'Akumulator 12 V', en: '12 V battery', v: { U: 12, I: 1 } },
+    { pl: 'Żarówka 230 V', en: '230 V bulb', v: { U: 230, P: 60 } },
+    { pl: 'Bateria 9 V', en: '9 V battery', v: { U: 9, R: 1000 } }
+  ];
+
+  var V = { U: 5, I: 0.02, R: 250, P: 0.1 };
+  var given = ['U', 'I'];
+
+  function num(x) { var s = String(x); return Y.lang === 'pl' ? s.replace('.', ',') : s; }
+  function si(v) {
+    for (var i = 0; i < SHOW.length; i++) {
+      var r = parseFloat((v / SHOW[i][0]).toPrecision(4));
+      if (r >= 1 || i === SHOW.length - 1) return { n: r, p: SHOW[i][1] };
+    }
+  }
+  function fmt(v, k) { var s = si(v); return num(s.n) + ' ' + s.p + Q[k].unit; }
+  function urlNum(v) { return String(parseFloat(v.toPrecision(6))); }
+
+  function parse(raw, k) {
+    var s = raw.replace(/\s+/g, '').replace(Q[k].re, '');
+    var m = /^(\d+)([pnuµμmrRkKMG])(\d+)$/.exec(s);
+    if (m) return parseFloat(m[1] + '.' + m[3]) * PRE[m[2]];
+    m = /^(\d+(?:[.,]\d+)?|[.,]\d+)(?:e([+-]?\d+))?([pnuµμmkKMG]?)$/.exec(s);
+    if (!m) return null;
+    return parseFloat(m[1].replace(',', '.') + (m[2] ? 'e' + m[2] : '')) * PRE[m[3]];
+  }
+
+  function pairKey(a, b) { return KEYS.filter(function (k) { return k === a || k === b; }).join(''); }
+  function solve() {
+    var pk = pairKey(given[0], given[1]);
+    KEYS.forEach(function (k) { if (given.indexOf(k) < 0) V[k] = SOLVE[k][pk][2](V); });
+  }
+
+  var qsEl = document.getElementById('qs');
+  function buildFields() {
+    qsEl.innerHTML = KEYS.map(function (k) {
+      return '<div class="q" data-k="' + k + '"><label for="in' + k + '"><span class="s">' + k + '</span><span class="n">' + Q[k][Y.lang] + ' [' + Q[k].unit + ']</span><span class="bdg"></span></label>' +
+        '<input id="in' + k + '" type="text" inputmode="decimal" autocomplete="off" spellcheck="false" data-k="' + k + '"><p class="msg" aria-live="polite"></p></div>';
+    }).join('');
+  }
+  function field(k) { return qsEl.querySelector('.q[data-k="' + k + '"]'); }
+
+  function nearestE24(v) {
+    var dec = Math.floor(Math.log10(v)), mm = v / Math.pow(10, dec), best = 1, bd = Infinity;
+    E24.concat([10]).forEach(function (c) { var d = Math.abs(Math.log(mm / c)); if (d < bd) { bd = d; best = c; } });
+    return parseFloat((best * Math.pow(10, dec)).toPrecision(6));
+  }
+  function rating(p) {
+    for (var i = 0; i < RATINGS.length; i++) if (RATINGS[i][0] >= 2 * p) return RATINGS[i][1];
+    return null;
+  }
+  function resUrl(r) {
+    var s = si(r), v = ['', 'k', 'M', 'G'].indexOf(s.p) >= 0 ? String(s.n) + s.p : urlNum(r);
+    return '/resistance?v=' + encodeURIComponent(v) + '&n=4&t=gold';
+  }
+
+  function sub(tpl) { return tpl.replace(/\{(\w)\}/g, function (_, k) { return fmt(V[k], k); }); }
+
+  var circ = document.getElementById('circ');
+  function render(skip) {
+    KEYS.forEach(function (k) {
+      var f = field(k), isIn = given.indexOf(k) >= 0;
+      f.setAttribute('data-role', isIn ? 'in' : 'out');
+      f.querySelector('.bdg').textContent = isIn ? t('podane', 'given') : t('obliczone', 'calculated');
+      if (k !== skip) { f.querySelector('input').value = fmt(V[k], k); f.classList.remove('err'); f.querySelector('.msg').textContent = ''; }
+      document.getElementById('t' + k).textContent = k === 'P' ? 'P = ' + fmt(V.P, 'P') : fmt(V[k], k);
+    });
+
+    var pk = pairKey(given[0], given[1]);
+    document.getElementById('steps').innerHTML = KEYS.filter(function (k) { return given.indexOf(k) < 0; }).map(function (k) {
+      var s = SOLVE[k][pk];
+      return '<li><b>' + k + '</b> = <span class="f">' + s[0] + '</span> = ' + sub(s[1]) + ' = <span class="r">' + fmt(V[k], k) + '</span></li>';
+    }).join('');
+
+    var r24 = nearestE24(V.R), a = document.getElementById('fE24');
+    a.textContent = fmt(r24, 'R') + ' →';
+    a.href = resUrl(r24);
+    a.title = t('Pokaż paski w kalkulatorze rezystorów', 'Show the bands in the resistor calculator');
+    document.getElementById('fI24').textContent = fmt(V.U / r24, 'I');
+    var w = rating(V.P);
+    document.getElementById('fW').textContent = w ? t('min. ', 'at least ') + w : t('ponad 10 W, rezystor mocy na radiatorze', 'over 10 W, power resistor on a heatsink');
+
+    var heat = Math.max(0, Math.min(1, (Math.log10(V.P) + 3) / 6.5));
+    var spd = Math.max(0.35, Math.min(8, 0.4 - 0.9 * Math.log10(V.I)));
+    circ.style.setProperty('--heat', heat.toFixed(3));
+    circ.style.setProperty('--spd', spd.toFixed(2) + 's');
+    circ.setAttribute('aria-label', 'U ' + fmt(V.U, 'U') + ', I ' + fmt(V.I, 'I') + ', R ' + fmt(V.R, 'R') + ', P ' + fmt(V.P, 'P'));
+
+    var st = {};
+    st[given[0]] = urlNum(V[given[0]]);
+    st[given[1]] = urlNum(V[given[1]]);
+    Y.setParams(st);
+  }
+
+  qsEl.addEventListener('input', function (ev) {
+    var k = ev.target.dataset.k;
+    if (!k) return;
+    var f = field(k), msg = f.querySelector('.msg'), raw = ev.target.value;
+    var v = raw.trim() ? parse(raw, k) : null;
+    var bad = v === null ? (raw.trim() ? t('Nie rozumiem. Przykłady: 5, 20m, 4k7.', 'Cannot read that. Examples: 5, 20m, 4k7.') : t('Wpisz wartość.', 'Enter a value.'))
+      : !(v > 0 && isFinite(v)) ? t('Musi być większe od zera.', 'Must be greater than zero.') : '';
+    f.classList.toggle('err', !!bad);
+    msg.textContent = bad;
+    if (bad) return;
+    V[k] = v;
+    if (given.indexOf(k) < 0) given = [given[1], k];
+    solve();
+    render(k);
+  });
+  qsEl.addEventListener('focusout', function (ev) {
+    var k = ev.target.dataset && ev.target.dataset.k;
+    if (k && !field(k).classList.contains('err')) ev.target.value = fmt(V[k], k);
+  });
+
+  var exEl = document.getElementById('ex');
+  function buildExamples() {
+    exEl.innerHTML = EXAMPLES.map(function (e, i) {
+      var ks = Object.keys(e.v);
+      return '<button type="button" class="chip" data-i="' + i + '">' + e[Y.lang] + '<b>' + fmt(e.v[ks[0]], ks[0]) + ' · ' + fmt(e.v[ks[1]], ks[1]) + '</b></button>';
+    }).join('');
+  }
+  exEl.addEventListener('click', function (ev) {
+    var b = ev.target.closest('.chip');
+    if (!b) return;
+    var e = EXAMPLES[+b.dataset.i];
+    given = Object.keys(e.v);
+    given.forEach(function (k) { V[k] = e.v[k]; });
+    solve();
+    render();
+  });
+
+  function loadFromUrl() {
+    var p = Y.params(), ks = KEYS.filter(function (k) { return p.has(k); });
+    if (ks.length !== 2) return;
+    var vals = ks.map(function (k) { return parse(p.get(k), k); });
+    if (!vals.every(function (v) { return v > 0 && isFinite(v); })) return;
+    given = ks;
+    V[ks[0]] = vals[0];
+    V[ks[1]] = vals[1];
+  }
+
+  function title() { document.title = t('Prawo Ohma i moc · Yllipsis-skiid777', "Ohm's law and power · Yllipsis-skiid777"); }
+  document.addEventListener('yllipsis:lang', function () { title(); buildFields(); buildExamples(); render(); });
+
+  title();
+  loadFromUrl();
+  solve();
+  buildFields();
+  buildExamples();
+  render();
+})();
+</script>
+</body>
+</html>
