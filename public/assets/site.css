@@ -213,7 +213,25 @@ html.vt-lang::view-transition-new(root) { animation: yl-in 0.34s ease both; }
   border-top: 1px solid var(--y-line);
   font: 500 0.78rem var(--y-font-mono);
   color: var(--y-fg2);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 18px;
 }
+.yl-foot-text { display: flex; flex-wrap: wrap; gap: 6px 10px; min-width: 0; }
+.yl-foot-text a {
+  color: var(--y-fg);
+  text-decoration: underline;
+  text-decoration-color: var(--y-line);
+  text-underline-offset: 4px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+.yl-foot-text a:hover { color: var(--y-accent); text-decoration-color: currentColor; }
+.yl-meme { flex: none; display: block; width: 110px; border: 1px solid var(--y-line); border-radius: 8px; overflow: hidden; background: #ffffff; transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease; }
+.yl-meme img { display: block; width: 100%; height: auto; }
+:root[data-theme="dark"] .yl-meme img { filter: brightness(0.86); }
+.yl-meme:hover { transform: rotate(-3deg) scale(1.06); border-color: var(--y-fg2); }
+.yl-foot a:focus-visible { outline: 2px solid var(--y-accent); outline-offset: 3px; border-radius: 3px; }
 
 @media (max-width: 520px) {
   .yl-crumb { display: none; }
@@ -225,6 +243,7 @@ html.vt-lang::view-transition-new(root) { animation: yl-in 0.34s ease both; }
 @media (prefers-reduced-motion: reduce) {
   .yl-dots i { animation: none; opacity: 1; }
   .yl-thumb, .yl-theme, .yl-theme svg { transition: none; }
+  .yl-meme, .yl-meme:hover { transition: none; transform: none; }
   .yl-share, .yl-share *, .yl-share[data-s] { transition: none; animation: none !important; }
   .yl-share[data-s="ok"] .i-ok path { stroke-dashoffset: 0; }
 }
