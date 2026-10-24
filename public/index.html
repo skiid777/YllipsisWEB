@@ -87,6 +87,11 @@ h1 .yl-dots i { width: 0.17em; height: 0.17em; margin-bottom: 0.06em; }
 .search kbd { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font: 500 0.78rem var(--y-font-mono); color: var(--y-fg2); border: 1px solid var(--y-line); border-radius: 6px; padding: 1px 8px; background: var(--y-surface); pointer-events: none; }
 .count { font: 500 0.8rem var(--y-font-mono); color: var(--y-fg2); min-height: 1.2em; }
 
+.meme { display: block; width: min(100%, 380px); margin-bottom: clamp(40px, 6vw, 72px); border: 1px solid var(--y-line); border-radius: 18px; overflow: hidden; background: #ffffff; transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.25s ease; animation: rise2 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) 1s backwards; }
+.meme img { display: block; width: 100%; height: auto; }
+:root[data-theme="dark"] .meme img { filter: brightness(0.86); }
+.meme:hover { transform: rotate(-1.6deg) translateY(-4px); border-color: var(--y-fg2); }
+.meme:focus-visible { outline: 2px solid var(--y-accent); outline-offset: 3px; }
 .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: 18px; padding-bottom: clamp(48px, 8vw, 96px); }
 .card {
   position: relative;
@@ -160,8 +165,8 @@ a.card:hover .go svg { transform: translateX(6px); color: var(--y-accent); }
 
 .still .card, .still .pt i, .still .rs .b, .still .rs .c { animation: none; }
 @media (prefers-reduced-motion: reduce) {
-  h1 .w, .finder, .card, .pt i, .rs .b, .rs .c { animation: none; }
-  a.card:hover, a.card:hover .pt i:not(.e) { transform: none; }
+  h1 .w, .finder, .card, .meme, .pt i, .rs .b, .rs .c { animation: none; }
+  a.card:hover, a.card:hover .pt i:not(.e), .meme:hover { transform: none; }
 }
 </style>
 </head>
@@ -185,6 +190,10 @@ a.card:hover .go svg { transform: translateX(6px); color: var(--y-accent); }
     </section>
 
     <section class="grid" id="grid" aria-label="Narzędzia"></section>
+
+    <a class="meme" href="https://github.com/skiid777/YllipsisWEB" target="_blank" rel="noopener" title="Check the code on GitHub">
+      <img src="/assets/open-source.png" width="511" height="284" loading="lazy" data-attr="alt" data-pl="Nauczyciel wskazuje tablicę z napisem: Everything is open source" data-en="A teacher pointing at a board that says: Everything is open source" alt="Nauczyciel wskazuje tablicę z napisem: Everything is open source">
+    </a>
   </main>
 
   <div id="yl-foot"></div>
