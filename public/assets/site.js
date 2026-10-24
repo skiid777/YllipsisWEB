@@ -171,7 +171,12 @@
     var host = document.getElementById('yl-foot');
     if (!host) return;
     host.className = 'yl-foot';
-    host.textContent = 'yllipsis.com \u00b7 ' + new Date().getFullYear() + ' \u00b7 made by skiid777';
+    var repo = 'https://github.com/skiid777/YllipsisWEB';
+    host.innerHTML =
+      '<a class="yl-meme" href="' + repo + '" target="_blank" rel="noopener" title="Check the code on GitHub">' +
+      '<img src="/assets/open-source.png" width="110" height="61" loading="lazy" data-attr="alt" data-pl="Nauczyciel wskazuje tablicę z napisem: Everything is open source" data-en="A teacher pointing at a board that says: Everything is open source" alt=""></a>' +
+      '<div class="yl-foot-text"><span>yllipsis.com \u00b7 ' + new Date().getFullYear() + ' \u00b7 made by skiid777 \u00b7</span>' +
+      '<a href="' + repo + '" target="_blank" rel="noopener" title="Check the code on GitHub">Everything is open source!</a></div>';
   }
 
   function init() {
