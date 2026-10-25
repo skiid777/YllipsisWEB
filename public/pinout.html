@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="pl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Pinouty ESP32 i Arduino · Yllipsis-skiid777</title>
+<meta name="description" content="Interaktywne pinouty ESP32 (DevKitC 30 i 38 pin, S3, C3) oraz Arduino (Uno, Nano, Mega, Pro Micro) z przykładami i ustawieniami Arduino IDE.">
+<meta name="theme-color" content="#ffffff">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="/assets/site.css">
+<link rel="stylesheet" href="/assets/pinout.css">
+<script src="/assets/site.js"></script>
+</head>
+<body>
+<div id="yl-bar" data-crumb-pl="Pinouty" data-crumb-en="Pinouts"></div>
+
+<div class="page">
+  <div class="bg" aria-hidden="true"></div>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow" data-pl="ściągawka elektronika" data-en="electronics cheat sheet">ściągawka elektronika</p>
+      <h1 data-pl="Pinouty ESP32 i Arduino" data-en="ESP32 and Arduino pinouts">Pinouty ESP32 i Arduino</h1>
+      <p class="lead" data-pl="Wybierz płytkę, kliknij pin i zobacz, co potrafi i czego unikać. Niżej znajdziesz opis, przykłady kodu i ustawienia Arduino IDE dla każdej płytki." data-en="Pick a board, click a pin and see what it can do and what to avoid. Below you get a description, code examples and the Arduino IDE settings for every board.">Wybierz płytkę, kliknij pin i zobacz, co potrafi i czego unikać. Niżej znajdziesz opis, przykłady kodu i ustawienia Arduino IDE dla każdej płytki.</p>
+    </section>
+
+    <nav class="pn-tabs" id="pn-tabs" aria-label="Płytki"></nav>
+
+    <section class="pn-stage" id="pn-stage" aria-label="Pinout">
+      <div class="pn-stagecol">
+        <div class="pn-filters" id="pn-filters"></div>
+        <div class="pn-panel pn-viewer">
+          <div class="pn-scroll">
+            <div class="pn-scene" id="pn-scene">
+              <div class="pn-sway" id="pn-board-host"></div>
+            </div>
+          </div>
+          <div class="pn-legend" id="pn-legend"></div>
+        </div>
+      </div>
+      <aside class="pn-panel pn-info" id="pn-info" aria-live="polite"></aside>
+    </section>
+
+    <section class="pn-sec" id="opis">
+      <h2 data-pl="O płytce" data-en="About the board">O płytce</h2>
+      <p class="pn-for" data-for></p>
+      <div class="pn-about" id="pn-about"></div>
+    </section>
+
+    <section class="pn-sec" id="przyklady">
+      <h2 data-pl="Przykłady: cyfrowe i analogowe" data-en="Examples: digital and analog">Przykłady: cyfrowe i analogowe</h2>
+      <p class="pn-for" data-for></p>
+      <div id="pn-examples"></div>
+    </section>
+
+    <section class="pn-sec" id="ide">
+      <h2 data-pl="Arduino IDE: co ustawić, żeby wgrać program" data-en="Arduino IDE: what to set to upload a sketch">Arduino IDE: co ustawić, żeby wgrać program</h2>
+      <p class="pn-for" data-for></p>
+      <div id="pn-ide"></div>
+    </section>
+
+    <section class="pn-sec pn-end" id="tabela">
+      <h2 data-pl="Wszystkie piny w tabeli" data-en="Every pin in a table">Wszystkie piny w tabeli</h2>
+      <p class="pn-for" data-for></p>
+      <div class="pn-find">
+        <label class="pn-search">
+          <input id="pn-q" type="search" autocomplete="off" spellcheck="false" data-attr="placeholder" data-pl="Szukaj pinu, np. ADC, SPI, I2C…" data-en="Search a pin, e.g. ADC, SPI, I2C…" placeholder="Szukaj pinu, np. ADC, SPI, I2C…" aria-label="Szukaj pinu">
+        </label>
+        <span class="pn-count" id="pn-count" aria-live="polite"></span>
+      </div>
+      <div class="pn-tblwrap">
+        <table class="pn-tbl">
+          <thead>
+            <tr>
+              <th data-pl="Pin" data-en="Pin">Pin</th>
+              <th data-pl="Nazwa alternatywna" data-en="Alt name">Nazwa alternatywna</th>
+              <th data-pl="Rodzaj" data-en="Kind">Rodzaj</th>
+              <th data-pl="Funkcje" data-en="Functions">Funkcje</th>
+            </tr>
+          </thead>
+          <tbody id="pn-tbody"></tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <div id="yl-foot"></div>
+</div>
+
+<script src="/assets/pinout.js"></script>
+<script src="/assets/pinout-esp32.js"></script>
+<script src="/assets/pinout-arduino.js"></script>
+</body>
+</html>
