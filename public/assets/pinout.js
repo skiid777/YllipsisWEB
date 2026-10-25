@@ -143,7 +143,8 @@
     var x0 = dir > 0 ? gap : -gap - w;
     var label = pin.n + (pin.s ? ', ' + pin.s : '');
     var s = '<g class="pn-pin k-' + pin.k + (h.onpcb ? ' onpcb' : '') + '" data-i="' + pin.i + '" tabindex="0" role="button" aria-label="' + esc(label) + '" transform="translate(' + x + ' ' + y + ')' + (rot ? ' rotate(' + rot + ')' : '') + '">';
-    s += '<rect class="hit" x="' + (dir > 0 ? -8 : -(gap + w + 4)) + '" y="-11" width="' + (gap + w + 12) + '" height="22"/>';
+    var secW = pin.s && (h.out === 'l' || h.out === 'r') ? Math.round(pin.s.length * (fs - 1) * 0.62) + 12 : 0;
+    s += '<rect class="hit" x="' + (dir > 0 ? -8 : -(gap + w + secW + 4)) + '" y="-11" width="' + (gap + w + secW + 12) + '" height="22"/>';
     s += '<line class="lead" x1="0" y1="0" x2="' + dir * gap + '" y2="0"/>';
     s += '<circle class="ring" r="10"/><circle class="pad" r="6"/><circle class="hole" r="2.4"/>';
     s += '<rect class="pill" x="' + x0 + '" y="' + (-ph / 2) + '" width="' + w + '" height="' + ph + '" rx="' + ph / 2 + '"/>';
@@ -234,7 +235,7 @@
     var h;
     if (!pin) {
       h = '<p class="pn-eyebrow">' + esc(Y.t('Płytka', 'Board')) + '</p><h3 class="pn-i-t">' + esc(tr(b.name)) + '</h3>' +
-        '<p class="pn-muted">' + esc(Y.t('Kliknij dowolny pin na płytce, żeby zobaczyć jego funkcje i ograniczenia. Przeciągnij kursor nad płytką, żeby ją przechylić.', 'Click any pin on the board to see its functions and limits. Move the cursor over the board to tilt it.')) + '</p>' +
+        '<p class="pn-muted">' + esc(Y.t('Kliknij dowolny pin na płytce, żeby zobaczyć jego funkcje i ograniczenia.', 'Click any pin on the board to see its functions and limits.')) + '</p>' +
         '<dl class="pn-facts">' + b.specs.slice(0, 6).map(function (s) {
           return '<div><dt>' + esc(Y.t(s[0], s[1])) + '</dt><dd>' + esc(Array.isArray(s[2]) ? tr(s[2]) : s[2]) + '</dd></div>';
         }).join('') + '</dl>';
@@ -384,20 +385,6 @@
 
   function bindScene() {
     var sc = $('pn-scene');
-    sc.addEventListener('pointermove', function (ev) {
-      if (ev.pointerType === 'touch') return;
-      var r = sc.getBoundingClientRect();
-      var nx = (ev.clientX - r.left) / r.width * 2 - 1;
-      var ny = (ev.clientY - r.top) / r.height * 2 - 1;
-      sc.style.setProperty('--ry', (nx * 16).toFixed(2) + 'deg');
-      sc.style.setProperty('--rx', (-ny * 12).toFixed(2) + 'deg');
-      sc.classList.add('is-live');
-    });
-    sc.addEventListener('pointerleave', function () {
-      sc.style.removeProperty('--ry');
-      sc.style.removeProperty('--rx');
-      sc.classList.remove('is-live');
-    });
     sc.addEventListener('click', function (ev) {
       var g = ev.target.closest('.pn-pin');
       if (g) selectPin(+g.getAttribute('data-i'));
